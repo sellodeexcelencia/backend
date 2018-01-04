@@ -1,0 +1,82 @@
+{
+  "name": "dmt-sellodeexcelencia-backend-nodejs",
+  "version": "1.0.1",
+  "description": "El back de Sello de Excelencia",
+  "engines": {
+    "node": "6.9.2"
+  },
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm run style",
+    "test": "./node_modules/.bin/mocha app/tests/dev*",
+    "start": "npm run apidoc && node index.js",
+    "style": "eslint index.js app/routes.js app/controllers/ app/models/ app/utils/",
+    "debug": "node --debug-brk",
+    "dbg": "node-debug index.js",
+    "apidoc": "apidoc -i app/controllers app/models -o public/apidoc/"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^1.2.1",
+    "@google/cloud-debug": "^0.8.5",
+    "@google/cloud-trace": "^0.5.8",
+    "apidoc": "^0.16.1",
+    "body-parser": "^1.15.2",
+    "connect-form2": "^0.1.2",
+    "cors": "^2.8.1",
+    "express": "4.14.0",
+    "generate-password": "^1.3.0",
+    "hummus": "^1.0.83",
+    "jsdom": "^9.8.3",
+    "jsonwebtoken": "^7.2.1",
+    "method-override": "^2.3.6",
+    "mocha": "^3.1.2",
+    "morgan": "^1.7.0",
+    "multer": "^1.3.0",
+    "mysql": "^2.11.1",
+    "nodemailer": "^4.0.1",
+    "path": "^0.12.7",
+    "request": "^2.79.0",
+    "xlsx": "0.11.3"
+  },
+  "eslintConfig": {
+    "ecmaVersion": 6,
+    "env": {
+      "browser": true,
+      "node": true
+    }
+  },
+  "apidoc": {
+    "title": "Sello de Excelencia apiDoc",
+    "url": "http://backend-dot-domoti-sellodeexcelencia.appspot-preview.com/",
+    "sampleUrl": "http://localhost:3000/",
+    "header": {
+      "title": "Sello de Excelencia",
+      "filename": "apidoc/header.md"
+    },
+    "footer": {
+      "title": "Creditos",
+      "filename": "apidoc/footer.md"
+    },
+    "template": {
+      "withCompare": true,
+      "withGenerator": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/domoti/dmt-sellodeexcelencia-backend-nodejs"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express",
+    "gcd"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1"
+  }
+}

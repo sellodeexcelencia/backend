@@ -1,0 +1,243 @@
+<div layout="column" flex>
+  <!--main container -->
+  <!--div class="breadcrum" ng-bind-html="ctrl.breadcrum"></div-->
+  <!-- one columns -->
+  <!-- -->
+  <md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="datos básicos" md-on-select="ctrl.selectTab(null)">
+      <md-content layout-spacing="center">
+        <md-toolbar class="md-hue-1" layout="row" flex>
+          <span flex></span>
+          <md-button class="md-accent md-raised" ng-click="ctrl.saveItem($event)" ng-disabled="ctrl.form.$invalid">Guardar</md-button>
+        </md-toolbar>
+        <form class="md-padding" name="ctrl.form" layout="row" flex>
+          <div layout="row" layout-wrap class="input-row" layout-padding flex>
+            <md-input-container flex="50">
+              <label>Id</label>
+              <input type="text" ng-model="ctrl.data.id" ng-disabled="true">
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Nombre</label>
+              <input type="text" ng-model="ctrl.data.name">
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Categoría</label>
+              <md-select ng-model="ctrl.data.id_category" ng-disabled="true">
+                <md-option ng-repeat="o in ctrl.options.id_category" value="{{o.id}}">{{o.name}}</md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Estado Actual</label>
+              <md-select ng-model="ctrl.data.current_status" ng-disabled="true">
+                <md-option ng-repeat="o in ctrl.options.current_status" value="{{o.id}}">{{o.name}}</md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Nivel</label>
+              <input type="text" ng-model="ctrl.data.level" ng-disabled="true">
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Calificación</label>
+              <input type="text" ng-model="ctrl.data.rate" ng-disabled="true">
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Url</label>
+              <input type="text" ng-model="ctrl.data.url">
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Entidad</label>
+              <md-autocomplete md-items="item in ctrl.entities.institution.data" md-item-text="item.name " md-selected-item="ctrl.data.institution"
+                md-selected-item-change="ctrl.selectedInstitution(item)" md-search-text-change="ctrl.entities.institution.search()"
+                md-search-text="ctrl.entities.institution.query.filter" md-select-on-match="true" md-input-name="institution"
+                md-autofocus="true" md-autoselect="true" placeholder="Entidad">
+                <md-item-template>
+                  <span md-highlight-text="ctrl.entities.institution.query.filter" md-highlight-flags="^i">{{item.name}}</span>
+                </md-item-template>
+              </md-autocomplete>
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Usuario de Prueba</label>
+              <input type="text" ng-model="ctrl.data.test_user" ng-disabled="true">
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Clave de Prueba</label>
+              <input type="text" ng-model="ctrl.data.test_password" ng-disabled="true">
+            </md-input-container>
+            <md-input-container flex="50">
+              <md-checkbox ng-model="ctrl.data.is_active" aria-label="Activo">Activo</md-checkbox>
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Fecha de Creación</label>
+              <md-datepicker ng-model="ctrl.data.timestamp" ng-disabled="true"></md-datepicker>
+            </md-input-container>
+          </div>
+        </form>
+        <p ng-if="ctrl.form.$submitted && ctrl.form.$invalid" class="md-warn" layout="row" layout-align="start center">
+          <i class="material-icons">error_outline</i>
+          <span>&nbsp; Todos los campos son necesarios</span>
+        </p>
+
+      </md-content>
+    </md-tab>
+    <md-tab label="HISTORIAL">
+      <md-content class="md-padding" layout-spacing="center">
+        <div layout="column" flex>
+          <table md-table md-progress="ctrl.entities.service_status.promise">
+            <thead md-head>
+              <tr md-row>
+                <th md-column ng-repeat="f in ctrl.entities.service_status.table.fields" ng-if="f.name !== 'id_service'">
+                  <span>{{f.name | translate}}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody md-body>
+              <tr md-row ng-repeat="item in ctrl.entities.service_status.data | orderBy:-timestamp">
+                <td md-cell ng-repeat="f in ctrl.entities.service_status.table.fields" ng-if="f.name !== 'id_service'">
+                  <span ng-if="f.type === 'media'">
+                    <a href="{{item.media.url}}">Adjunto</a>
+                  </span>
+                  <span ng-if="f.type !== 'link' && f.type != 'media' && f.type != 'datetime'">{{ item[f.name] }}</span>
+                  <span ng-if="f.type === 'link'">{{ item[f.table][f.foreign_name] }}</span>
+                  <span ng-if="f.type === 'datetime'">{{ item[f.name] | date}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <md-table-pagination md-limit="ctrl.entities.service_status.query.limit" md-limit-options="[10, 15, 20]" md-page="ctrl.entities.service_status.query.page"
+            md-label="{page: 'Página:', rowsPerPage: 'Filas por página:', of: 'de'}" md-total="{{ctrl.entities.service_status.total_results}}"
+            md-on-paginate="ctrl.entities.service_status.getData" md-page-select></md-table-pagination>
+        </div>
+
+      </md-content>
+    </md-tab>
+    <md-tab label="COMENTARIOS">
+      <md-content class="md-padding" layout-spacing="center">
+        <div layout="column" flex>
+          <table md-table md-progress="ctrl.entities.service_comment.promise">
+            <thead md-head md-order="ctrl.entities.service_comment.query.order" md-on-reorder="ctrl.entities.service_comment.getData">
+              <tr md-row>
+                <th md-column md-order-by="id">
+                  <span>Id</span>
+                </th>
+                <th md-column md-order-by="id_user">
+                  <span>Usuario</span>
+                </th>
+                <th md-column md-order-by="text">
+                  <span>Comentario</span>
+                </th>
+                <th md-column md-order-by="rate">
+                  <span>Calificación</span>
+                </th>
+                <th md-column md-order-by="timestamp">
+                  <span>Fecha</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody md-body>
+              <tr md-row ng-repeat="item in ctrl.entities.service_comment.data | orderBy:-timestamp">
+                <td md-cell>
+                  <span>{{ item.id }}</span>
+                </td>
+                <td md-cell>
+                  <span>{{ item.user.email }}</span>
+                </td>
+                <td md-cell>
+                  <span>{{ item.text }}</span>
+                </td>
+                <td md-cell>
+                  <span>{{ item.rate }}</span>
+                </td>
+                <td md-cell>
+                  <span>{{ item.timestamp | date }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <md-table-pagination md-limit="ctrl.entities.service_comment.query.limit" md-limit-options="[10, 15, 20]" md-page="ctrl.entities.service_comment.query.page"
+            md-label="{page: 'Página:', rowsPerPage: 'Filas por página:', of: 'de'}" md-total="{{ctrl.entities.service_comment.total_results}}"
+            md-on-paginate="ctrl.entities.service_status.getData" md-page-select></md-table-pagination>
+        </div>
+
+      </md-content>
+    </md-tab>
+    <md-tab label="Requisitos">
+      <md-content class="md-padding" layout-spacing="center">
+        <div layout="column" flex>
+          <span ng-if="ctrl.data.current_status == 1" class="md-primary">* Al aprobar todos los requisitos; el servicio pasará a Evaluación, y los requisitos se asignarán automáticamente</span>
+          <table md-table md-progress="ctrl.entities.user_answer.promise">
+            <thead md-head md-order="ctrl.entities.user_answer.query.order" md-on-reorder="ctrl.entities.user_answer.getData">
+              <tr md-row>
+                <th md-column style="max-width:150px;overflow:hidden;text-overflow:ellipsis;" md-order-by="id_question">
+                    <span>Id</span>
+                </th>
+                <th md-column style="max-width:150px;overflow:hidden;text-overflow:ellipsis;" md-order-by="id_question">
+                  <span>Requisito</span>
+                </th>
+                <th md-column style="max-width:150px;overflow:hidden;text-overflow:ellipsis;" md-order-by="comment">
+                  <span>Comentario</span>
+                </th>
+                <th md-column>
+                  <md-select multiple="true" ng-model="ctrl.entities.user_answer.query.filters['service.id_category']" placeholder="Categoría"
+                    ng-change="ctrl.entities.user_answer.getData()">
+                    <md-option ng-repeat="o in ctrl.entities.category.data" value="{{o.id}}">{{o.name}}</md-option>
+                  </md-select>
+                </th>
+                <th md-column style="max-width:150px;overflow:hidden;text-overflow:ellipsis;">
+                  <span>Adjunto</span>
+                </th>
+                <th md-column style="max-width:150px;overflow:hidden;text-overflow:ellipsis;" md-order-by="id_status">
+                  <span>Estado</span>
+                </th>
+                <th md-column style="max-width:150px;overflow:hidden;text-overflow:ellipsis;">
+                  <span>Acciones</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody md-body>
+              <tr md-row ng-repeat="item in ctrl.entities.user_answer.data">
+                  <td md-cell style="max-width:150px;overflow:hidden;text-overflow:ellipsis;">
+                    <span>{{ item.id_question }}</span>
+                  </td>
+                <td md-cell style="max-width:150px;overflow:hidden;text-overflow:ellipsis;">
+                  <span>{{ item.question.text }}</span>
+                </td>
+                <td md-cell style="max-width:150px;overflow:hidden;text-overflow:ellipsis;">
+                  <span>{{ item.comment }}</span>
+                </td>
+                <td md-cell>
+                  <span>{{ ctrl.entities.category.data | linkvalue:{name:'id_category',foreign_key:'id',foreign_name:'name'}:item.service
+                    }}</span>
+                </td>
+                <td md-cell>
+                  <span>
+                    <a ng-if="item.media.url" href="{{item.media.url}}">Adjunto</a>
+                  </span>
+                </td>
+                <td md-cell>
+                  <span>{{ item.status.name }}</span>
+                </td>
+                <td md-cell>
+                  <div ng-if="item.id_status == 1">
+                    <md-button aria-label="accept" ng-click="item.id_status = ctrl.STATES.EVALUATION_REQUEST.POR_ASIGNAR;ctrl.updateItem(item,f,ctrl.user_answer_relation);"
+                      class="md-primary md-raised">
+                      Aprobar </md-button>
+                    <md-button aria-label="reject" ng-click="item.id_status = ctrl.STATES.EVALUATION_REQUEST.ERROR; ctrl.updateItem(item,f,ctrl.user_answer_relation);"
+                      class="md-primary md-hue-1 md-raised">
+                      Rechazar </md-button>
+                  </div>
+                  <div>
+                    <md-button aria-label="accept" ng-click="ctrl.openAnswerDetail(item);" class="md-primary md-raised"> Ver</md-button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <md-table-pagination md-limit="ctrl.entities.user_answer.query.limit" md-limit-options="[20, 30, 40]" md-page="ctrl.entities.user_answer.query.page"
+            md-label="{page: 'Página:', rowsPerPage: 'Filas por página:', of: 'de'}" md-total="{{ctrl.entities.user_answer.total_results}}"
+            md-on-paginate="ctrl.entities.user_answer.getData" md-page-select></md-table-pagination>
+        </div>
+
+      </md-content>
+    </md-tab>
+  </md-tabs>
+</div>

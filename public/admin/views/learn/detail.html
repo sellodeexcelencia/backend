@@ -1,0 +1,67 @@
+<div layout="column" flex>
+  <!--main container -->
+  <!--div class="breadcrum" ng-bind-html="ctrl.breadcrum"></div-->
+  <!-- one columns -->
+  <!-- -->
+  <md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="datos básicos" md-on-select="ctrl.selectTab(null)">
+      <md-content layout-spacing="center">
+        <md-toolbar class="md-hue-1" layout="row" flex>
+          <span flex></span>
+          <md-button ng-if="!ctrl.loading" class="md-accent md-raised" ng-click="ctrl.saveItem($event)" ng-disabled="ctrl.form.$invalid">Guardar</md-button>
+          <md-progress-circular class="md-accent" md-mode="indeterminate" ng-if="ctrl.loading" aria-label="Cargando"> </md-progress-circular>
+        </md-toolbar>
+        <form class="md-padding" name="ctrl.form" layout="row" flex>
+          <div layout="row" layout-wrap class="input-row" layout-padding flex>
+            <div layout="column" flex="50">
+              <md-input-container md-no-float>
+                <label>Id</label>
+                <input type="text" ng-disabled="true" ng-model="ctrl.data.id">
+              </md-input-container>
+              <md-input-container flex="100" style="text-align:center;">
+                <div ngf-select ng-model="ctrl.data.image">
+                  <img ngf-thumbnail="ctrl.data.image" />
+                  <br/>
+                  <md-button class="md-raised">IMAGEN</md-button>
+                </div>
+                <md-button class="md-raised md-primary" ng-click="ctrl.data.image='del'">BORRAR IMAGEN</md-button>
+              </md-input-container>
+            </div>
+            <div layout="column" flex="50">
+              <md-input-container md-no-float>
+                <label>Titulo</label>
+                <input type="text" ng-model="ctrl.data.title" ng-required="true">
+              </md-input-container>
+              <md-input-container md-no-float>
+                <label>Url</label>
+                <input type="text" ng-model="ctrl.data.url">
+              </md-input-container>
+              <md-input-container md-no-float>
+                <label>Descripción</label>
+                <textarea type="text" ng-model="ctrl.data.description"></textarea>
+              </md-input-container>
+              <md-input-container md-no-float>
+                <label>Rol</label>
+                <md-select ng-model="ctrl.data.id_role">
+                  <md-option ng-repeat="o in ctrl.options.id_role" value="{{o.id}}">{{o.name}}</md-option>
+                </md-select>
+              </md-input-container>
+              <md-input-container md-no-float>
+                <label>Fecha de Activación</label>
+                <md-datepicker ng-model="ctrl.data.activation_date" ng-required="true"></md-datepicker>
+              </md-input-container>
+              <md-input-container md-no-float>
+                  <md-checkbox name="active" ng-model="ctrl.data.active" aria-label="Activo">Activo</md-checkbox>
+                </md-input-container>
+            </div>
+          </div>
+        </form>
+        <p ng-if="ctrl.form.$submitted && ctrl.form.$invalid" class="md-warn" layout="row" layout-align="start center">
+          <i class="material-icons">error_outline</i>
+          <span>&nbsp; Todos los campos son necesarios</span>
+        </p>
+
+      </md-content>
+    </md-tab>
+  </md-tabs>
+</div>

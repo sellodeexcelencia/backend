@@ -1,0 +1,62 @@
+
+@-webkit-keyframes fade-in { 0% {opacity: 0;}50%{opacity:0;}100%{opacity:1;}}
+
+text-angular .ta-toolbar{
+  background: #fff;
+  padding: 10px;
+}
+
+text-angular .btn-group{
+  display: inline;
+}
+text-angular .btn-group .btn{
+  cursor: pointer;
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  padding: 0px;
+}
+text-angular .btn-group .btn:hover{
+  background: #eee;
+}
+text-angular .ta-bind{
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+
+.chat .messages-container{
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: #efefef;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  padding: 5px;
+}
+.chat .message{
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+.chat .message.mine{
+  width: 68%;
+  margin-left: 27%;
+  background: #55ddff;
+}
+.chat .message.remote{
+  width: 69%;
+  margin-left: 1%;
+  background: #55ffcc;
+}
+.color-gray{
+  color: #aaa !important;
+}
+md-input-container div{
+  overflow: hidden;
+}

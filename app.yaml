@@ -1,0 +1,8 @@
+service: backend-test
+runtime: nodejs
+env: flex
+instance_class: B1
+manual_scaling:
+  instances: 1
+skip_files:
+ - ^node_modules$

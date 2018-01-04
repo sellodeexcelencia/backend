@@ -1,0 +1,65 @@
+<div layout="row" layout-wrap flex>
+  <md-card flex="45">
+    <md-card-content>
+      <h2>Hall de la fama</h2>
+      <p>Seleccione la fecha del reporte</p>
+      <md-datepicker ng-model="ctrl.date_hall" ng-change="ctrl.updateDates()"></md-datepicker>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-click="ctrl.downloadHall()">Descargar</md-button>
+    </md-card-actions>
+  </md-card>
+  <md-card flex="45">
+    <md-card-content>
+      <h2>Informe de estado de requisitos por postulación</h2>
+      <p>Seleccione el Producto o Servicio</p>
+
+      <md-autocomplete md-items="item in ctrl.service.entities.service.data" md-item-text="item.name " md-selected-item="ctrl._service"
+        md-selected-item-change="ctrl.selectedService(item)" md-search-text-change="ctrl.service.entities.service.search()"
+        md-search-text="ctrl.service.entities.service.query.filter" md-select-on-match="true" md-input-name="service" md-autofocus="true"
+        md-autoselect="true" placeholder="Servicio o Producto">
+        <md-item-template>
+          <span md-highlight-text="ctrl.service.entities.service.query.filter" md-highlight-flags="^i">{{item.name}}</span>
+        </md-item-template>
+      </md-autocomplete>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="ctrl.downloadServiceReport()" class="md-primary md-raised">Descargar</md-button>
+    </md-card-actions>
+  </md-card>
+  <md-card flex="45">
+    <md-card-content>
+      <h2>Informe de tiempos de atención por cada estado</h2>
+      <md-radio-group ng-model="ctrl._filter">
+        <md-radio-button ng-value="1" aria-label="label">
+          Todas las Entidades
+        </md-radio-button>
+        <md-radio-button ng-value="2" aria-label="label">
+          Por Entidad
+        </md-radio-button>
+      </md-radio-group>
+      <md-autocomplete ng-if="ctrl._filter === 2" md-items="item in ctrl.service.entities.institution.data" md-item-text="item.name "
+        md-selected-item="ctrl._institution" md-selected-item-change="ctrl.selectedInstitution(item)" md-search-text-change="ctrl.service.entities.institution.search()"
+        md-search-text="ctrl.service.entities.institution.query.filter" md-select-on-match="true" md-input-name="institution"
+        md-autofocus="true" md-autoselect="true" placeholder="Entidad">
+        <md-item-template>
+          <span md-highlight-text="ctrl.service.entities.institution.query.filter" md-highlight-flags="^i">{{item.name}}</span>
+        </md-item-template>
+      </md-autocomplete>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="ctrl.downloadPerformance()" class="md-primary md-raised">Descargar</md-button>
+    </md-card-actions>
+  </md-card>
+  <md-card flex="45">
+    <md-card-content>
+      <h2>Informe de sellos otorgados</h2>
+      <p>Descargue el listado de los sellos</p>
+
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="ctrl.downloadCertified()" class="md-primary md-raised">Descargar Otorgados</md-button>
+      <md-button ng-click="ctrl.downloadDenied()" class="md-primary md-raised">Descargar No Otorgados</md-button>
+    </md-card-actions>
+  </md-card>
+</div>

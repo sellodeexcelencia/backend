@@ -1,0 +1,78 @@
+<div layout="column">
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">{{ctrl.page.name}}</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="filter.show = true">
+                <md-icon class="material-icons">search</md-icon>
+            </md-button>
+            <md-button class="md-raised md-primary" ng-if="!ctrl.page.readOnly" ng-click="create($event)">
+                <md-icon class="material-icons">add</md-icon>
+            </md-button>
+            <md-button ngf-select
+            ngf-accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+            ngf-pattern="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+            ngf-change="load($file)" class="md-raised md-primary" ng-if="ctrl.page.import">
+                <md-icon class="material-icons">cloud_upload</md-icon>
+            </md-button>
+
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !selected.length">
+        <div class="md-toolbar-tools">
+            <md-icon class="material-icons">search</md-icon>
+            <form flex name="filter.form" layout="row">
+                <input flex type="text" ng-model="query.filter" ng-model-options="filter.options" placeholder="Buscar">
+            </form>
+            <md-button class="md-icon-button" ng-click="removeFilter()">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
+        <div class="md-toolbar-tools" layout-align="space-between">
+            <div>{{selected.length}} {{selected.length > 1 ? 'items seleccionados' : 'item seleccionado'}}</div>
+            <md-button class="md-icon-button" ng-click="delete($event)">
+                <md-icon class="material-icons">delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" layout="row" ng-show="ctrl.entity.filters.length > 0">
+        <span flex></span>
+        <md-select flex ng-repeat="filter in ctrl.entity.filters" ng-model="filter.selected" placeholder="{{filter.name | translate}}"
+            ng-change="ctrl.updateFilter(filter)">
+            <md-option value="null">{{filter.name | translate}}</md-option>
+            <md-option ng-repeat="o in filter.options.data" value="{{o[filter.filter_key]}}">{{o[filter.filter_name]}}</md-option>
+        </md-select>
+    </md-toolbar>
+    <md-table-container>
+        <table md-table ng-model="selected" md-progress="promise">
+            <thead md-head md-order="query.order" md-on-reorder="getData">
+                <tr md-row>
+                    <th md-column ng-repeat="f in ctrl.entity.fields">
+                        <span ng-if="f.type !== 'link' && f.type!=='file'">{{f.name | translate:'es'}}</span>
+                        <md-select ng-if="f.type == 'link'" multiple="true" ng-model="query.filters[f.name]" placeholder="{{f.name | translate:'es'}}"
+                            ng-change="getData()">
+                            <md-option ng-repeat="o in ctrl.options[f.name]" value="{{o[f.foreign_key]}}">{{o[f.foreign_name]}}</md-option>
+                        </md-select>
+                    </th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row md-select="item" md-select-id="name" md-auto-select ng-repeat="item in items">
+                    <td md-cell ng-repeat="f in ctrl.entity.fields" ng-click="editField($event,item,f)" ng-class="{'color-gray':item.disabled}">
+                        <span ng-if="f.type=='link' && f.disabled">{{ ctrl.options[f.name] | linkvalue:f:item }}</span>
+                        <span ng-if="f.type !=='boolean' && f.type!=='link' && f.type!=='datetime' && f.type!=='file'">{{item[f.name]}}</span>
+                        <md-datepicker ng-model="item[f.name]" ng-if="f.type=='datetime' || f.type=='date'" ng-disabled="f.disabled"></md-datepicker>
+                        <md-select ng-if="f.type=='link' && !f.disabled" ng-model="item[f.name]" placeholder="Other" ng-change="updateItem(item,f);">
+                            <md-option ng-repeat="o in ctrl.options[f.name]" value="{{o[f.foreign_key]}}">{{o[f.foreign_name]}}</md-option>
+                        </md-select>
+                        <span ng-if="f.type ==='boolean' ">{{item[f.name] | translate}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-limit="query.limit" md-limit-options="[10, 15, 20]" md-page="query.page" md-total="{{total_results}}"
+        md-label="{page: 'Página:', rowsPerPage: 'Filas por página:', of: 'de'}" md-on-paginate="getData" md-page-select></md-table-pagination>
+</div>

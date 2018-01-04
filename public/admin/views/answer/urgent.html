@@ -1,0 +1,101 @@
+<div layout="column">
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length || filter.show">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">{{ctrl.page.name}}</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="filter.show = true">
+                <md-icon class="material-icons">search</md-icon>
+            </md-button>
+            <!--md-button class="md-raised md-primary" ng-if="!ctrl.page.readOnly" ng-click="create($event)">
+                <md-icon class="material-icons">add</md-icon>
+            </md-button-->
+            <md-button ngf-select ngf-accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ngf-pattern="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ngf-change="load($file)" class="md-raised md-primary" ng-if="ctrl.page.import">
+                <md-icon class="material-icons">cloud_upload</md-icon>
+            </md-button>
+
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !selected.length">
+        <div class="md-toolbar-tools" layout="start center" flex layout="row">
+            <md-icon class="material-icons">search</md-icon>
+            <form flex name="filter.form" layout="row">
+                    <input flex="100" type="text" 
+                    ng-model="query.filter" ng-model-options="filter.options" 
+                    placeholder="Buscar">
+            </form>
+            <md-button class="md-icon-button" ng-click="removeFilter()">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
+        <div class="md-toolbar-tools" layout-align="space-between">
+            <div>{{selected.length}} {{selected.length > 1 ? 'items seleccionados' : 'item seleccionado'}}</div>
+            <md-button class="md-icon-button" ng-click="delete($event)">
+                <md-icon class="material-icons">delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" layout="row" ng-show="ctrl.entity.filters.length > 0">
+        <span flex></span>
+        <md-select flex ng-repeat="filter in ctrl.entity.filters" ng-model="filter.selected" placeholder="{{filter.name | translate}}"
+            ng-change="ctrl.updateFilter(filter)">
+            <md-option value="null">{{filter.name | translate}}</md-option>
+            <md-option ng-repeat="o in filter.options.data" value="{{o[filter.filter_key]}}">{{o[filter.filter_name]}}</md-option>
+        </md-select>
+    </md-toolbar>
+    <md-table-container>
+        <table md-table md-progress="promise">
+            <thead md-head md-order="query.order" md-on-reorder="getData">
+                <tr md-row>
+                    <th md-column md-order-by="id_service">
+                        <span>Servicio</span>
+                    </th>
+                    <th md-column  md-order-by="id_question">
+                        <span>Requisito</span>
+                    </th>
+                    <th md-column>
+                        <span>Comentario</span>
+                    </th>
+                    <th md-column>
+                        <span>Adjunto</span>
+                    </th>
+                    <th md-column>
+                        <md-select 
+                        multiple="true" 
+                        ng-model="query.filters.id_status" 
+                        placeholder="Estado" 
+                        ng-change="getData()">
+                        <md-option ng-repeat="o in ctrl.options.id_status" value="{{o.id}}">{{o.name}}</md-option>
+                        </md-select>
+                    </th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="item in items" style="cursor:pointer"
+                    ng-click="ctrl.openAnswerDetail(item)">
+                    <td md-cell>
+                        <span>{{ item.id_service }} - {{item.service.name}}</span>
+                    </td>
+                    <td md-cell>
+                        <span>{{ item.question.text }}</span>
+                    </td>
+                    <td md-cell>
+                        <span>{{ item.comment }}</span>
+                    </td>
+                    <td md-cell>
+                        <span>
+                            <a ng-if="item.media.url" href="{{item.media.url}}">Adjunto</a>
+                        </span>
+                    </td>
+                    <td md-cell>
+                        <span>{{ item.status.name }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-limit="query.limit" md-limit-options="[10, 15, 20]" md-page="query.page" md-total="{{total_results}}"
+        md-label="{page: 'Página:', rowsPerPage: 'Filas por página:', of: 'de'}" md-on-paginate="getData" md-page-select></md-table-pagination>
+</div>

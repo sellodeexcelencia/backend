@@ -1,0 +1,157 @@
+<div layout="column" flex>
+  <!--main container -->
+  <!--div class="breadcrum" ng-bind-html="ctrl.breadcrum"></div-->
+  <!-- one columns -->
+  <!-- -->
+  <md-toolbar layout="row" flex layout-padding ng-if="ctrl.languages.length">
+    <span flex></span>
+    <div flex>
+      <md-select flex ng-model="ctrl.language" ng-change="ctrl.getData()">
+        <md-option ng-repeat="lang in ctrl.languages" value="{{lang.id}}">
+          <md-icon md-svg-src="{{lang.icon}}"></md-icon>{{lang.name}}</md-option>
+      </md-select>
+    </div>
+  </md-toolbar>
+  <md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="datos básicos" md-on-select="ctrl.selectTab(null)">
+      <md-content layout-spacing="center">
+        <md-toolbar class="md-hue-1" layout="row" flex>
+          <span flex></span>
+          <md-button class="md-accent md-raised" ng-click="ctrl.sendMessage($event)" ng-disabled="ctrl.form.$invalid">Enviar Mensaje</md-button>
+          <md-button class="md-accent md-raised" ng-click="ctrl.saveItem($event)" ng-disabled="ctrl.form.$invalid">Guardar</md-button>
+        </md-toolbar>
+        <form class="md-padding" name="ctrl.form" layout="row" flex>
+          <div layout="row" layout-wrap class="input-row" layout-padding flex>
+              <md-input-container flex="50">
+                  <label>Id</label>
+                  <input type="text" ng-model="ctrl.data.id" ng-disabled="true">
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Nombre</label>
+                  <input type="text" ng-model="ctrl.data.name" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Segundo Nombre</label>
+                  <input type="text" ng-model="ctrl.data.secondname" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Apellido</label>
+                  <input type="text" ng-model="ctrl.data.lastname" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Segundo Apellido</label>
+                  <input type="text" ng-model="ctrl.data.secondlastname" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Correo electrónico</label>
+                  <input type="text" ng-model="ctrl.data.email" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Telefóno</label>
+                  <input type="text" ng-model="ctrl.data.phone" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Extensión</label>
+                  <input type="text" ng-model="ctrl.data.extension" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Célular</label>
+                  <input type="text" ng-model="ctrl.data.mobile" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <md-checkbox ng-model="ctrl.data.active" aria-label="Activo">Activo</md-checkbox>
+                </md-input-container>
+                <md-input-container flex="50">
+                  <md-checkbox ng-model="ctrl.data.terms" aria-label="Terminos" ng-disabled="true">Términos y Condiciones</md-checkbox>
+                </md-input-container>
+                <md-input-container flex="50">
+                  <md-checkbox ng-model="ctrl.data.tmp_pwd" aria-label="Cambiar Clave la Próxima vez que inicie sesión">Cambiar Clave la Próxima vez que inicie sesión</md-checkbox>
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Tipo de Documento</label>
+                  <md-select ng-model="ctrl.data.id_type_document">
+                    <md-option ng-repeat="o in ctrl.options.id_type_document" value="{{o.id}}">{{o.name}}</md-option>
+                  </md-select>
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Documento</label>
+                  <input type="text" ng-model="ctrl.data.document" >
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>País</label>
+                  <md-autocomplete md-items="item in ctrl.entities.country.data" md-item-text="item.name " md-selected-item="ctrl.data.country"
+                    md-selected-item-change="ctrl.selectedCountry(item)" md-search-text-change="ctrl.entities.country.search()"
+                    md-search-text="ctrl.entities.country.query.filter" md-select-on-match="true" md-input-name="country" md-autofocus="true"
+                    md-autoselect="true" placeholder="País">
+                    <md-item-template>
+                      <span md-highlight-text="ctrl.entities.country.query.filter" md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                  </md-autocomplete>
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Región</label>
+                  <md-autocomplete md-items="item in ctrl.entities.region.data" md-item-text="item.name " md-selected-item="ctrl.data.region"
+                    md-selected-item-change="ctrl.selectedRegion(item)" md-search-text-change="ctrl.entities.region.search()" md-search-text="ctrl.entities.region.query.filter"
+                    md-select-on-match="true" md-input-name="institution" md-autofocus="true" md-autoselect="true" placeholder="Region">
+                    <md-item-template>
+                      <span md-highlight-text="ctrl.entities.region.query.filter" md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                  </md-autocomplete>
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Ciudad</label>
+                  <md-autocomplete md-items="item in ctrl.entities.city.data" md-item-text="item.name " md-selected-item="ctrl.data.city" md-selected-item-change="ctrl.selectedCity(item)"
+                    md-search-text-change="ctrl.entities.city.search()" md-search-text="ctrl.entities.city.query.filter" md-select-on-match="true"
+                    md-input-name="city" md-autofocus="true" md-autoselect="true" placeholder="Ciudad">
+                    <md-item-template>
+                      <span md-highlight-text="ctrl.entities.city.query.filter" md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                  </md-autocomplete>
+                </md-input-container>
+                <md-input-container flex="50">
+                  <label>Fecha de Creación</label>
+                  <md-datepicker ng-model="ctrl.data.timestamp" ng-disabled="true"></md-datepicker>
+                </md-input-container>
+          </div>
+        </form>
+        <p ng-if="ctrl.form.$submitted && ctrl.form.$invalid" class="md-warn" layout="row" layout-align="start center">
+          <i class="material-icons">error_outline</i>
+          <span>&nbsp; Todos los campos son necesarios</span>
+        </p>
+
+      </md-content>
+    </md-tab>
+    <md-tab label="{{relation.name | translate}}" md-on-select="ctrl.selectTab(relation)" ng-if="relation.name == 'roles'"
+      ng-repeat="relation in ctrl.currentEntity.relations">
+      <md-content class="md-padding" layout-spacing="center">
+        <!-- Relation 1-n & n-n -->
+        
+        <div layout="column" flex>
+          <table md-table md-row-select multiple ng-model="ctrl.entities[relation.entity].selected" md-progress="ctrl.entities[relation.entity].promise">
+            <thead md-head>
+              <tr md-row>
+                <th md-column ng-repeat="f in ctrl.entities[relation.entity].table.fields" ng-if="f.name !== relation.rightKey">
+                  <span>{{f.name | translate}}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody md-body>
+              <tr md-row md-on-select="ctrl.select" md-on-deselect="ctrl.unselect" md-select="item[ctrl.entities[relation.entity].table.defaultSort]"
+                md-auto-select ng-repeat="item in ctrl.entities[relation.entity].data" ng-if="item.id !== 1 && item.id !== 2 && item.id !== 4">
+                <td md-cell ng-repeat="f in ctrl.entities[relation.entity].table.fields" ng-click="ctrl.editField($event,item,f,relation)"
+                  ng-if="f.name !== relation.rightKey">
+                  <span ng-if="f.type !== 'link'">{{ item[f.name] }}</span>
+                  <span ng-if="f.type === 'link'">{{ item[f.table][f.foreign_name] }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <md-table-pagination md-limit="ctrl.entities[relation.entity].query.limit" md-limit-options="[10, 15, 20]" md-page="ctrl.entities[relation.entity].query.page"
+            md-label="{page: 'Página:', rowsPerPage: 'Filas por página:', of: 'de'}" md-total="{{ctrl.entities[relation.entity].total_results}}" md-on-paginate="ctrl.entities[relation.entity].getData"
+            md-page-select></md-table-pagination>
+        </div>
+
+      </md-content>
+    </md-tab>
+  </md-tabs>
+</div>

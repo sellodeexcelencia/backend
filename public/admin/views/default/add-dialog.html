@@ -1,0 +1,54 @@
+<md-dialog flex-grow flex>
+    <md-toolbar>
+				<div class="md-toolbar-tools">
+            <h2 class="md-title">Agregar {{ctrl.currentPage.name}}</h2>
+					<span flex></span>
+					<md-button class="md-icon-button" ng-click="ctrl.cancel()">
+						<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
+  <md-dialog-content class="md-dialog-content" flex>
+
+    
+
+    <p ng-if="ctrl.form.$submitted && ctrl.form.$invalid" class="md-warn" layout="row" layout-align="start center">
+      <i class="material-icons">error_outline</i>
+      <span>&nbsp; Todos los campos son necesarios</span>
+    </p>
+
+    <form name="ctrl.form" ng-submit="ctrl.addItem()" flex>
+      <div layout="column" class="input-row">
+        <div ng-repeat="f in ctrl.currentEntity.fields" flex>
+          <md-input-container ng-if="f.type !== 'link'" class="md-block">
+            <label ng-if="f.type!=='boolean'">{{f.name | translate}}</label>
+            <input type="number" ng-if="f.type=='int'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled" />
+            <input type="text" ng-if="f.type=='string'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled" />
+            <input type="email" ng-if="f.type=='email'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled" />
+            <input type="file" ng-if="f.type=='file'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled" />
+            <md-checkbox ng-if="f.type=='boolean'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled">{{f.name}}</md-checkbox>
+            <textarea ng-if="f.type=='text'" ng-model="ctrl.data[f.name]"></textarea>
+          </md-input-container>
+          <div ng-if="f.type === 'link'">
+            <label>{{f.name | translate}}</label>
+            <md-select flex ng-repeat="filter in ctrl.currentEntity.filters" 
+            ng-model="filter.selected" placeholder="{{filter.name | translate}}" ng-change="ctrl.updateFilter(filter)">
+              <md-option value="null">{{filter.name | translate}}</md-option>
+              <md-option ng-repeat="o in filter.options.data" value="{{o[filter.filter_key]}}">{{o[filter.filter_name]}}</md-option>
+            </md-select>
+            <md-select ng-model="ctrl.data[f.name]" ng-disabled="f.disabled == 'true'">
+              <md-option ng-repeat="o in ctrl.options[f.name].data track by $index" value="{{o[f.foreign_key]}}">{{o[f.foreign_name]}}</md-option>
+            </md-select>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </md-dialog-content>
+
+  <md-dialog-actions>
+    <md-button class="md-primary md-raised" ng-click="ctrl.addItem()" ng-disabled="ctrl.form.$invalid">Guardar</md-button>
+    <md-button class="md-primary" ng-click="ctrl.cancel()">Cancel</md-button>
+  </md-dialog-actions>
+
+</md-dialog>

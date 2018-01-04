@@ -1,0 +1,115 @@
+<div layout="column" flex>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="ctrl.entities[ctrl.entity].selected.length || filter.show">
+        <div class="md-toolbar-tools" layout="start center" flex layout="row">
+            <h2 class="md-title">{{ctrl.page.name}}</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="filter.show = true">
+                <md-icon class="material-icons">search</md-icon>
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-if="!ctrl.page.readOnly" ng-click="ctrl.create($event)">
+                <md-icon class="material-icons">add</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show && !ctrl.entities[ctrl.entity].selected.length">
+        <div class="md-toolbar-tools" layout="start center" flex layout="row">
+            <md-icon class="material-icons">search</md-icon>
+            <form flex name="filter.form" layout="row">
+                <input flex="100" type="text" ng-model="ctrl.entities[ctrl.entity].query.filter" ng-model-options="ctrl.entities[ctrl.entity].filter.options"
+                    placeholder="Buscar" ng-change="ctrl.update()">
+            </form>
+            <md-button class="md-icon-button" ng-click="ctrl.removeFilter()">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar alternate" ng-show="ctrl.entities[ctrl.entity].selected.length">
+        <div class="md-toolbar-tools" layout="start center" flex layout="row">
+            <div>{{ctrl.entities[ctrl.entity].selected.length}} {{ctrl.entities[ctrl.entity].selected.length > 1 ? 'items seleccionados'
+                : 'item seleccionado'}}</div>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="ctrl.delete($event)">
+                <md-icon class="material-icons">delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" layout="row" ng-show="ctrl.entities[ctrl.entity].filters.length > 0">
+        <span flex></span>
+        <md-select flex ng-repeat="filter in ctrl.entities[ctrl.entity].filters" ng-model="filter.selected" placeholder="{{filter.name}}"
+            ng-change="ctrl.updateFilter(filter)">
+            <md-option value="null">{{filter.name}}</md-option>
+            <md-option ng-repeat="o in filter.options" value="{{o[filter.foreign_key]}}">{{o[filter.foreign_name]}}</md-option>
+        </md-select>
+    </md-toolbar>
+    <md-table-container>
+        <table md-table md-row-select multiple ng-model="ctrl.entities[ctrl.entity].selected" md-progress="promise">
+            <thead md-head md-order="ctrl.entities[ctrl.entity].query.order" md-on-reorder="ctrl.update">
+                <tr md-row>
+                    <th md-column md-order-by="id">
+                        <span>Id</span>
+                    </th>
+                    <th md-column>
+                        <md-select multiple="true" ng-model="ctrl.entities[ctrl.entity].query.filters.id_name" placeholder="Nombre" ng-change="ctrl.update()">
+                            <md-option ng-repeat="o in ctrl.options.id_name" value="{{o.id}}">{{o.name}}</md-option>
+                        </md-select>
+                    </th>
+                    <th md-column>
+                        <md-select multiple="true" ng-model="ctrl.entities[ctrl.entity].query.filters.id_category" placeholder="Categoría" ng-change="ctrl.update()">
+                            <md-option ng-repeat="o in ctrl.options.id_category" value="{{o.id}}">{{o.name}}</md-option>
+                        </md-select>
+                    </th>
+                    <th md-column>
+                        <md-select multiple="true" ng-model="ctrl.entities[ctrl.entity].query.filters.id_role" placeholder="Rol" ng-change="ctrl.update()">
+                            <md-option ng-repeat="o in ctrl.options.id_role" value="{{o.id}}">{{o.name}}</md-option>
+                        </md-select>
+                    </th>
+                    <th md-column md-order-by="level">
+                        <span>Nivel</span>
+                    </th>
+                    <th md-column md-order-by="points">
+                        <span>Puntos</span>
+                    </th>
+                    <th md-column md-order-by="public">
+                        <span>Publico</span>
+                    </th>
+                    <th md-column md-order-by="description">
+                        <span>Descripción</span>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row md-select="item" md-select-id="id" md-auto-select ng-repeat="item in ctrl.data">
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <span>{{item.id}}</span>
+                    </td>
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <span>{{item.name.name}}</span>
+                    </td>
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <span>{{item.category.name}}</span>
+                    </td>
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <span>{{item.role.name}}</span>
+                    </td>
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <span>{{item.level}}</span>
+                    </td>
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <span>{{item.points}}</span>
+                    </td>
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <md-checkbox name="public" ng-model="item.public" ng-disabled="true" aria-label="Público"></md-checkbox>
+                    </td>
+                    <td md-cell ng-click="ctrl.details(item)">
+                        <span>{{item.description}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-limit="ctrl.entities[ctrl.entity].query.limit" md-limit-options="[10, 15, 20]" md-page="ctrl.entities[ctrl.entity].query.page"
+        md-total="{{ctrl.entities[ctrl.entity].total_results}}" md-label="{page: 'Página:', rowsPerPage: 'Filas por página:', of: 'de'}"
+        md-on-paginate="ctrl.update" md-page-select></md-table-pagination>
+</div>

@@ -1,0 +1,22 @@
+<md-dialog delete-dialog>
+		<md-dialog-content class="md-dialog-content">
+			<div ng-if="!ctrl.result">
+				<h2 class="md-title">Enviar Mensajes</h2>
+				<md-input-container class="md-block">
+					<label>Email:</label>
+					<input ng-model="ctrl.user.email" ng-disabled="true">
+				</md-input-container>
+				<text-angular ng-model="ctrl.message">
+					
+				</text-angular>
+			</div>
+			<div ng-if="ctrl.result">
+					<h2 class="md-title">Mensaje Enviado</h2>
+					<p>El mensaje ha sido enviado satisfactoriamente</p>
+			</div>
+		</md-dialog-content>
+		<div class="md-actions">
+			<md-button ng-if="!ctrl.result" class="md-accent md-raised" ng-click="ctrl.send()">Enviar</md-button>
+			<md-button class="md-primary md-raised" ng-click="ctrl.cancel()">Cerrar</md-button>
+		</div>
+	</md-dialog>

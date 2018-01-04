@@ -1,0 +1,38 @@
+<md-dialog flex-grow flex>
+		<md-toolbar>
+				<div class="md-toolbar-tools">
+					<h2>Agregar Puntos a esta entidad</h2>
+					<span flex></span>
+					<md-button class="md-icon-button" ng-click="ctrl.cancel()">
+						<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
+  <md-dialog-content class="md-dialog-content" flex>
+
+    
+    <form name="ctrl.form" ng-submit="ctrl.addItem()" flex>
+      <div layout="row" layout-wrap class="input-row">
+				<md-input-container flex="100">
+					<label>Motivo / Razón del puntaje</label>
+					<md-select ng-model="ctrl.data.id_motives">
+						<md-option ng-repeat="o in ctrl.options.id_motives.data track by $index" value="{{o.id}}">{{o.name.name}}</md-option>
+					</md-select>
+				</md-input-container>
+				<md-input-container flex="100">
+					<label>Justificación</label>
+					<textarea type="text" md-maxlength="150" rows="5" md-select-on-focus ng-model="ctrl.data.justification"></textarea>
+				</md-input-container>
+				<md-input-container flex="100">
+					<label>Valor</label>
+					<input type="number" ng-model="ctrl.data.value"/>
+				</md-input-container>
+      </div>
+    </form>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <md-button class="md-primary md-raised" ng-click="ctrl.addItem()" ng-disabled="ctrl.form.$invalid">Guardar</md-button>
+    <md-button class="md-primary" ng-click="ctrl.cancel()">Cancel</md-button>
+	</md-dialog-actions>
+
+</md-dialog>

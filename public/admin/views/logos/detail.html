@@ -1,0 +1,41 @@
+<div layout="column" flex>
+    <!--main container -->
+    <!--div class="breadcrum" ng-bind-html="ctrl.breadcrum"></div-->
+    <!-- one columns -->
+    <!-- -->
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="datos básicos" md-on-select="ctrl.selectTab(null)">
+        <md-content layout-spacing="center">
+          <md-toolbar class="md-hue-1" layout="row" flex layout-align="start center">
+            <span flex></span>
+            <md-button ng-if="!ctrl.loading" class="md-accent md-raised" ng-click="ctrl.saveItem($event)" ng-disabled="ctrl.form.$invalid">Guardar</md-button>
+            <md-progress-circular class="md-accent" md-mode="indeterminate" ng-if="ctrl.loading"aria-label="Cargando"> </md-progress-circular>
+          </md-toolbar>
+          <form class="md-padding" name="ctrl.form" layout="row" flex>
+            <div layout="row" layout-wrap class="input-row" layout-padding flex>
+              <md-input-container ng-repeat="f in ctrl.currentEntity.fields track by $index" ng-if="f.name!=='password'" flex="100">
+                <label ng-if="f.type!=='boolean' && f.type !=='file'">{{f.name | translate}}</label>
+                <input type="number" ng-if="f.type=='int'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled" />
+                <input type="text" ng-if="f.type=='string'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled" />
+                <md-datepicker ng-model="ctrl.data[f.name]" ng-if="f.type=='datetime'" ng-disabled="f.disabled"></md-datepicker>
+                <input type="email" ng-if="f.type=='email'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled" />
+                <md-checkbox ng-if="f.type=='boolean'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled">{{f.name | translate}}</md-checkbox>
+                <md-select ng-if="f.type=='link'" ng-model="ctrl.data[f.name]" ng-disabled="f.disabled">
+                  <md-option ng-repeat="o in ctrl.options[f.name]" value="{{o[f.foreign_key]}}">{{o[f.foreign_name]}}</md-option>
+                </md-select>
+                <textarea ng-if="f.type=='text'" ng-model="ctrl.data[f.name]"></textarea>
+                <div style="text-align:center;" ng-if="f.type=='file'" ngf-select ng-model="ctrl.data[f.name]">
+                  <img ngf-thumbnail="ctrl.data[f.name]" /><br/>
+                  <md-button class="md-raised">{{f.name | translate}}</md-button>
+                </div>
+              </md-input-container>
+            </div>
+          </form>
+          <p ng-if="ctrl.form.$submitted && ctrl.form.$invalid" class="md-warn" layout="row" layout-align="start center">
+            <i class="material-icons">error_outline</i>
+            <span>&nbsp; Todos los campos son necesarios</span>
+          </p>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </div>

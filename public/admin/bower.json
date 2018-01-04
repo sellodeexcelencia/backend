@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "authors": [
+    "Daniel <daniel@domoti.rocks>"
+  ],
+  "description": "Expone los servicios que se crean en back",
+  "main": "app/index.html",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.0",
+    "angular-loading-bar": "^0.9.0",
+    "angular-material":"^1.1.1",
+    "angular-material-data-table": "^0.10.9"
+  }
+}

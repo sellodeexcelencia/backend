@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <base href="/admin/">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sello de Excelencia</title>
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="bower_components/angular-material-data-table/dist/md-data-table.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.min.css">
+  <link href="styles/index.css" rel="stylesheet" type="text/css" />
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body ng-app="dmt-back" flex ng-cloak ng-controller="backCtrl as ctrl">
+  <md-toolbar layout="row" flex layout-align="start center" class="md-primary">
+    <md-button ng-click="ctrl.menu()">
+      <md-icon class="material-icons">menu</md-icon>
+      </md-icon>
+    </md-button>
+    <h2>Sello de Excelencia</h2>
+    <span flex></span>
+    <md-button ng-click="ctrl.logout()">
+      <md-icon class="material-icons">exit_to_app</md-icon>
+    </md-button>
+  </md-toolbar>
+  <md-content flex layout="row">
+    <md-sidenav md-is-locked-open="$mdMedia('min-width: 480px')" md-component-id="menu" class="md-whiteframe-1dp">
+      <!--md-sidenav md-component-id="menu"-->
+      <md-content layout-padding>
+        <div ng-repeat="x in ctrl.leftMenu" layout="column">
+          <b>{{x.section}}</b>
+          <md-button ng-repeat="p in x.pages" 
+            ng-if="p.authorized"
+            class="md-primary" 
+            ng-class="{'md-raised': ctrl.location.path().indexOf(x.path +'/'+ p.path) === 1}"
+            ng-click="ctrl.selectPage(x,p);">
+            
+            {{p.name}}
+          </md-button>
+        </div>
+      </md-content>
+    </md-sidenav>
+    <md-content ng-view flex>
+	<h1>Bienvenido al Administrador del Sello de Excelencia Gobierno Digital Colombia</h1>
+    </md-content>
+  </md-content>
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-aria.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-messages.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.min.js"></script>
+
+  <!-- Text Angular -->
+  <script src='//cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular-rangy.min.js'></script>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular-sanitize.min.js'></script>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.16/textAngular.min.js'></script>
+
+  <!-- File Upload -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-shim.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+  <!-- Angular Data Tables -->
+  <script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+
+  <!-- File Saver -->
+  <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.js"></script>
+  
+  <!-- Base Items -->
+  <script src="tables.js"></script>
+  <script src="entities.js"></script>
+  <script src="api.js"></script>
+  <script src="config.js"></script>
+  <script src="translate.js"></script>
+  <script src="index.js"></script>
+  <script src="./scripts/utils/utils.js"></script>
+  <script src="./scripts/services/entityservice.js"></script>
+
+
+  <!-- Controllers -->
+  <script src="./scripts/controllers/reports/list.js"></script>
+  <!-- Basic you could do a completely administration with just this 4 files but you are a human -->
+  <script src="./scripts/controllers/default/detail.js"></script>
+  <script src="./scripts/controllers/default/additem.js"></script>
+  <script src="./scripts/controllers/default/listitem.js"></script>
+  <script src="./scripts/controllers/default/deleteitem.js"></script>
+
+  <!-- Ok, we added other two -->
+  <script src="./scripts/controllers/extended/detail.js"></script>
+  <script src="./scripts/controllers/extended/listitem.js"></script>
+
+  <!-- ¯\_(ツ)_/¯ -->
+  <script src="./scripts/controllers/hall/detail.js"></script>
+  <script src="./scripts/controllers/banner/list.js"></script>
+  <script src="./scripts/controllers/banner/detail.js"></script>
+
+  <!-- ¯\_(ツ)_/¯ -->
+  <script src="./scripts/controllers/entity/list.js"></script>
+  <script src="./scripts/controllers/entity/detail.js"></script>
+  <script src="./scripts/controllers/entity/addpoints.js"></script>
+
+  <script src="./scripts/controllers/representant/list.js"></script>
+  <script src="./scripts/controllers/representant/detail.js"></script>
+
+  <script src="./scripts/controllers/citizen/list.js"></script>
+  <script src="./scripts/controllers/citizen/detail.js"></script>
+
+  <script src="./scripts/controllers/evaluator/list.js"></script>
+  <script src="./scripts/controllers/evaluator/detail.js"></script>
+  <script src="./scripts/controllers/evaluator/addpoints.js"></script>
+
+  <script src="./scripts/controllers/admon/list.js"></script>
+  <script src="./scripts/controllers/admon/detail.js"></script>
+  <script src="./scripts/controllers/admon/sendmessage.js"></script>
+  
+  <!-- ¯\_(ツ)_/¯ -->
+  <script src="./scripts/controllers/service/list.js"></script>
+  <script src="./scripts/controllers/service/detail.js"></script>
+
+  <script src="./scripts/controllers/answer/urgent.js"></script>
+  <script src="./scripts/controllers/answer/detail.js"></script>
+  
+  <!-- ¯\_(ツ)_/¯ -->
+  <script src="./scripts/controllers/question/list.js"></script>
+  <script src="./scripts/controllers/question/detail.js"></script>
+  
+  <script src="./scripts/controllers/learn/list.js"></script>
+  <script src="./scripts/controllers/learn/detail.js"></script>
+
+  <script src="./scripts/controllers/roles/list.js"></script>
+  <script src="./scripts/controllers/roles/detail.js"></script>
+
+  <script src="./scripts/controllers/points/list.js"></script>
+  <script src="./scripts/controllers/points/detail.js"></script>
+
+  <script src="./scripts/controllers/country/city.js"></script>
+  <script src="./scripts/controllers/country/region.js"></script>
+  <script src="./scripts/controllers/country/country.js"></script>
+
+  <script src="./scripts/controllers/status/status.js"></script>
+  <script src="./scripts/controllers/status/request_status.js"></script>
+</body>
+
+</html>

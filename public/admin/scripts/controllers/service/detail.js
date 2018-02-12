@@ -134,6 +134,30 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			})	
 		})
 	}
+	ctrl.asignate = function(ev){
+		var confirm = $mdDialog.confirm()
+          .title('Reasignación de Requisitos')
+          .textContent('Esta opción volverá a correr la asignación de los requisitos pendientes de asignar, desea hacerlo?')
+          .ariaLabel('Reasignación')
+          .targetEvent(ev)
+          .ok('Aceptar')
+          .cancel('Cancelar')
+		$mdDialog.show(confirm).then(function() {
+			var url = '/api/service/asignate?id=' + $routeParams.id
+			$http.get(url).then(()=>{
+				$mdDialog.show($mdDialog.alert()
+				.parent(angular.element(document.body))
+				.clickOutsideToClose(true)
+				.title('Reasignado')
+				.textContent('Se han asignado los requisitos.')
+				.ariaLabel('Guardado')
+				.ok('Aceptar')
+				.targetEvent(ev))
+			})
+		}, function() {
+			
+		});
+	}
 	ctrl.selectQt = function(selection){
 		ctrl.service.bind(selection,ctrl.questiontopic_relation)
 	}

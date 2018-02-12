@@ -508,6 +508,32 @@ var service_controller = function () {
 			return _get(model_entity_service, user, params)
 		}
 	}
+
+	var get_reasignate_service= function (user, params) {
+		return model_entity_service.asignate(params).then((evaluations) => {
+			console.log('evaluations ready')
+			console.log(evaluations)
+			if (evaluations.length == 0) {
+				return
+			}
+			let data = {
+				col_names: [],
+				data: evaluations
+			}
+			for (let i in evaluations[0]) {
+				data.col_names.push(i)
+			}
+			console.log(data)
+			let entity_evaluation_request = require('../models/entity_evaluation_request');
+			let model_entity_evaluation_request = new entity_evaluation_request()
+			let entity_user_anwer = require('../models/entity_user_answer');
+			let model_entity_user_answer = new entity_user_anwer()
+			model_entity_evaluation_request.createMultiple(
+				data
+			)
+			model_entity_user_answer.update({ id_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO }, { id_service: params.id , id_status: CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR})
+		})
+	}
 	/**
 	 * @api {get} api/service/category Request category information
 	 * @apiName Getcategory
@@ -645,6 +671,7 @@ var service_controller = function () {
 		return _get(model_entity_service_comment, user, params)
 	}
 	getMap.set('service', { method: get_entity_service, permits: Permissions.NONE })
+	getMap.set('asignate', { method: get_reasignate_service, permits: Permissions.ADMIN_SERVICES })
 	getMap.set('category', { method: get_category, permits: Permissions.NONE })
 	getMap.set('status', { method: get_status, permits: Permissions.NONE })
 	getMap.set('service_status', { method: get_entity_service_status, permits: Permissions.NONE })

@@ -164,6 +164,14 @@
       <md-content class="md-padding" layout-spacing="center">
         <div layout="column" flex>
           <span ng-if="ctrl.data.current_status == 1" class="md-primary">* Al aprobar todos los requisitos; el servicio pasará a Evaluación, y los requisitos se asignarán automáticamente</span>
+          <div layout-row>
+            <span flex></span>
+            <md-button class="md-raised md-primary" ng-if="!ctrl.page.readOnly" ng-click="ctrl.asignate($event)">
+              <md-icon class="material-icons">add</md-icon>
+              Reasignar
+            </md-button>
+          </div>
+           
           <table md-table md-progress="ctrl.entities.user_answer.promise">
             <thead md-head md-order="ctrl.entities.user_answer.query.order" md-on-reorder="ctrl.entities.user_answer.getData">
               <tr md-row>

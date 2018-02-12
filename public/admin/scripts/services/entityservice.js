@@ -24,7 +24,7 @@ angular.module('dmt-back')
 						page: 1,
 					},
 					getData: function () { return scope.getEntityData(relation) },
-					download: function () { return scope.downloadEntityData(relation) },
+					download: function (simple) { return scope.downloadEntityData(relation,simple) },
 					search: function () { return scope.search(relation) }
 				}
 			}
@@ -279,8 +279,11 @@ angular.module('dmt-back')
 			ctrl.getData = function () {
 				return ctrl.entities[ctrl.currentEntity.name].getData()
 			}
-			ctrl.downloadEntityData = function(relation){
+			ctrl.downloadEntityData = function(relation,simple){
 				let str = [];
+				if(simple === null){
+					simple = true
+				}
 				let entity = dmt.entities[relation.entity];
 				let table = null
 				if (!entity) {
@@ -300,6 +303,9 @@ angular.module('dmt-back')
 							str.push("field=" + name);
 						}
 					})
+				}
+				if(simple === false){
+					str.push("simple=false")
 				}
 				for (let key in ctrl.entities[relation.entity].query.filters) {
 					if (ctrl.entities[relation.entity].query.filters[key]) {
@@ -325,8 +331,8 @@ angular.module('dmt-back')
 				return deferred.promise;
 			}
 			
-			ctrl.download = function () {
-				return ctrl.entities[ctrl.currentEntity.name].download()
+			ctrl.download = function (simple) {
+				return ctrl.entities[ctrl.currentEntity.name].download(simple)
 			}
 			ctrl.downloadUrl = function(url){
 				var deferred = $q.defer()

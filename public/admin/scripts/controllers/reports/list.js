@@ -17,7 +17,7 @@ function ($scope, $mdDialog, page, entityService, $http) {
 
 	ctrl.service.loadEntity('service')
 	ctrl.downloadServiceReport = function(){
-		ctrl.service.downloadUrl('/api/stats/service?download=true&service='+ctrl._service.id).then((response)=>{
+		ctrl.service.downloadUrl('/api/stats/service?limit=5000&download=true&service='+ctrl._service.id).then((response)=>{
 			var filename = 'Servicio.xlsx'
 			saveAs(response, filename)
 		})
@@ -26,9 +26,9 @@ function ($scope, $mdDialog, page, entityService, $http) {
 	ctrl.downloadPerformance = function(){
 		let url = ''
 		if(ctrl._filter === 2){
-			url = '/api/stats/performance?download=true&institution='+ctrl._institution.id
+			url = '/api/stats/performance?limit=5000&download=true&institution='+ctrl._institution.id
 		}else{
-			url = '/api/stats/performance?download=true'
+			url = '/api/stats/performance?limit=5000&download=true'
 		}
 		ctrl.service.downloadUrl(url).then((response)=>{
 			var filename = 'Institucion.xlsx'
@@ -37,14 +37,14 @@ function ($scope, $mdDialog, page, entityService, $http) {
 	}
 
 	ctrl.downloadCertified = function(){
-		let url = '/api/stats/certified?download=true'
+		let url = '/api/stats/certified?limit=5000&download=true'
 		ctrl.service.downloadUrl(url).then((response)=>{
 			var filename = 'Otorgados.xlsx'
 			saveAs(response, filename)
 		})
 	}
 	ctrl.downloadDenied = function(){
-		let url = '/api/stats/denied?download=true'
+		let url = '/api/stats/denied?limit=5000&download=true'
 		ctrl.service.downloadUrl(url).then((response)=>{
 			var filename = 'NoOtorgados.xlsx'
 			saveAs(response, filename)

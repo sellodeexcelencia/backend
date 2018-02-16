@@ -100,31 +100,14 @@ dmt.entities = {
         foreign_name: "name"
       },
       {
-        type: "n-n",
-        entity: "institution",
-        name: "institutions",
-        intermediate: {
-          entity: "institution_user",
-          leftKey: "id_user",
-          rightKey: "id_institution",
-
-        }
-      },
-      {
         type: "1-n",
         name: "record_points",
         rightKey: "id_user",
         entity: "points"
       },
-      {
-        type: "1-n",
-        name: "requests",
-        rightKey: "id_user",
-        entity: "evaluation_request"
-      },
     ]
   },
-  "role":{
+  "role": {
     table: "role",
     relations: [
       {
@@ -364,8 +347,8 @@ dmt.entities = {
       }
     ]
   },
-  "region":{
-    table:"region",
+  "region": {
+    table: "region",
     relations: [
       {
         type: "1-1",
@@ -383,8 +366,8 @@ dmt.entities = {
       }
     ]
   },
-  "country":{
-    table:"country",
+  "country": {
+    table: "country",
     relations: [
       {
         type: "1-1",
@@ -395,27 +378,27 @@ dmt.entities = {
       }
     ]
   },
-  "banner":{
-    table:"banner",
-    relations:[
+  "banner": {
+    table: "banner",
+    relations: [
       {
-        type:"1-1",
-        entity:"type_banner",
-        name:"type",
-        leftKey:"id_type_banner",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "type_banner",
+        name: "type",
+        leftKey: "id_type_banner",
+        foreign_name: "name"
       }
     ]
   },
-  "hangouts":{
-    table:"hangouts",
-    relations:[
+  "hangouts": {
+    table: "hangouts",
+    relations: [
       {
-        type:"1-1",
-        entity:"role",
-        name:"role",
-        leftKey:"id_role",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "role",
+        name: "role",
+        leftKey: "id_role",
+        foreign_name: "name"
       }
     ]
   },
@@ -474,147 +457,147 @@ dmt.entities = {
       },
     ]
   },
-  "user_answer":{
-    table:"user_answer",
-    relations:[
+  "user_answer": {
+    table: "user_answer",
+    relations: [
       {
-        type:"1-1",
-        entity:"service",
-        name:"service",
-        leftKey:"id_service",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "service",
+        name: "service",
+        leftKey: "id_service",
+        foreign_name: "name"
       },
       {
-        type:"1-1",
-        entity:"question",
-        leftKey:"id_question",
-        name:"question",
-        foreign_name:"text"
+        type: "1-1",
+        entity: "question",
+        leftKey: "id_question",
+        name: "question",
+        foreign_name: "text"
       },
       {
-        type:"1-1",
-        entity:"user",
-        name:"user",
-        leftKey:"id_user",
-        foreign_name:"email"
+        type: "1-1",
+        entity: "user",
+        name: "user",
+        leftKey: "id_user",
+        foreign_name: "email"
       },
-      
+
       {
-        type:"1-1",
-        entity:"questiontopic",
-        name:"topic",
-        leftKey:"id_topic",
-        foreign_name:"name"
-      },
-      {
-        type:"1-1",
-        entity:"request_status",
-        name:"status",
-        leftKey:"id_status",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "questiontopic",
+        name: "topic",
+        leftKey: "id_topic",
+        foreign_name: "name"
       },
       {
-        type:"1-n",
-        entity:"evaluation_request",
-        name:"evaluators",
-        rightKey:"id_answer",
-        foreign_name:"id_user"
+        type: "1-1",
+        entity: "request_status",
+        name: "status",
+        leftKey: "id_status",
+        foreign_name: "name"
+      },
+      {
+        type: "1-n",
+        entity: "evaluation_request",
+        name: "evaluators",
+        rightKey: "id_answer",
+        foreign_name: "id_user"
       }
     ]
   },
-  "hall_of_fame":{
-    table:"hall_of_fame",
-    relations:[
+  "hall_of_fame": {
+    table: "hall_of_fame",
+    relations: [
       {
-        type:"1-1",
-        entity:"role",
-        name:"role",
-        leftKey:"id_role",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "role",
+        name: "role",
+        leftKey: "id_role",
+        foreign_name: "name"
       },
     ]
   },
-  "motives":{
-    table:"motives",
-    relations:[
+  "motives": {
+    table: "motives",
+    relations: [
       {
-        type:"1-1",
-        entity:"motivename",
-        name:"name",
-        leftKey:"id_name",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "motivename",
+        name: "name",
+        leftKey: "id_name",
+        foreign_name: "name"
       },
       {
-        type:"1-1",
-        entity:"category",
-        name:"category",
-        leftKey:"id_category",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "category",
+        name: "category",
+        leftKey: "id_category",
+        foreign_name: "name"
       },
       {
-        type:"1-1",
-        entity:"role",
-        leftKey:"id_role",
-        name:"role",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "role",
+        leftKey: "id_role",
+        name: "role",
+        foreign_name: "name"
       }
     ]
   },
-  "evaluation_request":{
-    table:"evaluation_request",
-    relations:[
+  "evaluation_request": {
+    table: "evaluation_request",
+    relations: [
       {
-        type:"1-1",
-        entity:"user",
-        leftKey:"id_user",
-        name:"user",
-        foreign_name:"email"
+        type: "1-1",
+        entity: "user",
+        leftKey: "id_user",
+        name: "user",
+        foreign_name: "email"
       },
       {
-        type:"1-1",
-        entity:"user_answer",
-        leftKey:"id_answer",
-        name:"user_answer",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "user_answer",
+        leftKey: "id_answer",
+        name: "user_answer",
+        foreign_name: "name"
       },
       {
-        type:"1-1",
-        entity:"question",
-        leftKey:"id_question",
-        name:"question",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "question",
+        leftKey: "id_question",
+        name: "question",
+        foreign_name: "name"
       },
       {
-        type:"1-1",
-        entity:"service",
-        leftKey:"id_service",
-        name:"service",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "service",
+        leftKey: "id_service",
+        name: "service",
+        foreign_name: "name"
       },
       {
-        type:"1-1",
-        entity:"request_status",
-        leftKey:"id_request_status",
-        name:"status",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "request_status",
+        leftKey: "id_request_status",
+        name: "status",
+        foreign_name: "name"
       },
       {
-        type:"1-n",
-        entity:"chats",
-        name:"chats",
-        rightKey:"id_evaluation_request"
+        type: "1-n",
+        entity: "chats",
+        name: "chats",
+        rightKey: "id_evaluation_request"
       }
     ]
   },
-  "points":{
-    table:"points",
-    relations:[
+  "points": {
+    table: "points",
+    relations: [
       {
-        type:"1-1",
-        entity:"motives",
-        name:"motives",
-        leftKey:"id_motives",
-        foreign_name:"name"
+        type: "1-1",
+        entity: "motives",
+        name: "motives",
+        leftKey: "id_motives",
+        foreign_name: "name"
       }
     ]
   },

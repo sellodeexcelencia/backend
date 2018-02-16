@@ -280,7 +280,7 @@ angular.module('dmt-back')
 				return ctrl.entities[ctrl.currentEntity.name].getData()
 			}
 			ctrl.downloadEntityData = function(relation,simple){
-				let str = [];
+				let str = ['page=1','limit=100000000000000'];
 				if(simple === null){
 					simple = true
 				}

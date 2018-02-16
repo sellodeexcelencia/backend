@@ -212,7 +212,7 @@ var Jobs = function () {
 				model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
 				let tout = Math.floor(Math.random() * 1000) + 100
 				setTimeout(() => {
-					utiles.sendEmail(request.user_email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
+					utiles.sendEmail(_admin.email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
 						`<div style="text-align:center;margin: 10px auto;">
 							<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 							</div>

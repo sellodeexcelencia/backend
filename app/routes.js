@@ -140,7 +140,10 @@ var Routes = function (app) {
     /* ---------------- DELETE ---------------- */
     app.delete('/api/:type/*', urlencodedParser, getDeleteFunction)
 
-    app.get('*', (req,res) => {res.sendFile('/var/www/dmt-sellodeexcelencia/backend/public/index.html')})
+    app.get('*', (req, res) => { 
+        var path = require('path')
+        res.sendFile(path.resolve(__dirname+'/../public/index.html')) 
+    })
 }
 
 module.exports = Routes

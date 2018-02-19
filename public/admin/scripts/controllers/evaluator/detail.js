@@ -10,6 +10,29 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 	ctrl.page = page
 	ctrl.currentEntity = ctrl.service.currentEntity
 	ctrl.today = new Date()
+	ctrl.currentEntity.relations.push({
+		type: "n-n",
+		entity: "institution",
+		name: "institutions",
+		intermediate: {
+			entity: "institution_user",
+			leftKey: "id_user",
+			rightKey: "id_institution",
+
+		}
+	})
+	ctrl.currentEntity.relations.push({
+		type: "1-n",
+		name: "record_points",
+		rightKey: "id_user",
+		entity: "points"
+	})
+	ctrl.currentEntity.relations.push({
+		type: "1-n",
+		name: "requests",
+		rightKey: "id_user",
+		entity: "evaluation_request"
+	})
 	ctrl.currentEntity.relations.forEach((relation)=>{
 		if(relation.entity == 'points'){
 			ctrl.points_relation = relation

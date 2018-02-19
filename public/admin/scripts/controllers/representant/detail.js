@@ -9,11 +9,35 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 	ctrl.page = page;
 	ctrl.tab = null;
 	ctrl.currentEntity = dmt.entities[page.entity || page.parent.entity];
-	if(!ctrl.currentEntity.relations){
+
+	if (!ctrl.currentEntity.relations) {
 		ctrl.currentEntity.relations = []
 	}
+	ctrl.currentEntity.relations.push({
+		type: "n-n",
+		entity: "institution",
+		name: "institutions",
+		intermediate: {
+			entity: "institution_user",
+			leftKey: "id_user",
+			rightKey: "id_institution",
+
+		}
+	})
+	ctrl.currentEntity.relations.push({
+		type: "1-n",
+		name: "record_points",
+		rightKey: "id_user",
+		entity: "points"
+	})
+	ctrl.currentEntity.relations.push({
+		type: "1-n",
+		name: "requests",
+		rightKey: "id_user",
+		entity: "evaluation_request"
+	})
 	ctrl.currentEntity.relations.forEach((relation) => {
-		if(relation.entity == 'points'){
+		if (relation.entity == 'points') {
 			ctrl.points_relation = relation
 		}
 		ctrl.entities[relation.entity] = {
@@ -25,7 +49,7 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 			bookmark: null,
 			selected: [],
 			query: {
-				filters:{},
+				filters: {},
 				filter: '',
 				limit: 10,
 				page: 1,
@@ -43,7 +67,7 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 				bookmark: null,
 				selected: [],
 				query: {
-					filters:{},
+					filters: {},
 					filter: '',
 					limit: 10,
 					page: 1,
@@ -78,9 +102,9 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 			$http.delete(url)
 		}
 	}
-	ctrl.selectedCountry = function(country){
-		if(country && country.id){
-			if(country.id !== ctrl._country){
+	ctrl.selectedCountry = function (country) {
+		if (country && country.id) {
+			if (country.id !== ctrl._country) {
 				ctrl._country = -1
 				ctrl.data.region = null
 				ctrl.data.id_region = null
@@ -89,7 +113,7 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 			}
 			ctrl.data.id_country = country.id
 			ctrl.entities.region.query.filters.id_country = [country.id]
-		}else{
+		} else {
 			ctrl.data.country = null
 			ctrl.data.region = null
 			ctrl.data.id_region = null
@@ -97,22 +121,22 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 			ctrl.data.id_city = null
 		}
 	}
-	ctrl.selectedRegion = function (region){
-		if(region){
-			if(region.id !== ctrl._region){
+	ctrl.selectedRegion = function (region) {
+		if (region) {
+			if (region.id !== ctrl._region) {
 				ctrl._region = -1
 				ctrl.data.city = null
 				ctrl.data.id_city = null
 			}
 			ctrl.data.id_region = region.id
 			ctrl.entities.city.query.filters.id_region = [region.id]
-		}else{
+		} else {
 			ctrl.data.city = null
 			ctrl.data.id_city = null
 		}
 	}
-	ctrl.selectedCity = function(city){
-		if(city){
+	ctrl.selectedCity = function (city) {
+		if (city) {
 			ctrl.data.id_city = city.id
 		}
 	}
@@ -120,7 +144,7 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 		ctrl.tab = tab
 	}
 
-	ctrl.createPoints = function(event){
+	ctrl.createPoints = function (event) {
 		$mdDialog.show({
 			clickOutsideToClose: true,
 			controller: 'addEntityPointsController',
@@ -141,7 +165,7 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 	}
 	ctrl.create = function (event, relation) {
 		let entity = dmt.entities[relation.entity];
-		
+
 		$mdDialog.show({
 			clickOutsideToClose: true,
 			controller: entity.add ? entity.add.controller || 'addItemController' : 'addItemController',
@@ -167,10 +191,10 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 		entity.fields.forEach(function (field) {
 			if (field.type !== 'file') {
 				if (typeof item[field.name] === 'object' || typeof item[field.name] === 'array') {
-					if( (item[field.name] instanceof Date)){
+					if ((item[field.name] instanceof Date)) {
 						let _d = item[field.name].toISOString()
 						_d = _d.split('T').join(' ').split('.')[0]
-						data.append(field.name, _d)	
+						data.append(field.name, _d)
 					}
 					return;
 				}
@@ -309,7 +333,7 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 
 		$http.get(entity.endpoint + "?" + str.join("&")).then((response) => {
 			let _table = table;
-			if(relation.entity === 'points'){
+			if (relation.entity === 'points') {
 				_table.fields = [
 					{
 						"name": "id",
@@ -335,8 +359,8 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 						"table": "motives",
 						"disabled": true,
 						"key": false,
-						"foreign_key":"id",
-						"foreign_name":"name"
+						"foreign_key": "id",
+						"foreign_name": "name"
 					},
 					{
 						"name": "justification",
@@ -353,20 +377,20 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 	}
 	ctrl.getSuccess = function (results) {
 		ctrl.data = results.data.data[0];
-		if(!ctrl.data.region.id){
+		if (!ctrl.data.region.id) {
 			ctrl.data.region = null
-		}else{
+		} else {
 			ctrl._region = ctrl.data.region.id
 		}
-		if(!ctrl.data.country.id){
+		if (!ctrl.data.country.id) {
 			ctrl.data.country = null
-		}else{
+		} else {
 			ctrl._country = ctrl.data.country.id
 		}
-		if(!ctrl.data.city.id){
+		if (!ctrl.data.city.id) {
 			ctrl.data.city = null
 		}
-		
+
 		for (let p in ctrl.currentEntity.fields) { //mysql boolean 1 / 0 to true / false            
 			if (ctrl.currentEntity.fields[p].type === "boolean") {
 				ctrl.data[ctrl.currentEntity.fields[p].name] = ctrl.data[ctrl.currentEntity.fields[p].name] === 1;
@@ -407,25 +431,25 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 	};
 	if ($routeParams.id) {
 		ctrl.getData();
-		$http.get('/api/place/institution?filter_field=users.id&filter_value='+$routeParams.id)
-		.then((results)=>{
-			if(results.data.total_results == 1){
-				ctrl.entities.institution.selectedInstitution = results.data.data[0]
-				ctrl.entities.institution.originalInstitution = results.data.data[0].id
-			}
-		})
+		$http.get('/api/place/institution?filter_field=users.id&filter_value=' + $routeParams.id)
+			.then((results) => {
+				if (results.data.total_results == 1) {
+					ctrl.entities.institution.selectedInstitution = results.data.data[0]
+					ctrl.entities.institution.originalInstitution = results.data.data[0].id
+				}
+			})
 	}
-	ctrl.deleteRepresentant = function($event){
-		var url = '/api/configuration/institution_user?id_institution='+ctrl.entities.institution.originalInstitution+'&id_user=' + $routeParams.id
-		$http.delete(url).then(()=>{
+	ctrl.deleteRepresentant = function ($event) {
+		var url = '/api/configuration/institution_user?id_institution=' + ctrl.entities.institution.originalInstitution + '&id_user=' + $routeParams.id
+		$http.delete(url).then(() => {
 			$mdDialog.show($mdDialog.alert()
-			.parent(angular.element(document.body))
-			.clickOutsideToClose(true)
-			.title('Guardado')
-			.textContent('Se ha eliminado este representante de la entidad.')
-			.ariaLabel('Guardado exitosamente')
-			.ok('Aceptar')
-			.targetEvent($event))
+				.parent(angular.element(document.body))
+				.clickOutsideToClose(true)
+				.title('Guardado')
+				.textContent('Se ha eliminado este representante de la entidad.')
+				.ariaLabel('Guardado exitosamente')
+				.ok('Aceptar')
+				.targetEvent($event))
 			ctrl.entities.institution.selectedInstitution = null
 		})
 	}
@@ -492,13 +516,13 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 			let table = null
 			if (!entity) {
 				entity = dmt.tables[item.table];
-			} 
+			}
 			base = entity.endpoint
 		}
 		if (!base) {
 			base = ctrl.currentEntity.endpoint;
 		}
-		$http.get(base+'?limit=5000').then(function (results) {
+		$http.get(base + '?limit=5000').then(function (results) {
 			ctrl.options[item.name] = results.data.data;
 		});
 	}
@@ -519,7 +543,7 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 	function error(err) {
 		window.location.href = "/admin/login";
 	}
-	this.sendMessage = function(event){
+	this.sendMessage = function (event) {
 		$mdDialog.show({
 			clickOutsideToClose: true,
 			controller: entity.delete ? entity.delete.controller || 'sendMessageController' : 'sendMessageController',
@@ -559,8 +583,8 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 				if (field.name === ctrl.currentEntity.defaultSort) {
 					update = true;
 				}
-					data.append(field.name, ctrl.data[field.name])
-				
+				data.append(field.name, ctrl.data[field.name])
+
 			})
 			if (ctrl.currentEntity.translate) {
 				data.append("language", ctrl.language);
@@ -570,16 +594,16 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 				//$http.put(base, data).then(ctrl.getData).catch(error);
 				request.open("PUT", base);
 				request.setRequestHeader("Authorization", localStorage.getItem("token"));
-				request.onload = function(){
+				request.onload = function () {
 					ctrl.loading = false;
 					$mdDialog.show($mdDialog.alert()
-					.parent(angular.element(document.body))
-					.clickOutsideToClose(true)
-					.title('Guardado')
-					.textContent('Se ha guardado exitosamente')
-					.ariaLabel('Guardado exitosamente')
-					.ok('Aceptar')
-					.targetEvent(ev))
+						.parent(angular.element(document.body))
+						.clickOutsideToClose(true)
+						.title('Guardado')
+						.textContent('Se ha guardado exitosamente')
+						.ariaLabel('Guardado exitosamente')
+						.ok('Aceptar')
+						.targetEvent(ev))
 					ctrl.getData();
 				}
 				request.send(data);
@@ -595,9 +619,9 @@ angular.module('dmt-back').controller('detailItemRepresentantController', functi
 						.textContent('Se ha guardado exitosamente')
 						.ariaLabel('Guardado exitosamente')
 						.ok('Aceptar')
-						.targetEvent(ev)).then(()=>{
+						.targetEvent(ev)).then(() => {
 							var url = $location.path()
-							url = url.substr(0,url.lastIndexOf("/"))
+							url = url.substr(0, url.lastIndexOf("/"))
 							$location.path(url);
 						})
 				};

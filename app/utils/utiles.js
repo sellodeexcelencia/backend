@@ -78,30 +78,32 @@ module.exports = {
       }).catch((err) => { reject(err) })
     })
   },
-  sendEmail: function (to, cc, bcc, subject, body, attachment) {    
+  sendEmail: function (to, cc, bcc, subject, body, attachment) {
     return new Promise((resolve, reject) => {
-      if(!to){
-        reject("no receipt")
-      }
-      var transporter = Nodemailer.createTransport( Config.smtp )
-      var mailOptions = {
-        from: Config.smtp.from, // sender address
-        to: to, // list of receivers
-        cc: cc,
-        bcc: bcc,
-        subject: subject, // Subject line
-        html: body // plaintext body
-      }
-      //send Mail
-      // send mail with defined transport object
-	console.log('sending mail')
-	console.log(mailOptions)
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error)
+      setTimeout(()=>{
+        if(!to){
+          reject("no receipt")
         }
-        resolve()
-      })
+        var transporter = Nodemailer.createTransport( Config.smtp )
+        var mailOptions = {
+          from: Config.smtp.from, // sender address
+          to: to, // list of receivers
+          cc: cc,
+          bcc: bcc,
+          subject: subject, // Subject line
+          html: body // plaintext body
+        }
+        //send Mail
+        // send mail with defined transport object
+        console.log('sending mail')
+        console.log(mailOptions)
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error)
+          }
+          resolve()
+        })
+      },100)
     })
   },
   writeExcelFile: function(data){

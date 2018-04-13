@@ -549,6 +549,7 @@ dmt.config = [
 				name: "Paises",
 				path: "paises",
 				entity: "country",
+				order: "name",
 				permission:'admin_cities_regions',
 				controller:'listItemExtendedController',
 				templateUrl: "views/extended/list.html",

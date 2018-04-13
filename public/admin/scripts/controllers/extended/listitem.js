@@ -78,7 +78,7 @@ angular.module('dmt-back').controller('listItemExtendedController', function ($s
 
     $scope.query = {
         filter: '',
-        order: page ? ctrl.entity.defaultSort : "name",
+        order: page.order ? page.order: ctrl.entity.defaultSort,
         limit: 20,
         page: 1,
         filters: ctrl.page.filters || {}

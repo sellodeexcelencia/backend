@@ -16,7 +16,7 @@ var Jobs = function () {
 		///RENOVACIÓN
 		//servicios que estén en creación y no se hayan postulado alert_time
 		let adate = new Date()
-		model_entity_service.getByCurrentStatusDate(null, adate, [CONSTANTS.SERVICE.INCOMPLETO])
+		model_entity_service.getByLastStatusDate(null, adate, [CONSTANTS.SERVICE.INCOMPLETO])
 			.then((results) => {
 				results.forEach((service) => {
 					let tout = Math.floor(Math.random() * 1000) + 100

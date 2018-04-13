@@ -104,6 +104,35 @@ var Service = function () {
 			return { data: list, total_results: total }
 		})
 	}
+	this.getByLastStatusDate = function(valid_to,alert_time,status){
+		if(!status){
+			return
+		}
+		if(valid_to){
+			valid_to = valid_to.toISOString().split('T')[0]
+		}
+		if(alert_time){
+			alert_time = alert_time.toISOString().split('T')[0]
+		}
+		let q=`SELECT \`service\`.\`*\`,\`user\`.\`name\` \`user_name\`,
+		\`user\`.\`email\` \`user_email\`,\`service_status\`.\`valid_to\`,
+		\`category\`.\`name\` \`category_name\`
+		 FROM \`service\` 
+		JOIN (SELECT \`service_status\`.\`id_service\`,MAX(\`service_status\`.\`timestamp\`) \`timestamp\`, \`service_status\`.\`valid_to\` FROM \`service_status\` 
+		WHERE (
+			${status ? `\`service_status\`.\`id_status\` IN ( '${status.join(',')}' ) ` : ``} 
+			${valid_to ? 'AND DATE(\`service_status\`.\`valid_to\`) = \''+valid_to +'\' ' :''}
+			${alert_time ? 'AND DATE(\`service_status\`.\`valid_to\`) = \''+alert_time +'\' ' :''}
+		) GROUP BY \`id_service\`) 
+		\`service_status\` ON \`service_status\`.\`id_service\` = \`service\`.\`id\` 
+		JOIN \`institution_user\` ON \`institution_user\`.\`id_institution\` = \`service\`.\`id_institution\`
+		JOIN \`category\` ON \`service\`.\`id_category\` = \`category\`.\`id\`
+		JOIN \`user\` ON \`institution_user\`.\`id_user\` = \`user\`.\`id\`
+		WHERE \`service\`.\`is_active\` = '1'
+		ORDER BY \`service\`.id ;`
+		let keys = []
+		return this.customQuery(q)
+	}
 	this.getByCurrentStatusDate = function(valid_to,alert_time,status){
 		if(!status){
 			return

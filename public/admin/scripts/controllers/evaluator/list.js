@@ -36,7 +36,7 @@ function ($scope, $mdDialog,
         $location.path(path)
     }
     ctrl.download = function () {
-        ctrl.service.download().then((response) => {
+        ctrl.service.download(false).then((response) => {
             var filename = ctrl.page.name + '.xlsx'
             saveAs(response, filename)
         })

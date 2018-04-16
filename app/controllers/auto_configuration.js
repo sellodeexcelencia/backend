@@ -103,7 +103,6 @@ var configuration_controller = function () {
 	 *		"mobile": "This is an example text",
 	 *		"organization": "This is an example text",
 	 *		"ocupation": "This is an example text",
-	 *		"education_level": "This is an example text",
 	 *		"tmp_pwd": 1,
 	 *		"points": 97,
 	 *		"active": 1,
@@ -614,7 +613,6 @@ var configuration_controller = function () {
 	 * @apiParam {String} mobile 
 	 * @apiParam {String} organization 
 	 * @apiParam {String} ocupation 
-	 * @apiParam {String} education_level 
 	 * @apiParam {Boolean} tmp_pwd 
 	 * @apiParam {Number} points 
 	 * @apiParam {Boolean} active 
@@ -945,8 +943,7 @@ var configuration_controller = function () {
 	 * @apiParam {String} extension 
 	 * @apiParam {String} mobile 
 	 * @apiParam {String} organization 
-	 * @apiParam {String} ocupation 
-	 * @apiParam {String} education_level 
+	 * @apiParam {String} ocupation  
 	 * @apiParam {Boolean} tmp_pwd 
 	 * @apiParam {Number} points 
 	 * @apiParam {Boolean} active 
@@ -1308,7 +1305,6 @@ var configuration_controller = function () {
 	 * @apiParam {String} mobile 
 	 * @apiParam {String} organization 
 	 * @apiParam {String} ocupation 
-	 * @apiParam {String} education_level 
 	 * @apiParam {Boolean} tmp_pwd 
 	 * @apiParam {Number} points 
 	 * @apiParam {Boolean} active 

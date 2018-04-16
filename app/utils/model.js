@@ -2,7 +2,7 @@ var config = require('../../config.json')
 
 // This is the generic model, all models inherits from this one.
 var ModelMysql = require('./model-mysql.js')
-var EntityMysql = require('./entity-mysql.min.js')
+var EntityMysql = require('./entity-mysql.js')
 
 /*
 A model is a component where we can make crud operations over a table. It is intended to be parametrisable.

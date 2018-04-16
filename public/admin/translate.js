@@ -35,7 +35,6 @@ dmt.translate={
         "document":"Documento",
         "organization":"Organización",
         "ocupation":"Ocupación",
-        "education_level":"Nivel escolar",
         "points":"Puntos",
         "rate":"Calificación",
         "test_user":"Usuario de Prueba",
@@ -155,6 +154,9 @@ dmt.translate={
         "status":"Estado",
         "institution":"Entidad",
         "prev_points":"Puntos Anteriores",
+        "availability":"Disponibilidad",
+        "type_document":"Tipo de Documento",
+        "id_type_document":"Tipo de Documento",
     },
 }
 try {

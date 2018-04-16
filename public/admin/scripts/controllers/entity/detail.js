@@ -32,10 +32,10 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			if(!ctrl.data.city.id){
 				ctrl.data.city = null
 			}
-			return $http.get('/api/configuration/user?simple=false&filter_field=institutions.id&filter_value='+$routeParams.id)
+			return $http.get('/api/place/institutionUser?id='+$routeParams.id)
 		}).then((results)=>{
-			if(results.data.total_results == 1){
-				ctrl.entities.user.selectedUser = results.data.data[0]
+			if(results.data.length == 1){
+				ctrl.entities.user.selectedUser = results.data[0]
 			}
 			return $http.get('/api/configuration/motivename')
 		}).then((results)=>{

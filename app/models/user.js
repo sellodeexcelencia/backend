@@ -58,14 +58,6 @@
 		"Extra": ""
 	},
 	{
-		"Field": "extension",
-		"Type": "varchar(50)",
-		"Null": "YES",
-		"Key": "",
-		"Default": null,
-		"Extra": ""
-	},
-	{
 		"Field": "mobile",
 		"Type": "varchar(50)",
 		"Null": "YES",
@@ -83,14 +75,6 @@
 	},
 	{
 		"Field": "ocupation",
-		"Type": "varchar(50)",
-		"Null": "YES",
-		"Key": "",
-		"Default": null,
-		"Extra": ""
-	},
-	{
-		"Field": "education_level",
 		"Type": "varchar(50)",
 		"Null": "YES",
 		"Key": "",
@@ -309,14 +293,6 @@ var User = function () {
 	},
 	{
 		"Field": "ocupation",
-		"Type": "varchar(50)",
-		"Null": "YES",
-		"Key": "",
-		"Default": null,
-		"Extra": ""
-	},
-	{
-		"Field": "education_level",
 		"Type": "varchar(50)",
 		"Null": "YES",
 		"Key": "",

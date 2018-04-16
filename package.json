@@ -16,9 +16,9 @@
     "apidoc": "apidoc -i app/controllers app/models -o public/apidoc/"
   },
   "dependencies": {
+    "@google-cloud/debug-agent": "^2.4.0",
     "@google-cloud/storage": "^1.2.1",
-    "@google/cloud-debug": "^0.8.5",
-    "@google/cloud-trace": "^0.5.8",
+    "@google-cloud/trace-agent": "^2.7.2",
     "apidoc": "^0.16.1",
     "body-parser": "^1.15.2",
     "connect-form2": "^0.1.2",

@@ -320,7 +320,6 @@ var Auth = function () {
                     mobile: body.mobile || "",
                     organization: body.organization || null,
                     ocupation: body.ocupation || null,
-                    education_level: body.education_level || null,
                     password: pass,
                     tmp_pwd: tmp_pwd,
                     points: "0",

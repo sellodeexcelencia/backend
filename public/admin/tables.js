@@ -1634,12 +1634,6 @@ dmt.tables = {
 				"key": false
 			},
 			{
-				"name": "extension",
-				"type": "string",
-				"disabled": false,
-				"key": false
-			},
-			{
 				"name": "mobile",
 				"type": "string",
 				"disabled": false,
@@ -1653,12 +1647,6 @@ dmt.tables = {
 			},
 			{
 				"name": "ocupation",
-				"type": "string",
-				"disabled": false,
-				"key": false
-			},
-			{
-				"name": "education_level",
 				"type": "string",
 				"disabled": false,
 				"key": false

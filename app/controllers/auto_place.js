@@ -113,6 +113,12 @@ var place_controller = function () {
 		}
 		return _get(model_entity_institution,user,params)
 	}
+	var get_entity_institution_user = function (user, params) {
+		if(!user.permissions || user.permissions.indexOf('admin_institution') == -1){
+			throw utiles.informError(100);
+		}
+		return model_entity_institution.getUser(params.id)
+	}
 	/**
 	 * @api {get} api/place/institutionType Request institutionType information
 	 * @apiName GetinstitutionType
@@ -240,6 +246,7 @@ var place_controller = function () {
 		return _get(model_entity_country,user,params)
 	}
 	getMap.set('institution', { method: get_entity_institution, permits: Permissions.NONE })
+	getMap.set('institutionUser', { method: get_entity_institution_user, permits: Permissions.NONE })
 	getMap.set('institutionType', { method: get_institutionType, permits: Permissions.NONE })
 	getMap.set('city', { method: get_entity_city, permits: Permissions.NONE })
 	getMap.set('region', { method: get_entity_region, permits: Permissions.NONE })

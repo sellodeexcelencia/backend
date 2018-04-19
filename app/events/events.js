@@ -154,7 +154,7 @@ var Events = function () {
 					if (results.data.length) {
 						let motive = null
 						results.data.forEach((_motive) => {
-							if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO) {
+							if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO && _motive.level === _new.question.level) {
 								//'id_category': _service.id_category
 								motive = _motive
 								return
@@ -217,7 +217,7 @@ var Events = function () {
 							if (results.data.length) {
 								let motive = null
 								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.ACEPTAR_REQUISITO) {
+									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.ACEPTAR_REQUISITO && _motive.level === _new.question.level) {
 										//'id_category': _service.id_category
 										motive = _motive
 										return
@@ -253,7 +253,7 @@ var Events = function () {
 							if (results.data.length) {
 								let motive = null
 								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.RECHAZAR_REQUISITO) {
+									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.RECHAZAR_REQUISITO && _motive.level === _new.question.level) {
 										//'id_category': _service.id_category
 										motive = _motive
 										return
@@ -276,7 +276,7 @@ var Events = function () {
 							if (results.data.length) {
 								let motive = null
 								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO) {
+									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO && _motive.level === _new.question.level) {
 										//'id_category': _service.id_category
 										motive = _motive
 										return

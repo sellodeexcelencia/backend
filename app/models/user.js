@@ -268,14 +268,6 @@ var User = function () {
 		"Extra": ""
 	},
 	{
-		"Field": "extension",
-		"Type": "varchar(50)",
-		"Null": "YES",
-		"Key": "",
-		"Default": null,
-		"Extra": ""
-	},
-	{
 		"Field": "mobile",
 		"Type": "varchar(50)",
 		"Null": "YES",

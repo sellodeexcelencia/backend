@@ -37,6 +37,30 @@ var Jobs = function () {
 					}, tout)
 				})
 			})
+		//servicios que están en validación
+		model_user.getAdmin().then((result)=>{
+			let _admin = result[0]
+			model_entity_service.getByLastStatusDate(null, adate, [CONSTANTS.SERVICE.VERIFICACION])
+			.then((results) => {
+				results.forEach((service) => {
+					let tout = Math.floor(Math.random() * 1000) + 100
+					setTimeout(() => {
+						utiles.sendEmail(_admin.email, null, null, 'Recordatorio Sello de Excelencia',
+							`<div style="text-align:center;margin: 10px auto;">
+							<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
+							</div>
+							<p>Hola ${_admin.name}</p>
+							<p>Tienes un servicio pendiente de validar:</p>
+							<p>Nombre del Producto o Servicio: ${service.name}</p>
+							<p>Categoría: ${service.category_name}</p>
+							<p>Nivel ${service.level}</p>
+							<p>Nuestros mejores deseos,<\p>
+							<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`
+						)
+					}, tout)
+				})
+			})
+		})
 		//servicios que estén en otorgado y falten 2 meses para vencer el sello
 		adate = new Date()
 		adate.setDate(adate.getDate() + 60)

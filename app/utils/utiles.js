@@ -133,8 +133,21 @@ module.exports = {
           if(item[i] instanceof Date){
             row.push(item[i])
           }else{
-            let val = item[i] ? item[i].name || item[i].text || item[i].description || '' : ''
-            row.push(val)
+            if(item[i] instanceof Array){
+              let val = []
+              for(var j = 0 ; j < item[i].length ; j++){
+                let v =item[i][j] ? item[i][j].name || item[i][j].text || item[i][j].description || '' : ''
+                v += item[i][j].user_type ? ': '+item[i][j].user_type.name : ''
+                if(v != ''){
+                  val.push(v) 
+                }
+              }
+              row.push(val.join(", "))
+            }else{
+              let val = item[i] ? item[i].name || item[i].text || item[i].description || '' : ''
+              row.push(val)  
+            }
+            
           }
         }else{
           if(item[i] === 0){

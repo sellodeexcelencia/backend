@@ -96,9 +96,9 @@ var Events = function () {
 							})
 
 							if (ready) {
-								setTimeout(()=>{
+								setTimeout(() => {
 									return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.EVALUACION }, { id: _service.id })
-								},500)
+								}, 500)
 							}
 							return
 						})
@@ -118,30 +118,30 @@ var Events = function () {
 							})
 							if (approved === total) {
 								return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.CUMPLE }, { id: old.id_service })
-							}else if(approved + rejected === total){
-								return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.NO_CUMPLE }, { id: old.id_service })		
+							} else if (approved + rejected === total) {
+								return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.NO_CUMPLE }, { id: old.id_service })
 							}
 							return
 						})
 				} else if (_new.id_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {
 					model_entity_user_answer.getByParams({ id_service: _service.id })
-					.then((results) => {
-						let approved = 0
-						let rejected = 0
-						let total = results.data.length
-						results.data.forEach((answer) => {
-							if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {
-								approved += 1
+						.then((results) => {
+							let approved = 0
+							let rejected = 0
+							let total = results.data.length
+							results.data.forEach((answer) => {
+								if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {
+									approved += 1
+								}
+								if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {
+									rejected += 1
+								}
+							})
+							if (approved + rejected === total) {
+								return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.NO_CUMPLE }, { id: old.id_service })
 							}
-							if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {
-								rejected += 1
-							}
+							return
 						})
-						if (approved + rejected === total) {
-							return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.NO_CUMPLE }, { id: old.id_service })		
-						}
-						return
-					})
 				}
 			})
 	})
@@ -160,7 +160,7 @@ var Events = function () {
 								return
 							}
 						})
-						if(motive){
+						if (motive) {
 							entity_model_points.addUserPoints(user.id, motive.id, '')
 						}
 					}
@@ -223,7 +223,7 @@ var Events = function () {
 										return
 									}
 								})
-								if(motive){
+								if (motive) {
 									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
 								}
 							}
@@ -259,7 +259,7 @@ var Events = function () {
 										return
 									}
 								})
-								if(motive){
+								if (motive) {
 									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
 								}
 							}
@@ -282,7 +282,7 @@ var Events = function () {
 										return
 									}
 								})
-								if(motive){
+								if (motive) {
 									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
 								}
 							}
@@ -320,7 +320,7 @@ var Events = function () {
 										return
 									}
 								})
-								if(motive){
+								if (motive) {
 									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
 								}
 							}
@@ -419,13 +419,16 @@ var Events = function () {
 	emiter.on('service.rated', (id_service, avg) => {
 		if (avg <= 3.5) {
 			let _service = null
+			let _admin = null
 			model_entity_service.getByUid('' + id_service).then((result) => {
 				_service = result.data[0]
 				return model_user.getAdmin()
-			})
-				.then((result) => {
+			}).then((result) => {
 					_admin = result[0]
-					utiles.sendEmail(_admin.email, null, null, 'Servicio con puntaje bajo', `
+				return model_entity_institution.getUser(_service.id_institution)
+			}).then((result) =>{
+					_rep = result[0]
+					utiles.sendEmail(_admin.email, _rep.email, null, 'Servicio con puntaje bajo', `
 				<div style="text-align:center;margin: 10px auto;">
 				<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 				</div>
@@ -446,10 +449,10 @@ var Events = function () {
 				let user = result[0]
 				let email = ''
 				let name = ''
-				if(user){
+				if (user) {
 					email = user.email
 					name = user.name
-				}else{
+				} else {
 					email = old.institution.email
 					name = old.institution.name
 				}
@@ -473,10 +476,10 @@ var Events = function () {
 				let user = result[0]
 				let email = ''
 				let name = ''
-				if(user){
+				if (user) {
 					email = user.email
 					name = user.name
-				}else{
+				} else {
 					email = old.institution.email
 					name = old.institution.name
 				}
@@ -548,7 +551,7 @@ var Events = function () {
 						data.level = body.level
 					}
 					if (_new.current_status == CONSTANTS.SERVICE.VERIFICACION) { // verification
-console.log('postulate admin')
+						console.log('postulate admin')
 						utiles.sendEmail(_admin.email, null, null,
 							'Nueva postulación Sello de Excelencia Gobierno Digital Colombia', `
 						<div style="text-align:center;margin: 10px auto;">
@@ -562,7 +565,7 @@ console.log('postulate admin')
 						<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`)
 						model_entity_institution.getUser(old.id_institution).then((result) => {
 							let user = result[0]
-console.log('postulate')
+							console.log('postulate')
 							utiles.sendEmail(user.email, null, null,
 								'Nueva postulación Sello de Excelencia Gobierno Digital Colombia',
 								`<div style="text-align:center;margin: 10px auto;">
@@ -588,7 +591,7 @@ console.log('postulate')
 										return
 									}
 								})
-								if(motive){
+								if (motive) {
 									entity_model_points.addInstitutionPoints(old.id_institution, motive.id, '')
 								}
 							}
@@ -614,7 +617,7 @@ console.log('postulate')
 							model_entity_evaluation_request.createMultiple(
 								data
 							)
-							model_entity_user_answer.update({ id_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO }, { id_service: _new.id , id_status: CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR})
+							model_entity_user_answer.update({ id_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO }, { id_service: _new.id, id_status: CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR })
 						})
 						model_entity_institution.getUser(old.id_institution).then((result) => {
 							let user = result[0]
@@ -646,7 +649,7 @@ console.log('postulate')
 										return
 									}
 								})
-								if(motive){
+								if (motive) {
 									entity_model_points.addInstitutionPoints(old.id_institution, motive.id, '')
 								}
 							}
@@ -687,7 +690,7 @@ console.log('postulate')
 										return
 									}
 								})
-								if(motive){
+								if (motive) {
 									entity_model_points.addInstitutionPoints(old.id_institution, motive.id, '')
 								}
 							}

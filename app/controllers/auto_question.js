@@ -693,11 +693,12 @@ var question_controller = function () {
 		let request = null
 		return model_entity_evaluation_request.getByUid(body.id_evaluation_request).then((result) => {
 			request = result.data[0]
-			if (request.id_user != body.id_sender) { //entity
+			if (request.id_user != body.id_sender) { //entity sent the message
 				return request.id_user
 			} else {
-				return model_entity_user_answer.getByUid(request.id_answer).then((result) => {
-					return result.data[0].id_user
+				return model_entity_user_answer.getByUid(request.id_answer) //evaluator sent the message
+				.then((result) => {
+					return result.data[0].id_user //we get the answer and the user attached to it
 				})
 			}
 		}).then((id_user) => {

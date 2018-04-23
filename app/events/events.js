@@ -617,7 +617,8 @@ var Events = function () {
 							model_entity_evaluation_request.createMultiple(
 								data
 							)
-							model_entity_user_answer.update({ id_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO }, { id_service: _new.id, id_status: CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR })
+							model_entity_user_answer.update({ id_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO },
+								{ id_service: _new.id, id_status: CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR })
 						})
 						model_entity_institution.getUser(old.id_institution).then((result) => {
 							let user = result[0]

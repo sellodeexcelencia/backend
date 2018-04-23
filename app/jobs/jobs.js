@@ -9,6 +9,8 @@ var Jobs = function () {
 	model_entity_service = new model_entity_service()
 	let model_user = require('../models/user.js')
 	model_user = new model_user()
+	let model_entity_motives = require('../models/entity_motives.js')
+	model_entity_motives = new model_entity_motives()
 	/**
 	 * execute
 	 */
@@ -205,15 +207,15 @@ var Jobs = function () {
 							`<div style="text-align:center;margin: 10px auto;">
 								<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 								</div>
-								<p>Hola ${request.user_name}</p>
+								<p>Hola ${request.user_name ? request.user_name : ''}</p>
 								<p>El plazo de evaluación del siguiente requisito:</p>
-								<p>Categoría: ${request.category_name}</p>
-								<p>Nivel: ${request.level}</p>
-								<p>Temática: ${request.topic}</p>
-								<p>Requisito: ${request.question}</p>
-								<p>Entidad: ${request.institution}</p>
-								<p>Nombre del Producto o Servicio: ${request.service_name}</p>
-								<p>Está próximo a vencerse <b>${request.end_time.toLocaleString()}</b></p>
+								<p>Categoría: ${request.category_name ? request.category_name: ''}</p>
+								<p>Nivel: ${request.level ? request.level: ''}</p>
+								<p>Temática: ${request.topic ? request.topic : ''}</p>
+								<p>Requisito: ${request.question ? request.question: ''}</p>
+								<p>Entidad: ${request.institution ? request.institution: ''}</p>
+								<p>Nombre del Producto o Servicio: ${request.service_name ? request.service_name: ''}</p>
+								<p>Está próximo a vencerse <b>${request.end_time ? request.end_time.toLocaleString(): ''}</b></p>
 								<p>Por favor ingresa a la plataforma para Evaluar el Requisito.</p>
 								<p>Nuestros mejores deseos,<\p>
 								<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`
@@ -233,6 +235,22 @@ var Jobs = function () {
 		})
 		.then((results)=>{
 			results.forEach((request) => {
+				setTimeout(()=>{
+					model_entity_motives.getAll({ limit: 5000 }).then((results) => {
+						if (results.data.length) {
+							let motive = null
+							results.data.forEach((_motive) => {
+								if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.NO_EVALUAR) {
+									motive = _motive
+									return
+								}
+							})
+							if (motive) {
+								entity_model_points.addUserPoints(request.user_id, motive.id, '')
+							}
+						}
+					})
+				})
 				model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
 				let tout = Math.floor(Math.random() * 1000) + 100
 				setTimeout(() => {

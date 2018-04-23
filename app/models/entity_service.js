@@ -302,13 +302,11 @@ var Service = function () {
 		JOIN user_questiontopic ON user_questiontopic.id_topic = qt.id
 		JOIN user u ON u.id = user_questiontopic.id_user
 		WHERE u_a.id = '${request.id_answer}' 
-		AND u.id <> u_a.id_user
+		AND u.id <> '${request.id_user}'
 		AND u.active = 1
 		AND u.id NOT IN (SELECT id_user FROM evaluation_request WHERE id_answer = ${request.id_answer})
 		ORDER BY RAND()`
 		return this.customQuery(q).then((_users) => {
-			console.log('candidates')
-			console.log(_users)
 			if(_users.length){
 				let q = `UPDATE evaluation_request SET 
 					id_user = ${_users[0].id_user}, 
@@ -369,6 +367,7 @@ var Service = function () {
 		)
 		JOIN institution i on s.id_institution = i.id
 		WHERE 
+		${params['filter'] ? '(s.name like \'%'+params['filter'] +'%\' OR i.name like \'%'+params['filter'] +'%\') AND ' :''}
 		${_filters['postulation'] ? 'DATE(s.timestamp) = \''+_filters['postulation'][0] +'\' AND ' :''}
 		${_filters['institution.id'] ? 'i.id = \''+_filters['institution.id'][0] +'\' AND ' :''}
 		${_filters['id'] ? 's.id = \''+_filters['id'][0] +'\' AND ' :''}

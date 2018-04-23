@@ -126,6 +126,7 @@ var Evaluation_request = function () {
 			q.level level,
 			q.text question,
 			qt.name topic,
+			u.id user_id,
 			u.name user_name,
 			i.name institution,
 			u.email user_email 
@@ -136,7 +137,8 @@ var Evaluation_request = function () {
 			JOIN question q ON q.id = e_r.id_question
 			JOIN questiontopic qt ON qt.id = q.id_topic
 			JOIN institution i ON i.id = s.id_institution
-			WHERE e_r.id_request_status IN (${status.join(',')})
+			JOIN request_status r_s ON e_r.id_request_status
+			WHERE e_r.alert = 1 AND e_r.id_request_status IN (${status.join(',')})
 			${end_time ? 'AND DATE(e_r.end_time) = \''+end_time+'\' ':''}
 			${alert_time ? 'AND DATE(e_r.alert_time) = \''+alert_time+'\' ':''}`
 		return this.customQuery(q)

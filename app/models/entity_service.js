@@ -171,12 +171,29 @@ var Service = function () {
 				upgrade = true
 			}
 			if(!upgrade){
-				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}'`
+				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}'; 
+				DELETE chats `
 				return this.customQuery(q)
 			}else {
 				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}' AND id_status = '${CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE}'`
 				return this.customQuery(q)
 			}
+		}).then((results)=>{
+			let q = `SELECT id FROM chats WHERE id_evaluation_request IN (SELECT id from evaluation_request WHERE id_service = '${service.id}')`
+			return this.customQuery(q)
+		}).then((results)=>{
+			if(results.length == 0){
+				return []
+			}
+			let q = `DELETE FROM chats WHERE `; 
+			for(var i in results){
+				q+= `id=${results[i].id} OR`
+			}
+			q = q.splice(0,-3)
+			return this.customQuery(q)
+		}).then((results)=>{
+			let q = `DELETE from evaluation_request WHERE id_service = '${service.id}'`;
+			return this.customQuery(q)
 		})
 	}
 	this.asignate = function (service) {

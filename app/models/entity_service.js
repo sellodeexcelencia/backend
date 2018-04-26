@@ -171,8 +171,7 @@ var Service = function () {
 				upgrade = true
 			}
 			if(!upgrade){
-				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}'; 
-				DELETE chats `
+				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}'; `
 				return this.customQuery(q)
 			}else {
 				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}' AND id_status = '${CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE}'`

@@ -321,10 +321,14 @@ var question_controller = function () {
 				params.filter_field = [params.filter_field]
 				params.filter_value = [params.filter_value]
 			}
+			//
+			var now = new Date()
 			params.filter_field.push('evaluators.id_user')
 			params.filter_value.push('4')
 			params.filter_field.push('id_status')
 			params.filter_value.push('< 9')
+			params.filter_field.push('evaluators.alert_time')
+			params.filter_value.push('< '+now.toISOString().split("T")[0])
 			params.simple = false
 			params._join = 'AND'
 			//return model_entity_user_answer.urgent(user,params)

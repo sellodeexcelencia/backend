@@ -92,29 +92,17 @@ var service_controller = function () {
 	 * }
 	*/
 	function diplomaA(_service,_status,res, centerline){
-		console.log("1")
 		centerline = 435 || centerline
-		console.log("2")
 		res.writeHead(200, { 'Content-Type': 'application/pdf' });
-		console.log("3")
 		var hummus = require('hummus');
-		console.log("4")
 		var pdfWriter = hummus.createWriter(new hummus.PDFStreamForResponse(res));
-		console.log("5")
 		let page = pdfWriter.createPage(0, 0, 842, 595)
-		console.log("6")
 		var cxt = pdfWriter.startPageContentContext(page)
-		console.log("7")
 		let font = pdfWriter.getFontForFile('./app/assets/UniversCondensed.ttf')
-		console.log("8")
 		cxt.drawImage(0, 0, './app/assets/diploma.png')
-		console.log("9")
 		let _y = 440
-		console.log("10")
 		let size = font.calculateTextDimensions('CERTIFICADO',60);
-		console.log("11")
 		let center = centerline - size.width / 2
-		console.log("12")
 		cxt.writeText('CERTIFICADO', center,_y,
 			{
 				font: font,
@@ -123,13 +111,9 @@ var service_controller = function () {
 				color: 0x694a8b
 			}
 		)
-		console.log("13")
 		_y -= 25
-		console.log("14")
 		size = font.calculateTextDimensions('DE RECONOCIMIENTO',30);
-		console.log("15")
 		center = centerline - size.width / 2
-		console.log("16")
 		cxt.writeText('DE RECONOCIMIENTO', center, _y,
 			{
 				font: font,
@@ -138,13 +122,9 @@ var service_controller = function () {
 				color: 0x694a8b
 			}
 		)
-		console.log("17")
 		_y -= 50
-		console.log("18")
 		size = font.calculateTextDimensions('EL MINISTERIO DE TECNOLOGÍAS DE LA INFORMACIÓN Y LAS',16);
-		console.log("19")
 		center = centerline - size.width / 2
-		console.log("20")
 		cxt.writeText('EL MINISTERIO DE TECNOLOGÍAS DE LA INFORMACIÓN Y LAS', center, _y,
 			{
 				font: font,
@@ -153,13 +133,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("21")
 		_y -= 20
-		console.log("22")
 		size = font.calculateTextDimensions('COMUNICACIONES A TRAVÉS DE LA DIRECCIÓN DE GOBIERNO DIGITAL',16);
-		console.log("23")
 		center = centerline - size.width / 2
-		console.log("24")
 		cxt.writeText('COMUNICACIONES A TRAVÉS DE LA DIRECCIÓN DE GOBIERNO DIGITAL', center, _y,
 			{
 				font: font,
@@ -168,13 +144,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("25")
 		_y -= 20
-		console.log("26")
 		size = font.calculateTextDimensions('CERTIFICA QUE',13);
-		console.log("27")
 		center = centerline - size.width / 2
-		console.log("28")
 		cxt.writeText('CERTIFICA QUE', center, _y,
 			{
 				font: font,
@@ -183,13 +155,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("29")
 		_y -= 30
-		console.log("30")
 		size = font.calculateTextDimensions(_service.institution.name,24);
-		console.log("31")
 		center = centerline - size.width / 2
-		console.log("32")
 		cxt.writeText(_service.institution.name.toUpperCase(), center, _y,
 			{
 				font: font,
@@ -198,13 +166,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("33")
 		_y -= 20
-		console.log("34")
 		size = font.calculateTextDimensions('CUMPLIÓ CON LOS REQUISITOS DE CALIDAD',13);
-		console.log("35")
 		center = centerline - size.width / 2
-		console.log("36")
 		cxt.writeText('CUMPLIÓ CON LOS REQUISITOS DE CALIDAD', center, _y,
 			{
 				font: font,
@@ -213,13 +177,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("37")
 		_y -= 20
-		console.log("38")
 		size = font.calculateTextDimensions('PARA EL NIVEL __ DE LA CATEGORÍA',13);
-		console.log("39")
 		center = centerline - size.width / 2
-		console.log("40")
 		cxt.writeText('PARA EL NIVEL ', center, _y,
 			{
 				font: font,
@@ -228,13 +188,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("41")
 		size = font.calculateTextDimensions('PARA EL NIVEL _',13);
-		console.log("42")
 		center += size.width
-		console.log("43")
 		_status.level = _status.level || ''
-		console.log("44")
 		cxt.writeText(''+_status.level, center, _y,
 			{
 				font: font,
@@ -243,11 +199,8 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("45")
 		size = font.calculateTextDimensions(' '+_status.level+' ',16);
-		console.log("46")
 		center += size.width
-		console.log("47")
 		cxt.writeText(' DE LA CATEGORÍA', center, _y,
 			{
 				font: font,
@@ -256,13 +209,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("48")
 		_y -= 20
-		console.log("49")
 		size = font.calculateTextDimensions(' '+_service.category.name.toUpperCase()+' ',16);
-		console.log("50")
 		center = centerline - size.width / 2
-		console.log("51")
 		cxt.writeText(_service.category.name.toUpperCase(), center, _y,
 			{
 				font: font,
@@ -271,13 +220,9 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("52")
 		_y -= 20
-		console.log("53")
 		size = font.calculateTextDimensions('Y LE OTORGA EL SELLO DE EXCELENCIA GOBIERNO DIGITAL.',13);
-		console.log("54")
 		center = centerline - size.width / 2
-		console.log("55")
 		cxt.writeText('Y LE OTORGA EL SELLO DE EXCELENCIA GOBIERNO DIGITAL.', center, _y,
 			{
 				font: font,
@@ -286,7 +231,6 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("56")
 		cxt.writeText('DIRECTORA DE GOBIERNO DIGITAL', 338, 595-488,
 			{
 				font: font,
@@ -295,13 +239,10 @@ var service_controller = function () {
 				color: 0x694a8b
 			}
 		)
-		console.log("57")
+		_status.timestamp = new Date(_status.timestamp)
 		let date = _status.timestamp.getFullYear() + '-' +(_status.timestamp.getMonth()+1)+ '-' + _status.timestamp.getDate()
-		console.log("58")
 		size = font.calculateTextDimensions(date,15);
-		console.log("59")
 		center = centerline - size.width / 2
-		console.log("60")
 		cxt.writeText(date, center, 595-525,
 			{
 				font: font,
@@ -310,11 +251,8 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		console.log("61")
 		pdfWriter.writePage(page)
-		console.log("62")
 		pdfWriter.end()
-		console.log("63")
 	}
 	function diplomaB(_service,_status,res, centerline){
 		centerline = 435 || centerline

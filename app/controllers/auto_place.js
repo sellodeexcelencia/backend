@@ -243,6 +243,7 @@ var place_controller = function () {
 	 * }
 	*/
 	var get_entity_country = function (user, params) {
+		params.order="name asc"
 		return _get(model_entity_country,user,params)
 	}
 	getMap.set('institution', { method: get_entity_institution, permits: Permissions.NONE })

@@ -10,8 +10,8 @@ dbConf.multipleStatements = true
 var pool = mysql.createPool(dbConf)
 
 var EntityModel = function (info) {
-	let dmt_entities = require('../../public/admin/entities.js')
-	let dmt_tables = require('../../public/admin/tables.js')
+	let dmt_entities = require('./entities.js')
+	let dmt_tables = require('./tables.js')
 	let dmt = {
 		entities: dmt_entities.entities,
 		tables: dmt_tables.tables

@@ -38,7 +38,7 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			ctrl.service.entities.motivename.getData()
 			ctrl.service.entities.usertype.getData()
 			ctrl.service.entities.request_status.getData()
-			if(ctrl.service.entities.institution){
+			if(ctrl.service.entities.institution.data){
 				ctrl.service.entities.institution.data.push(ctrl.data.region)
 			}
 		})
@@ -216,9 +216,13 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 				}
 			},
 		}).then(()=>{
-			ctrl.service.entities.user_answer.getData()
+			setTimeout(()=>{
+				ctrl.service.entities.user_answer.getData()
+			},200)
 		},()=>{
-			ctrl.service.entities.user_answer.getData()
+			setTimeout(()=>{
+				ctrl.service.entities.user_answer.getData()
+			},200)
 		});
 	}
 	return ctrl

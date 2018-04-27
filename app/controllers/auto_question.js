@@ -466,6 +466,23 @@ var question_controller = function () {
 	var get_chats = function (user, params) {
 		return _get(model_chats, user, params)
 	}
+
+	var get_level = function(user,params){
+		if(!params.filter_field){
+			params.filter_field = []
+			params.filter_value = []
+		}else if(typeof params.filter_field === 'string'){
+			params.filter_field = [params.filter_field]
+			params.filter_value = [params.filter_value]
+		}
+		params.simple = false
+		params.filter_field.push('topic.id_category')
+		params.filter_value.push(params.category)
+		params.order="level desc",
+		params.limit=1
+		return _get(model_entity_question,user,params)
+	}
+	getMap.set('level', { method: get_level, permits: Permissions.NONE })
 	getMap.set('question', { method: get_entity_question, permits: Permissions.NONE })
 	getMap.set('questiontopic', { method: get_entity_questiontopic, permits: Permissions.NONE })
 	getMap.set('usertype', { method: get_usertype, permits: Permissions.NONE })

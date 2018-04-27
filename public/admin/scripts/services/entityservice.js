@@ -95,9 +95,11 @@ angular.module('dmt-back')
 					if (field.type !== 'file') {
 						if (typeof item[field.name] === 'object' || typeof item[field.name] === 'array') {
 							if ((item[field.name] instanceof Date)) {
-								let _d = item[field.name].toISOString()
-								_d = _d.split('T').join(' ').split('.')[0]
-								data.append(field.name, _d)
+								if(!isNaN(item[field.name].getTime())){
+									let _d = item[field.name].toISOString()
+									_d = _d.split('T').join(' ').split('.')[0]
+									data.append(field.name, _d)
+								}
 							}
 							return;
 						}

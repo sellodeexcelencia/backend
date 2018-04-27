@@ -38,7 +38,9 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			ctrl.service.entities.motivename.getData()
 			ctrl.service.entities.usertype.getData()
 			ctrl.service.entities.request_status.getData()
-			ctrl.service.entities.institution.data.push(ctrl.data.region)
+			if(ctrl.service.entities.institution){
+				ctrl.service.entities.institution.data.push(ctrl.data.region)
+			}
 		})
 	}
 	ctrl.selectTab = function (tab) {

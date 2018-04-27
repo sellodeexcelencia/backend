@@ -168,7 +168,9 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 		$location.path('postulaciones/todos/detalle/'+item.id)
 	}
 	ctrl.updateItem = function(item,f,relation){
-		ctrl.service.updateItem(item,f,relation)
+		ctrl.service.updateItem(item,f,relation).then(()=>{
+			ctrl.service.entities.user_answer.getData()
+		})
 	}
 	ctrl.createPoints = function(event){
 		$mdDialog.show({

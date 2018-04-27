@@ -212,7 +212,7 @@ angular.module('dmt-back')
 					}
 				}
 				if (relation.leftKey) { //1-n
-					//str.push("limit=5000");
+					str.push("limit=5000");
 				} else if (relation.rightKey) { //1-n
 					if(!ctrl.key){
 						return null

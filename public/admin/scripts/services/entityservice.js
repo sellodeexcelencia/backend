@@ -111,7 +111,7 @@ angular.module('dmt-back')
 						data.append(field.name, item[field.name] === true ? 1 : 0)
 						return;
 					}
-					if (!item[field.name]) {
+					if (!item[field.name] && item[field.name] !== "") {
 						return;
 					}
 					if (field.name === entity.defaultSort) {

@@ -31,7 +31,7 @@ var Auth = function () {
 	}
 
 	var certifiedReport = function(user,params){
-		return model_entity_service.getByPostulateCertificationDate({limit:50000})
+		return model_entity_service.getByPostulateCertificationDate({limit:50000},params.older)
 	}
 	var notCertifiedReport = function(user,params){
 		return model_entity_service.getDenied()

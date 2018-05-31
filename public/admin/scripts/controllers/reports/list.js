@@ -43,6 +43,15 @@ function ($scope, $mdDialog, page, entityService, $http) {
 			saveAs(response, filename)
 		})
 	}
+
+	ctrl.downloadEverCertified = function(){
+		let url = '/api/stats/certified?limit=5000&download=true&older=true'
+		ctrl.service.downloadUrl(url).then((response)=>{
+			var filename = 'Otorgados.xlsx'
+			saveAs(response, filename)
+		})
+	}
+
 	ctrl.downloadDenied = function(){
 		let url = '/api/stats/denied?limit=5000&download=true'
 		ctrl.service.downloadUrl(url).then((response)=>{

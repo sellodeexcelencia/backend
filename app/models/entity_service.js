@@ -358,7 +358,7 @@ var Service = function () {
 		SET FOREIGN_KEY_CHECKS = 1;`
 		return this.customQuery(q)
 	}
-	this.getByPostulateCertificationDate = function(params){
+	this.getByPostulateCertificationDate = function(params,older){
 		params = params || {}
 		params.limit = params.limit || 20
 		params.page = params.page || 1
@@ -378,7 +378,7 @@ var Service = function () {
 		let query = `SELECT s.id FROM service s
 		JOIN service_status ss ON  (
 			ss.id_service = s.id AND
-			ss.id_status = '${CONSTANTS.SERVICE.CUMPLE}' AND ss.valid_to > '${now}'
+			ss.id_status = '${CONSTANTS.SERVICE.CUMPLE}' ${older ? '':`AND ss.valid_to > '${now}'`}
 			${_filters['certification'] ? 'AND DATE(ss.timestamp) =  \''+_filters['certification'][0] +'\' AND ss.id_status = '+CONSTANTS.SERVICE.CUMPLE :''}
 		)
 		JOIN institution i on s.id_institution = i.id

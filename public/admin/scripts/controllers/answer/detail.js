@@ -56,7 +56,6 @@ function ($scope, $mdDialog, $mdEditDialog, parent, $http, entityService, $route
 			})
 		})
 	}
-
 	ctrl.delete = function (event, relation) {
 		let entity = dmt.entities[relation.entity];
 		$mdDialog.show({

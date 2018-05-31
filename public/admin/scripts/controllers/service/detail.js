@@ -59,7 +59,6 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			.targetEvent($event))
 		})
 	}
-
 	ctrl.sendMessage = function(event){
 		$mdDialog.show({
 			clickOutsideToClose: true,
@@ -74,7 +73,6 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			templateUrl: 'views/admon/message-dialog.html',
 		})
 	}
-
 	ctrl.delete = function (event, relation) {
 		let entity = dmt.entities[relation.entity];
 		$mdDialog.show({
@@ -160,6 +158,9 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			
 		});
 	}
+	ctrl.refreshAnswers = function(){
+		
+	}
 	ctrl.selectQt = function(selection){
 		ctrl.service.bind(selection,ctrl.questiontopic_relation)
 	}
@@ -199,8 +200,8 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 			saveAs(response, filename)
 		})
 	}
-
 	ctrl.openAnswerDetail = function(answer){
+		var that = ctrl.entities.user_answer;
 		$mdDialog.show({
 			clickOutsideToClose: true,
 			controller: 'answerController',
@@ -216,12 +217,10 @@ function ($scope, $mdDialog, $mdEditDialog, page, $http, entityService, $routePa
 				}
 			},
 		}).then(()=>{
-			setTimeout(()=>{
-				ctrl.service.entities.user_answer.getData()
-			},200)
+			setTimeout(ctrl.refreshAnswers,200)
 		},()=>{
 			setTimeout(()=>{
-				ctrl.service.entities.user_answer.getData()
+				that.getData()
 			},200)
 		});
 	}

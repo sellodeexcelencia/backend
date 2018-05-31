@@ -33,13 +33,19 @@ var Auth = function () {
 	var certifiedReport = function(user,params){
 		return model_entity_service.getByPostulateCertificationDate({limit:50000},params.older)
 	}
+
 	var notCertifiedReport = function(user,params){
 		return model_entity_service.getDenied()
+	}
+
+	var renovatedReport = function(user,params){
+		return model_entity_service.renovation()
 	}
 
 	getMap.set('service',{method:serviceReport,permits:Permissions.NONE})
 	getMap.set('performance',{method:performanceReport,permits:Permissions.NONE})
 	getMap.set('certified',{method:certifiedReport,permits:Permissions.NONE})
+	getMap.set('renovated',{method:renovatedReport,permits:Permissions.NONE})
 	getMap.set('denied',{method:notCertifiedReport,permits:Permissions.NONE})
 
 	var params = [getMap, postMap, putMap, null]

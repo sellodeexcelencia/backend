@@ -358,6 +358,16 @@ var Service = function () {
 		SET FOREIGN_KEY_CHECKS = 1;`
 		return this.customQuery(q)
 	}
+	this.renovation= function(){
+		let q = `SELECT s.id,s.name \`service\`,i.name \`institution\`,
+		s.is_active,ss.level,ss.timestamp,ss.valid_to from service_status ss 
+		JOIN service s ON s.id = ss.id_service
+		JOIN institution i ON s.id_institution = i.id
+		WHERE ss.id_status = 4;`
+		return this.customQuery(q).then(res=>{
+			return {data:res}
+		})
+	}
 	this.getByPostulateCertificationDate = function(params,older){
 		params = params || {}
 		params.limit = params.limit || 20

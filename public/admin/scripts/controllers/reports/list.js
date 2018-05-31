@@ -44,6 +44,14 @@ function ($scope, $mdDialog, page, entityService, $http) {
 		})
 	}
 
+	ctrl.downloadRenovated = function(){
+		let url = '/api/stats/renovated?download=true'
+		ctrl.service.downloadUrl(url).then((response)=>{
+			var filename = 'Renovados.xlsx'
+			saveAs(response, filename)
+		})
+	}
+
 	ctrl.downloadEverCertified = function(){
 		let url = '/api/stats/certified?limit=5000&download=true&older=true'
 		ctrl.service.downloadUrl(url).then((response)=>{

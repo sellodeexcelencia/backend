@@ -47,7 +47,7 @@ function ($scope, $mdDialog, page, entityService, $http) {
 	ctrl.downloadEverCertified = function(){
 		let url = '/api/stats/certified?limit=5000&download=true&older=true'
 		ctrl.service.downloadUrl(url).then((response)=>{
-			var filename = 'Otorgados.xlsx'
+			var filename = 'OtorgadosVencidosInhabilitados.xlsx'
 			saveAs(response, filename)
 		})
 	}

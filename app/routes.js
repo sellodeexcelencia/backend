@@ -37,12 +37,10 @@ var Routes = function (app) {
                 break;
             }
         }
-
         if (controller) {
             let method
             if (req.originalMethod === 'POST') method = controller.post(req.params, req.headers.authorization, body, files)
             else if (req.originalMethod === 'PUT') method = controller.put(req.params, req.headers.authorization, body, files)
-
             method.then((data) => {
                 if (data.error && data.error.htmlCode) res.status(data.error.htmlCode).send(data)
                 else res.send(data)
@@ -120,7 +118,7 @@ var Routes = function (app) {
     })
     app.get('/testmail', (req, res) => {
         var utiles = require('./utils/utiles.js')
-        utiles.sendEmail('jdevia@mintic.gov.co','daniel@domoti.rocks',null,'Prueba Mail','Probando Email')
+        utiles.sendEmail('',null,null,'Prueba Mail','Probando Email')
         .then((result)=>{
             res.send(result)
         })

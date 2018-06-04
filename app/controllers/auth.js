@@ -4,6 +4,7 @@ var utiles = require('../utils/utiles.js')
 var Permissions = require('../utils/permissions.js')
 
 var User = require('../models/user.js')
+var App = require('../models/app.js')
 var Session = require('../models/session.js')
 var User_role_model = require('../models/user_role.js')
 var emiter = require('../events/emiter.js').instance
@@ -12,6 +13,7 @@ var pass_generator = require('generate-password')
 
 var Auth = function () {
     var userModel = new User()
+    var appModel = new App()
     var sessionModel = new Session()
     var user_role = new User_role_model()
 
@@ -216,7 +218,7 @@ var Auth = function () {
     }
 
     /**
-     * @api {post} /auth/login Login as a user
+     * @api {post} /auth/login Login as an user
      * @apiVersion 0.0.1
      * @apiName loginUser
      * @apiGroup Auth
@@ -255,7 +257,52 @@ var Auth = function () {
                     now.setDate(now.getDate() + 1) // the token expires in 15 days
                     var session = {
                         token: utiles.sign(user),
-                        id_user: user.id,
+                        user_id: user.id,
+                        expires: now
+                    }
+                    sessionModel.create(session)
+                    var answer = utiles.informError(0)
+                    answer.token = session.token
+                    return answer
+                } else {
+                    throw utiles.informError(200)
+                }
+            }
+        })
+    }
+
+    /**
+     * @api {post} /auth/login_app Login as an app
+     * @apiVersion 0.0.1
+     * @apiName loginApp
+     * @apiGroup Auth
+     * @apiPermission none
+     *
+     * @apiDescription In this case "apiErrorStructure" is defined and used.
+     * Define blocks with params that will be used in several functions, so you dont have to rewrite them.
+     *
+     * @apiParam {String} appName Name of the App.
+     * @apiParam {String} secret Secret of the App.
+     *
+     * @apiSuccessExample Success-Response:
+     *      HTTP/1.1 200 OK
+     *     {
+     *       token:"123456789abcdef"
+     *     }
+     *
+     */
+    var login_app = function (token, body) {
+        return appModel.getByParams({name:body.appName}).then((app) => {
+            if (!app) throw utiles.informError(202) // user doesnt exists
+            else {
+                if (app.secret === body.secret) {
+                    if (app.active === 0) {
+                        throw utiles.informError(203) //user inactive
+                    }
+                    now += 15*60*1000
+                    var session = {
+                        token: utiles.sign({app:app.name,expires:now}),
+                        app_id: app.id,
                         expires: now
                     }
                     sessionModel.create(session)
@@ -342,7 +389,7 @@ var Auth = function () {
                         body.id = body.id || user.insertId
                         //create the role assignment
                         user_role.create({
-                            id_user: body.id,
+                            user_id: body.id,
                             id_role: parseInt(body.role)
                         })
                         if (body.role == 4) {
@@ -350,7 +397,7 @@ var Auth = function () {
                             var institution_user = new institution_user_model()
                             institution_user.create({
                                 id_institution: body.institution.id,
-                                id_user: body.id
+                                user_id: body.id
                             })
                             var institution_model = require("../models/entity_institution.js")
                             var institution = new institution_model()
@@ -360,13 +407,13 @@ var Auth = function () {
                             let user_category = require('../models/user_category.js')
                             let model_user_category = new user_category()
                             body.categories.forEach((value) => {
-                                let data = { id_user: body.id, id_category: value.id }
+                                let data = { user_id: body.id, id_category: value.id }
                                 model_user_category.create(data)
                             }, this)
                             let user_questiontopic = require('../models/user_questiontopic.js')
                             let model_user_questiontopic = new user_questiontopic()
                             body.topics.forEach((value) => {
-                                let data = { id_user: body.id, id_topic: value.id }
+                                let data = { user_id: body.id, id_topic: value.id }
                                 model_user_questiontopic.create(data)
                             }, this)
                         }
@@ -383,7 +430,7 @@ var Auth = function () {
 
 
     /**
-     * @api {post} /auth/recover Recover a user password
+     * @api {post} /auth/recover Recover an user password
      * @apiVersion 0.0.1
      * @apiName recoverPasswordUser
      * @apiGroup Auth
@@ -483,7 +530,7 @@ var Auth = function () {
             now.setDate(now.getDate() + 1) // the token expires in 1 days
             var session = {
                 token: utiles.sign(user),
-                id_user: user.id,
+                user_id: user.id,
                 expires: now
             }
             sessionModel.create(session)

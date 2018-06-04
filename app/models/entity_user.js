@@ -31,6 +31,16 @@ var User = function () {
 		},
 		{
 			"type": "n-n",
+			"entity": "institution",
+			"name": "institution",
+			"intermediate": {
+				"entity": "institution_user",
+				"leftKey": "id_user",
+				"rightKey": "id_institution"
+			}
+		},
+		{
+			"type": "n-n",
 			"entity": "questiontopic",
 			"name": "topics",
 			"intermediate": {

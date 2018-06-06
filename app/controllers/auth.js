@@ -257,7 +257,7 @@ var Auth = function () {
                     now.setDate(now.getDate() + 1) // the token expires in 15 days
                     var session = {
                         token: utiles.sign(user),
-                        user_id: user.id,
+                        id_user: user.id,
                         expires: now
                     }
                     sessionModel.create(session)
@@ -271,51 +271,7 @@ var Auth = function () {
         })
     }
 
-    /**
-     * @api {post} /auth/login_app Login as an app
-     * @apiVersion 0.0.1
-     * @apiName loginApp
-     * @apiGroup Auth
-     * @apiPermission none
-     *
-     * @apiDescription In this case "apiErrorStructure" is defined and used.
-     * Define blocks with params that will be used in several functions, so you dont have to rewrite them.
-     *
-     * @apiParam {String} appName Name of the App.
-     * @apiParam {String} secret Secret of the App.
-     *
-     * @apiSuccessExample Success-Response:
-     *      HTTP/1.1 200 OK
-     *     {
-     *       token:"123456789abcdef"
-     *     }
-     *
-     */
-    var login_app = function (token, body) {
-        return appModel.getByParams({name:body.appName}).then((app) => {
-            if (!app) throw utiles.informError(202) // user doesnt exists
-            else {
-                if (app.secret === body.secret) {
-                    if (app.active === 0) {
-                        throw utiles.informError(203) //user inactive
-                    }
-                    now += 15*60*1000
-                    var session = {
-                        token: utiles.sign({app:app.name,expires:now}),
-                        app_id: app.id,
-                        expires: now
-                    }
-                    sessionModel.create(session)
-                    var answer = utiles.informError(0)
-                    answer.token = session.token
-                    return answer
-                } else {
-                    throw utiles.informError(200)
-                }
-            }
-        })
-    }
-
+   
     /**
      * @api {post} /auth/register Register a new User
      * @apiVersion 0.0.1
@@ -389,7 +345,7 @@ var Auth = function () {
                         body.id = body.id || user.insertId
                         //create the role assignment
                         user_role.create({
-                            user_id: body.id,
+                            id_user: body.id,
                             id_role: parseInt(body.role)
                         })
                         if (body.role == 4) {
@@ -397,7 +353,7 @@ var Auth = function () {
                             var institution_user = new institution_user_model()
                             institution_user.create({
                                 id_institution: body.institution.id,
-                                user_id: body.id
+                                id_user: body.id
                             })
                             var institution_model = require("../models/entity_institution.js")
                             var institution = new institution_model()
@@ -407,13 +363,13 @@ var Auth = function () {
                             let user_category = require('../models/user_category.js')
                             let model_user_category = new user_category()
                             body.categories.forEach((value) => {
-                                let data = { user_id: body.id, id_category: value.id }
+                                let data = { id_user: body.id, id_category: value.id }
                                 model_user_category.create(data)
                             }, this)
                             let user_questiontopic = require('../models/user_questiontopic.js')
                             let model_user_questiontopic = new user_questiontopic()
                             body.topics.forEach((value) => {
-                                let data = { user_id: body.id, id_topic: value.id }
+                                let data = { id_user: body.id, id_topic: value.id }
                                 model_user_questiontopic.create(data)
                             }, this)
                         }
@@ -530,7 +486,7 @@ var Auth = function () {
             now.setDate(now.getDate() + 1) // the token expires in 1 days
             var session = {
                 token: utiles.sign(user),
-                user_id: user.id,
+                id_user: user.id,
                 expires: now
             }
             sessionModel.create(session)

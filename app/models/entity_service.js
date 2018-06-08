@@ -264,7 +264,7 @@ var Service = function () {
 							})
 							let valid = []
 							_couples[answer].forEach((data)=>{
-								if(data.email != null && data.id_user != null){
+								if(data.email && data.id_user){
 									valid.push(data)
 								}
 							})

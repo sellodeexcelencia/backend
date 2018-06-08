@@ -111,7 +111,35 @@ var User_answer = function () {
 		})
 	}
 	this.urgent = function (user, params) {
-		return this.getByParams({'evaluators.id_user':['4'],'id_status':'< 9'})
+		params = params || {}
+		params.limit = params.limit || 20
+		params.page = params.page || 1
+		params.order = params.order || 'id asc'
+		let now = new Date();
+		let query = `SELECT SQL_CALC_FOUND_ROWS * FROM view_user_answer 
+		WHERE id IN (
+			SELECT u_a.id FROM user_answer u_a
+			JOIN service s ON  u_a.id_service = s.id
+			JOIN questiontopic qt ON  u_a.id_topic = qt.id
+			JOIN question q ON  u_a.id_question = q.id
+			JOIN evaluation_request e_r ON e_r.id_answer = u_a.id
+			LEFT JOIN institution i on i.id = s.id_institution
+			WHERE 
+			e_r.id_user = 4 OR
+			(u_a.id_status < 9 AND e_r.alert_time < '${now.toISOString().split("T")[0]}')
+			${params.order ? 'ORDER BY u_a.'+params.order : ''}
+		)
+		LIMIT ${params.limit * (params.page - 1)},${params.limit};
+		SELECT FOUND_ROWS() as total;`
+		return this.customQuery(query).then((result) => {
+			let data = result[0]
+			let total = result[1][0].total
+			let list = []
+			for (let i = 0; i < data.length; i++) {
+				list.push(this.sintetizeRelation(data[i], { entity: 'user_answer' }))
+			}
+			return { data: list, total_results: total }
+		})
 	}
 	this.getStatsByService = function(service){
 		let q = `SELECT 

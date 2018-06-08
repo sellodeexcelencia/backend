@@ -4,7 +4,6 @@ var utiles = require('../utils/utiles.js')
 var Permissions = require('../utils/permissions.js')
 
 var User = require('../models/user.js')
-var App = require('../models/app.js')
 var Session = require('../models/session.js')
 var User_role_model = require('../models/user_role.js')
 var emiter = require('../events/emiter.js').instance
@@ -13,7 +12,6 @@ var pass_generator = require('generate-password')
 
 var Auth = function () {
     var userModel = new User()
-    var appModel = new App()
     var sessionModel = new Session()
     var user_role = new User_role_model()
 

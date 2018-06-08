@@ -129,6 +129,7 @@ var Service = function () {
 		JOIN \`category\` ON \`service\`.\`id_category\` = \`category\`.\`id\`
 		JOIN \`user\` ON \`institution_user\`.\`id_user\` = \`user\`.\`id\`
 		WHERE \`service\`.\`is_active\` = '1'
+		GROUP BY \`service\`.\`id\`
 		ORDER BY \`service\`.id ;`
 		let keys = []
 		return this.customQuery(q)

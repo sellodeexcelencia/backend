@@ -851,16 +851,16 @@ var Events = function () {
 	})
 	emiter.on('category.updated', (old, _new) => {
 		if (old.active === 1 && _new.active === 0) { //De_activate
-			model_entity_questiontopic.getByParams({ id_category: _new.id_category })
+			model_entity_questiontopic.getByParams({ id_category: _new.id })
 				.then((results) => {
 					results.data.forEach((topic) => {
-						model_entity_questiontopic.upate({ active: 0 }, { id: topic.id })
+						model_entity_questiontopic.update({ active: 0 }, { id: topic.id })
 					})
 				})
-			model_entity_service.getByParams({ id_category: _new.id_category })
+			model_entity_service.getByParams({ id_category: _new.id })
 				.then((results) => {
 					results.data.forEach((service) => {
-						model_entity_service.upate({ active: 0 }, { id: service.id })
+						model_entity_service.update({ active: 0 }, { id: service.id })
 					})
 				})
 		}

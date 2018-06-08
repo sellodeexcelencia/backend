@@ -400,6 +400,7 @@ var Service = function () {
 		${_filters['id'] ? 's.id = \''+_filters['id'][0] +'\' AND ' :''}
 		${_filters['id_category'] ? 's.id_category = \''+_filters['id_category'][0] +'\' AND ' :''}
 		${older ? 'true ':`s.is_active = '1' `}
+		GROUP BY s.id desc
 		ORDER BY s.id desc`
 		let keys = []
 		return this.customQuery(query).then((results)=>{

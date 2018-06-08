@@ -125,7 +125,7 @@ var User_answer = function () {
 			JOIN evaluation_request e_r ON e_r.id_answer = u_a.id
 			LEFT JOIN institution i on i.id = s.id_institution
 			WHERE 
-			e_r.id_user = 4 OR
+			(e_r.id_user = 4 AND u_a.id_status < 9 ) OR
 			(u_a.id_status < 9 AND e_r.alert_time < '${now.toISOString().split("T")[0]}')
 			${params.order ? 'ORDER BY u_a.'+params.order : ''}
 		)

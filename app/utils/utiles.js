@@ -128,12 +128,14 @@ module.exports = {
         if(i.indexOf('history') == 0){
           continue
         }
-        titles.push(dmt.translate.es[i] || i)
+        //titles.push(dmt.translate.es[i] || i)
         if(typeof item[i] === 'object'){
           if(item[i] instanceof Date){
+            titles.push(dmt.translate.es[i] || i)
             row.push(item[i])
           }else{
             if(item[i] instanceof Array){
+              continue
               let val = []
               for(var j = 0 ; j < item[i].length ; j++){
                 let v =item[i][j] ? item[i][j].name || item[i][j].text || item[i][j].description || '' : ''
@@ -144,12 +146,14 @@ module.exports = {
               }
               row.push(val.join(", "))
             }else{
+              titles.push(dmt.translate.es[i] || i)
               let val = item[i] ? item[i].name || item[i].text || item[i].description || '' : ''
               row.push(val)  
             }
             
           }
         }else{
+          titles.push(dmt.translate.es[i] || i)
           if(item[i] === 0){
             row.push(0)
           }else{

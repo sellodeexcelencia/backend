@@ -127,7 +127,7 @@ var User_answer = function () {
 			WHERE 
 			(e_r.id_user = 4 AND u_a.id_status < 9 ) OR
 			(u_a.id_status < 9 AND e_r.alert_time < '${now.toISOString().split("T")[0]}')
-			${params.order ? 'ORDER BY u_a.'+params.order : ''}
+			ORDER BY u_a.id DESC
 		)
 		LIMIT ${params.limit * (params.page - 1)},${params.limit};
 		SELECT FOUND_ROWS() as total;`

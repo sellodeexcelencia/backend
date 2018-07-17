@@ -945,6 +945,7 @@ var service_controller = function () {
 			throw utiles.informError(400)
 		}
 		let last = null
+		var level = -1;
 		return model_entity_service.getByUid('' + body.id).then((results) => {
 			let service = results.data[0]
 			let found = false
@@ -961,9 +962,13 @@ var service_controller = function () {
 			results.data.forEach((status)=>{
 				if(status.id_status === CONSTANTS.SERVICE.CUMPLE){
 					let date = new Date(status.timestamp)
-					if(!last){last = date}
+					if(!last){
+						last = date
+						level = status.level
+					}
 					if(date > last){
 						last = date
+						level = status.level
 					}
 				}
 			})
@@ -974,7 +979,11 @@ var service_controller = function () {
 						id_service:body.id,
 						timestamp:'> '+last
 					}).then(()=>{
-						model_entity_service.update({current_status:CONSTANTS.SERVICE.CUMPLE},{id:body.id})
+						model_entity_service.update(
+							{
+								current_status:CONSTANTS.SERVICE.CUMPLE,
+								level:level
+							},{id:body.id})
 					})
 			}
 			return model_entity_service.delete(body.id)

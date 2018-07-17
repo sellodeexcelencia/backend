@@ -28,7 +28,7 @@ dmt.translate={
         "picture":"Imagen",
         "phone":"Teléfono",
         "extension":"Extensión",
-        "mobile":"Celular",
+        "mobile":"Célular",
         "alert":"Enviar notificación",
         "newsletter":"Boletín",
         "id_type_document":"Tipo de Documento",

@@ -161,7 +161,6 @@ var Service = function () {
 		WHERE \`service\`.\`is_active\` = '1'
 		GROUP BY \`service\`.\`id\`
 		ORDER BY \`service\`.\`id\` ;`
-		let keys = []
 		return this.customQuery(q)
 	}
 	this.prepareAsignation = function(service){

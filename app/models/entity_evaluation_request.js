@@ -120,7 +120,7 @@ var Evaluation_request = function () {
 		if(alert_time){
 			alert_time = alert_time.toISOString().split('T')[0]
 		}
-		let q = `SELECT e_r.*,
+		let q = `SELECT DISTINCT e_r.*,
 			c.name category_name, 
 			s.name service_name,
 			q.level level,

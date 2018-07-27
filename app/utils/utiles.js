@@ -119,9 +119,9 @@ module.exports = {
         if(i.indexOf('motives') == 0){
           continue
         }
-        if(item['current_status'] === 5 && i.indexOf('rate') === 0 && i.indexOf('is_active')){
+        /*if(item['current_status'] === 5 && i.indexOf('rate') === 0 && i.indexOf('is_active')){
           continue
-        }
+        }*/
         if(i.indexOf('current_status') == 0){
           continue
         }

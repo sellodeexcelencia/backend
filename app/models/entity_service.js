@@ -187,9 +187,9 @@ var Service = function () {
 			}
 			let q = `DELETE FROM chats WHERE `; 
 			for(var i in results){
-				q+= `id=${results[i].id} OR`
+				q+= `id=${results[i].id} OR `
 			}
-			q = q.splice(0,-3)
+			q = q.slice(0,-3)
 			return this.customQuery(q)
 		}).then((results)=>{
 			let q = `DELETE from evaluation_request WHERE id_service = '${service.id}'`;

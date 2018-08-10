@@ -198,7 +198,7 @@ var Jobs = function () {
 			[CONSTANTS.EVALUATION_REQUEST.ACEPTADO,
 			CONSTANTS.EVALUATION_REQUEST.SOLICITADO,
 			CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION,
-			CONSTANTS.EVALUATION_REQUEST.ASIGNADO])
+			CONSTANTS.EVALUATION_REQUEST.ASIGNADO],true)
 			.then((results) => {
 				results.forEach((request) => {
 					let tout = Math.floor(Math.random() * 1000) + 100
@@ -231,7 +231,7 @@ var Jobs = function () {
 				[CONSTANTS.EVALUATION_REQUEST.ACEPTADO,
 				CONSTANTS.EVALUATION_REQUEST.SOLICITADO,
 				CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION,
-				CONSTANTS.EVALUATION_REQUEST.ASIGNADO])
+				CONSTANTS.EVALUATION_REQUEST.ASIGNADO],true)
 		})
 		.then((results)=>{
 			results.forEach((request) => {
@@ -251,7 +251,7 @@ var Jobs = function () {
 						}
 					})
 				})
-				model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
+				//model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
 				let tout = Math.floor(Math.random() * 1000) + 100
 				setTimeout(() => {
 					utiles.sendEmail(_admin.email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',

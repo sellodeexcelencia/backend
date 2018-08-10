@@ -17,6 +17,7 @@ var Events = function () {
 	let model_entity_motives = new (require('../models/entity_motives.js'))()
 	let model_status = new (require('../models/status.js'))()
 	let model_category = new (require('../models/category.js'))()
+	let model_question = new (require('../models/question.js'))()
 	let model_entity_question = new (require('../models/entity_question.js'))()
 	let model_usertype = new (require('../models/usertype.js'))()
 
@@ -148,7 +149,10 @@ var Events = function () {
 	emiter.on('evaluation_request.created', (_new) => {
 		let user = null
 		if (_new.id_request_status === CONSTANTS.EVALUATION_REQUEST.SOLICITADO) {
-			model_user.getByUid('' + _new.id_user).then((result) => {
+			model_question.getByUid(_new.id_question).then((res)=>{
+				_new.question = res[0]
+				return model_user.getByUid('' + _new.id_user)
+			}).then((result) => {
 				user = result[0]
 				model_entity_motives.getAll({ limit: 5000 }).then((results) => {
 					if (results.data.length) {
@@ -182,8 +186,10 @@ var Events = function () {
 			let _service = null
 			let _topic = null
 			let _institution = null
-			model_request_status.getByUid('' + _new.id_request_status)
-				.then((result) => {
+			model_question.getByUid(_new.id_question).then((res)=>{
+				_new.question = res[0]
+				return model_request_status.getByUid('' + _new.id_request_status)
+			}).then((result) => {
 					_status = result[0]
 					return model_user.getAdmin()
 				}).then((result) => {

@@ -119,11 +119,7 @@ var User_answer = function () {
 		let query = `SELECT SQL_CALC_FOUND_ROWS * FROM view_user_answer 
 		WHERE id IN (
 			SELECT u_a.id FROM user_answer u_a
-			JOIN service s ON  u_a.id_service = s.id
-			JOIN questiontopic qt ON  u_a.id_topic = qt.id
-			JOIN question q ON  u_a.id_question = q.id
 			JOIN evaluation_request e_r ON e_r.id_answer = u_a.id
-			LEFT JOIN institution i on i.id = s.id_institution
 			WHERE 
 			(e_r.id_user = 4 AND u_a.id_status < 9 ) OR
 			(u_a.id_status < 9 AND e_r.alert_time < '${now.toISOString().split("T")[0]}')

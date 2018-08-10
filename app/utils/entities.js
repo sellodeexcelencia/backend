@@ -116,12 +116,12 @@ dmt.entities = {
         rightKey: "id_user",
         entity: "points"
       },
-      {
+      /*{
         type: "1-n",
         name: "requests",
         rightKey: "id_user",
         entity: "evaluation_request"
-      },
+      },*/
     ]
   },
   "role":{
@@ -276,13 +276,13 @@ dmt.entities = {
         leftKey: "id_request_status",
         foreign_name: "name"
       },
-      {
+      /*{
         type: "1-1",
         name: "question",
         entity: "question",
         leftKey: "id_question",
         foreign_name: "name"
-      }
+      }*/
     ]
   },
   "institution": {

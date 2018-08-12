@@ -237,10 +237,10 @@ var Events = function () {
 					}
 					//5 Rechazado
 					if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.RECHAZADO) {
-						if (_new.branch >= 2) {
+						if (_new.branch >= 1) {
 							utiles.sendEmail(_admin.email, null, null,
-								'Tercer Rechazo Requisito - Sello de Excelencia Gobierno Digital Colombia',
-								`<p>Se ha rechazado el siguiente requisito 3 veces.</p>
+								'Segundo Rechazo Requisito - Sello de Excelencia Gobierno Digital Colombia',
+								`<p>Se ha rechazado el siguiente requisito 2 veces.</p>
 								<p>Hola ${_admin.name}</p>
 								<p>Categoría: ${_service.category.name}</p>
 								<p>Nivel: ${_new.question.level}</p>

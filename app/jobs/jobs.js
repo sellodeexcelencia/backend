@@ -3,8 +3,8 @@ var config = require('../../config.json')
 let HOST = config.hosts[config.enviroment]
 let utiles = require('../utils/utiles')
 var Jobs = function () {
-	let model_entity_evalution_request = require('../models/entity_evaluation_request.js')
-	model_entity_evalution_request = new model_entity_evalution_request()
+	let model_entity_evaluation_request = require('../models/entity_evaluation_request.js')
+	model_entity_evaluation_request = new model_entity_evaluation_request()
 	let model_entity_service = require('../models/entity_service.js')
 	model_entity_service = new model_entity_service()
 	let model_user = require('../models/user.js')
@@ -40,15 +40,15 @@ var Jobs = function () {
 				})
 			})
 		//servicios que están en validación
-		model_user.getAdmin().then((result)=>{
+		model_user.getAdmin().then((result) => {
 			let _admin = result[0]
 			model_entity_service.getByLastStatusDate(null, adate, [CONSTANTS.SERVICE.VERIFICACION])
-			.then((results) => {
-				results.forEach((service) => {
-					let tout = Math.floor(Math.random() * 1000) + 100
-					setTimeout(() => {
-						utiles.sendEmail(_admin.email, null, null, 'Recordatorio Sello de Excelencia',
-							`<div style="text-align:center;margin: 10px auto;">
+				.then((results) => {
+					results.forEach((service) => {
+						let tout = Math.floor(Math.random() * 1000) + 100
+						setTimeout(() => {
+							utiles.sendEmail(_admin.email, null, null, 'Recordatorio Sello de Excelencia',
+								`<div style="text-align:center;margin: 10px auto;">
 							<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 							</div>
 							<p>Hola ${_admin.name}</p>
@@ -58,10 +58,10 @@ var Jobs = function () {
 							<p>Nivel ${service.level}</p>
 							<p>Nuestros mejores deseos,<\p>
 							<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`
-						)
-					}, tout)
+							)
+						}, tout)
+					})
 				})
-			})
 		})
 		//servicios que estén en otorgado y falten 2 meses para vencer el sello
 		adate = new Date()
@@ -194,68 +194,69 @@ var Jobs = function () {
 			})
 		//solicitudes de evaluación que estén en alert_time y no estén en cumple / no_cumple
 		adate = new Date()
-		model_entity_evalution_request.getByStatusDate(null, adate,
+		model_entity_evaluation_request.getByStatusDate(null, adate,
 			[CONSTANTS.EVALUATION_REQUEST.ACEPTADO,
 			CONSTANTS.EVALUATION_REQUEST.SOLICITADO,
 			CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION,
-			CONSTANTS.EVALUATION_REQUEST.ASIGNADO],true)
+			CONSTANTS.EVALUATION_REQUEST.ASIGNADO], true)
 			.then((results) => {
 				results.forEach((request) => {
-					let tout = Math.floor(Math.random() * 1000) + 100
-					setTimeout(() => {
-						utiles.sendEmail(request.user_email, null, null, 'Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
-							`<div style="text-align:center;margin: 10px auto;">
+					if (request.alert == 1) {
+						let tout = Math.floor(Math.random() * 1000) + 100
+						setTimeout(() => {
+							utiles.sendEmail(request.user_email, null, null, 'Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
+								`<div style="text-align:center;margin: 10px auto;">
 								<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 								</div>
 								<p>Hola ${request.user_name ? request.user_name : ''}</p>
 								<p>El plazo de evaluación del siguiente requisito:</p>
-								<p>Categoría: ${request.category_name ? request.category_name: ''}</p>
-								<p>Nivel: ${request.level ? request.level: ''}</p>
+								<p>Categoría: ${request.category_name ? request.category_name : ''}</p>
+								<p>Nivel: ${request.level ? request.level : ''}</p>
 								<p>Temática: ${request.topic ? request.topic : ''}</p>
-								<p>Requisito: ${request.question ? request.question: ''}</p>
-								<p>Entidad: ${request.institution ? request.institution: ''}</p>
-								<p>Nombre del Producto o Servicio: ${request.service_name ? request.service_name: ''}</p>
-								<p>Está próximo a vencerse <b>${request.end_time ? request.end_time.toLocaleString(): ''}</b></p>
+								<p>Requisito: ${request.question ? request.question : ''}</p>
+								<p>Entidad: ${request.institution ? request.institution : ''}</p>
+								<p>Nombre del Producto o Servicio: ${request.service_name ? request.service_name : ''}</p>
+								<p>Está próximo a vencerse <b>${request.end_time ? request.end_time.toLocaleString() : ''}</b></p>
 								<p>Por favor ingresa a la plataforma para Evaluar el Requisito.</p>
 								<p>Nuestros mejores deseos,<\p>
 								<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`
-						)
-					}, tout)
+							)
+						}, tout)
+					}
 				})
 			})
 		//reasignar solicitudes con valid_to = hoy 
 		let _admin = null
-		return model_user.getAdmin().then((result)=>{
+		return model_user.getAdmin().then((result) => {
 			_admin = result[0]
-			return model_entity_evalution_request.getByStatusDate(adate, null,
+			return model_entity_evaluation_request.getByStatusDate(adate, null,
 				[CONSTANTS.EVALUATION_REQUEST.ACEPTADO,
 				CONSTANTS.EVALUATION_REQUEST.SOLICITADO,
 				CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION,
-				CONSTANTS.EVALUATION_REQUEST.ASIGNADO],true)
-		})
-		.then((results)=>{
-			results.forEach((request) => {
-				setTimeout(()=>{
-					model_entity_motives.getAll({ limit: 5000 }).then((results) => {
-						if (results.data.length) {
-							let motive = null
-							results.data.forEach((_motive) => {
-								if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.NO_EVALUAR) {
-									motive = _motive
-									return
+				CONSTANTS.EVALUATION_REQUEST.ASIGNADO], true)
+		}).then((results) => {
+				results.forEach((request) => {
+					setTimeout(() => {
+						model_entity_motives.getAll({ limit: 5000 }).then((results) => {
+							if (results.data.length) {
+								let motive = null
+								results.data.forEach((_motive) => {
+									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.NO_EVALUAR) {
+										motive = _motive
+										return
+									}
+								})
+								if (motive) {
+									entity_model_points.addUserPoints(request.user_id, motive.id, '')
 								}
-							})
-							if (motive) {
-								entity_model_points.addUserPoints(request.user_id, motive.id, '')
 							}
-						}
+						})
 					})
-				})
-				//model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
-				let tout = Math.floor(Math.random() * 1000) + 100
-				setTimeout(() => {
-					utiles.sendEmail(_admin.email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
-						`<div style="text-align:center;margin: 10px auto;">
+					//model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
+					let tout = Math.floor(Math.random() * 1000) + 100
+					setTimeout(() => {
+						utiles.sendEmail(_admin.email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
+							`<div style="text-align:center;margin: 10px auto;">
 							<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 							</div>
 							<p>Hola ${_admin.name}</p>
@@ -270,13 +271,13 @@ var Jobs = function () {
 							<p>Por favor ingresa a la plataforma para Evaluar el Requisito.</p>
 							<p>Nuestros mejores deseos,<\p>
 							<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`
-					)
-				}, tout)
+						)
+					}, tout)
+				})
 			})
-		})
 	}
 
-	this.info = function(){
+	this.info = function () {
 		let adate = new Date()
 		return model_entity_service.getByCurrentStatusDate(null, null, [CONSTANTS.SERVICE.INCOMPLETO])
 	}

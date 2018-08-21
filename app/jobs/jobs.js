@@ -246,20 +246,21 @@ var Jobs = function () {
 				results.data.forEach((_motive) => {
 					if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.NO_EVALUAR) {
 						motive = _motive
-						return
 					}
 				})
 			}
+			return model_entity_evaluation_request.asignateRequests(adate, null,
+				[CONSTANTS.EVALUATION_REQUEST.ACEPTADO,
+				CONSTANTS.EVALUATION_REQUEST.SOLICITADO,
+				CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION,
+				CONSTANTS.EVALUATION_REQUEST.ASIGNADO], true,_admin.id)
 		}).then(() => {
 			requests.forEach((request) => {
-				if (motive) {
-					entity_model_points.addUserPoints(request.user_id, motive.id, '').then(()=>{
-						model_entity_evaluation_request.update({id_user:4},{id:request.id})
-					})
-				}
-				//model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
 				let tout = Math.floor(Math.random() * 1000) + 100
 				setTimeout(() => {
+					if (motive) {
+						entity_model_points.addUserPoints(request.user_id, motive.id, '')
+					}
 					utiles.sendEmail(_admin.email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
 						`<div style="text-align:center;margin: 10px auto;">
 							<img width="100" src="${HOST}/assets/img/sell_gel.png"/>

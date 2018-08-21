@@ -50,7 +50,7 @@ function ($scope, $mdDialog, $mdEditDialog, parent, $http, entityService, $route
 	})
 	ctrl.getMessages = function(){
 		ctrl.entities.evaluation_request.data.forEach((request)=>{
-			var url = '/api/question/chats?filter_field=id_evaluation_request&filter_value=' + request.id
+			var url = '/api/question/chats?limit=200&filter_field=id_evaluation_request&filter_value=' + request.id
 			$http.get(url).then((response)=>{
 				request.messages = response.data.data
 			})

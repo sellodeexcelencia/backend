@@ -20,7 +20,7 @@ angular.module('dmt-back')
 						filter: '',
 						order: null,
 						filters: {},
-						limit: 10,
+						limit: 50,
 						page: 1,
 					},
 					getData: function () { return scope.getEntityData(relation) },

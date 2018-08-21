@@ -110,7 +110,7 @@ dmt.entities = {
 
         }
       },
-      {
+      /*{
         type: "1-n",
         name: "record_points",
         rightKey: "id_user",

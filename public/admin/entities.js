@@ -99,12 +99,12 @@ dmt.entities = {
         leftKey: "id_type_document",
         foreign_name: "name"
       },
-      /*{
+      {
         type: "1-n",
         name: "record_points",
         rightKey: "id_user",
         entity: "points"
-      },*/
+      },
     ]
   },
   "role": {

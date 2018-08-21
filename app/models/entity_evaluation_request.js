@@ -151,7 +151,7 @@ var Evaluation_request = function () {
 		if(alert_time){
 			alert_time = alert_time.toISOString().split('T')[0]
 		}
-		let q = `UPDATE evaluation_request e_r,
+		let q = `UPDATE evaluation_request e_r 
 			JOIN service s ON e_r.id_service = s.id
 			JOIN user u ON u.id = e_r.id_user
 			JOIN category c ON c.id = s.id_category
@@ -163,6 +163,7 @@ var Evaluation_request = function () {
 			WHERE e_r.id_request_status IN (${status.join(',')})
 			${end_time ? less ?  'AND DATE(e_r.end_time) < \''+end_time+'\' ' : 'AND DATE(e_r.end_time) = \''+end_time+'\' ':''}
 			${alert_time ? less ? 'AND DATE(e_r.alert_time) < \''+alert_time+'\' ' : 'AND DATE(e_r.alert_time) = \''+alert_time+'\' ':''}`
+			console.log(q)
 		return this.customQuery(q)
 	}
 	return this

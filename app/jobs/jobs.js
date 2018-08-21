@@ -11,6 +11,8 @@ var Jobs = function () {
 	model_user = new model_user()
 	let model_entity_motives = require('../models/entity_motives.js')
 	model_entity_motives = new model_entity_motives()
+	let entity_model_points = require('../models/entity_points.js')
+	entity_model_points = new entity_model_points()
 	/**
 	 * execute
 	 */

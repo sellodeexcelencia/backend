@@ -144,6 +144,27 @@ var Evaluation_request = function () {
 			${alert_time ? less ? 'AND DATE(e_r.alert_time) < \''+alert_time+'\' ' : 'AND DATE(e_r.alert_time) = \''+alert_time+'\' ':''}`
 		return this.customQuery(q)
 	}
+	this.asignateRequests = function(end_time,alert_time,status,less,new_user){
+		if(end_time){
+			end_time = end_time.toISOString().split('T')[0]
+		}
+		if(alert_time){
+			alert_time = alert_time.toISOString().split('T')[0]
+		}
+		let q = `UPDATE evaluation_request e_r,
+			JOIN service s ON e_r.id_service = s.id
+			JOIN user u ON u.id = e_r.id_user
+			JOIN category c ON c.id = s.id_category
+			JOIN question q ON q.id = e_r.id_question
+			JOIN questiontopic qt ON qt.id = q.id_topic
+			JOIN institution i ON i.id = s.id_institution
+			JOIN request_status r_s ON e_r.id_request_status = r_s.id
+			SET e_r.id_user = '${new_user}'
+			WHERE e_r.id_request_status IN (${status.join(',')})
+			${end_time ? less ?  'AND DATE(e_r.end_time) < \''+end_time+'\' ' : 'AND DATE(e_r.end_time) = \''+end_time+'\' ':''}
+			${alert_time ? less ? 'AND DATE(e_r.alert_time) < \''+alert_time+'\' ' : 'AND DATE(e_r.alert_time) = \''+alert_time+'\' ':''}`
+		return this.customQuery(q)
+	}
 	return this
 };
 util.inherits(Evaluation_request, BaseModel)

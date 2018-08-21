@@ -229,6 +229,8 @@ var Jobs = function () {
 			})
 		//reasignar solicitudes con valid_to = hoy 
 		let _admin = null
+		let motive = null
+		let requests = null
 		return model_user.getAdmin().then((result) => {
 			_admin = result[0]
 			return model_entity_evaluation_request.getByStatusDate(adate, null,
@@ -236,29 +238,30 @@ var Jobs = function () {
 				CONSTANTS.EVALUATION_REQUEST.SOLICITADO,
 				CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION,
 				CONSTANTS.EVALUATION_REQUEST.ASIGNADO], true)
+		}).then(results => {
+			requests = results
+			return model_entity_motives.getAll({ limit: 5000 })
 		}).then((results) => {
-				results.forEach((request) => {
-					setTimeout(() => {
-						model_entity_motives.getAll({ limit: 5000 }).then((results) => {
-							if (results.data.length) {
-								let motive = null
-								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.NO_EVALUAR) {
-										motive = _motive
-										return
-									}
-								})
-								if (motive) {
-									entity_model_points.addUserPoints(request.user_id, motive.id, '')
-								}
-							}
-						})
+			if (results.data.length) {
+				results.data.forEach((_motive) => {
+					if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.NO_EVALUAR) {
+						motive = _motive
+						return
+					}
+				})
+			}
+		}).then(() => {
+			requests.forEach((request) => {
+				if (motive) {
+					entity_model_points.addUserPoints(request.user_id, motive.id, '').then(()=>{
+						model_entity_evaluation_request.update({id_user:4},{id:request.id})
 					})
-					//model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
-					let tout = Math.floor(Math.random() * 1000) + 100
-					setTimeout(() => {
-						utiles.sendEmail(_admin.email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
-							`<div style="text-align:center;margin: 10px auto;">
+				}
+				//model_entity_evalution_request.update({id_user:_admin.id},{id:request.id})
+				let tout = Math.floor(Math.random() * 1000) + 100
+				setTimeout(() => {
+					utiles.sendEmail(_admin.email, null, null, 'Asignación por Vencimiento de Evaluación - Sello de Excelencia Gobierno Digital Colombia',
+						`<div style="text-align:center;margin: 10px auto;">
 							<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 							</div>
 							<p>Hola ${_admin.name}</p>
@@ -273,10 +276,10 @@ var Jobs = function () {
 							<p>Por favor ingresa a la plataforma para Evaluar el Requisito.</p>
 							<p>Nuestros mejores deseos,<\p>
 							<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`
-						)
-					}, tout)
-				})
+					)
+				}, tout)
 			})
+		})
 	}
 
 	this.info = function () {

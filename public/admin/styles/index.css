@@ -28,7 +28,9 @@ text-angular .ta-bind{
   background: #fff;
   border: 1px solid #ddd;
 }
-
+img{
+  width: 100%;
+}
 
 .chat .messages-container{
   border-top-left-radius: 5px;

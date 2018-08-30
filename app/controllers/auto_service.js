@@ -108,7 +108,7 @@ var service_controller = function () {
 				font: font,
 				size: 60,
 				colorspace: 'rgb',
-				color: 0x694a8b
+				color: 0x3eb1c8
 			}
 		)
 		_y -= 25
@@ -119,7 +119,7 @@ var service_controller = function () {
 				font: font,
 				size: 30,
 				colorspace: 'rgb',
-				color: 0x694a8b
+				color: 0x3eb1c8
 			}
 		)
 		_y -= 50
@@ -231,19 +231,19 @@ var service_controller = function () {
 				color: 0X5f676a
 			}
 		)
-		cxt.writeText('DIRECTORA DE GOBIERNO DIGITAL', 338, 595-488,
+		cxt.writeText('DIRECCIÓN DE GOBIERNO DIGITAL', 338, 595-440,
 			{
 				font: font,
 				size: 16,
 				colorspace: 'rgb',
-				color: 0x694a8b
+				color: 0x3eb1c8
 			}
 		)
 		_status.timestamp = new Date(_status.timestamp)
 		let date = _status.timestamp.getFullYear() + '-' +(_status.timestamp.getMonth()+1)+ '-' + _status.timestamp.getDate()
 		size = font.calculateTextDimensions(date,15);
 		center = centerline - size.width / 2
-		cxt.writeText(date, center, 595-525,
+		cxt.writeText(date, center, 595-473,
 			{
 				font: font,
 				size: 11,
@@ -263,7 +263,7 @@ var service_controller = function () {
 		var cxt = pdfWriter.startPageContentContext(page)
 		let font = pdfWriter.getFontForFile('./app/assets/UniversCondensed.ttf')
 		cxt.drawImage(0, 0, './app/assets/diploma.png')
-		let _y = 480
+		let _y = 460
 		let size = font.calculateTextDimensions('CERTIFICADO',60);
 		let center = centerline - size.width / 2
 		cxt.writeText('CERTIFICADO', center,_y,
@@ -271,7 +271,7 @@ var service_controller = function () {
 				font: font,
 				size: 60,
 				colorspace: 'rgb',
-				color: 0x694a8b
+				color: 0x3eb1c8
 			}
 		)
 		_y -= 25
@@ -282,7 +282,7 @@ var service_controller = function () {
 				font: font,
 				size: 30,
 				colorspace: 'rgb',
-				color: 0x694a8b
+				color: 0x3eb1c8
 			}
 		)
 		_y -= 50
@@ -433,19 +433,19 @@ var service_controller = function () {
 				}
 			)
 		}
-		cxt.writeText('DIRECTORA DE GOBIERNO DIGITAL', 338, 595-488,
+		cxt.writeText('DIRECCIÓN DE GOBIERNO DIGITAL', 338, 595-440,
 			{
 				font: font,
 				size: 16,
 				colorspace: 'rgb',
-				color: 0x694a8b
+				color: 0x3eb1c8
 			}
 		)
 		_status.timestamp = new Date(_status.timestamp)
 		let date = _status.timestamp.getFullYear() + '-' +(_status.timestamp.getMonth()+1)+ '-' + _status.timestamp.getDate()
-		size = font.calculateTextDimensions(date,15);
+		size = font.calculateTextDimensions(date,16);
 		center = centerline - size.width / 2
-		cxt.writeText(date, center, 595-525,
+		cxt.writeText(date, center, 595-473,
 			{
 				font: font,
 				size: 11,

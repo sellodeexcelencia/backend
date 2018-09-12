@@ -122,7 +122,7 @@ var User_answer = function () {
 			JOIN evaluation_request e_r ON e_r.id_answer = u_a.id
 			WHERE 
 			(e_r.id_user = 4 AND e_r.id_request_status < 9 ) OR
-			(e_r.id_request_status < 9 AND e_r.alert_time < '${now.toISOString().split("T")[0]}')
+			(e_r.id_request_status < 9 AND e_r.end_time < '${now.toISOString().split("T")[0]}')
 			ORDER BY u_a.id DESC
 		)
 		LIMIT ${params.limit * (params.page - 1)},${params.limit};

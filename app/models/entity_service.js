@@ -131,7 +131,6 @@ var Service = function () {
 		WHERE \`service\`.\`is_active\` = '1'
 		GROUP BY \`service\`.\`id\`
 		ORDER BY \`service\`.id ;`
-		let keys = []
 		return this.customQuery(q)
 	}
 	this.getByCurrentStatusDate = function(valid_to,alert_time,status){
@@ -159,6 +158,7 @@ var Service = function () {
 		JOIN \`category\` ON \`service\`.\`id_category\` = \`category\`.\`id\`
 		JOIN \`user\` ON \`institution_user\`.\`id_user\` = \`user\`.\`id\`
 		WHERE \`service\`.\`is_active\` = '1'
+		AND \`service\`.\`current_status\` IN ('${status.join(',')}')
 		GROUP BY \`service\`.\`id\`
 		ORDER BY \`service\`.\`id\` ;`
 		return this.customQuery(q)
@@ -327,7 +327,9 @@ var Service = function () {
 			if(_users.length){
 				let q = `UPDATE evaluation_request SET 
 					id_user = ${_users[0].id_user}, 
-					id_request_status = '${CONSTANTS.EVALUATION_REQUEST.ASIGNADO}' 
+					id_request_status = '${CONSTANTS.EVALUATION_REQUEST.ASIGNADO}',
+					alert_time = DATE_ADD(NOW(), INTERVAL (SELECT duration from request_status WHERE id = '${CONSTANTS.EVALUATION_REQUEST.ASIGNADO}') DAY),
+					end_time = DATE_ADD(NOW(), INTERVAL  (SELECT duration - pre_end from request_status WHERE id = '${CONSTANTS.EVALUATION_REQUEST.ASIGNADO}') DAY)
 					WHERE id='${request.id}'`
 				emiter.emit('evaluation_request.asignation',{id_user:_users[0].id_user})
 				return this.customQuery(q)

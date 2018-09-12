@@ -547,7 +547,7 @@ var EntityModel = function (info) {
 		var queryValues = ''
 		var queryWhere = '('
 		table.fields.forEach((f) => {
-			if (!data[f.name]) {
+			if (data[f.name] === undefined) {
 				return
 			}
 			if (f.name == 'timestamp') {

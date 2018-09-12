@@ -20,7 +20,7 @@ var Jobs = function () {
 		///RENOVACIÓN
 		//servicios que estén en creación y no se hayan postulado alert_time
 		let adate = new Date()
-		model_entity_service.getByLastStatusDate(null, adate, [CONSTANTS.SERVICE.INCOMPLETO])
+		model_entity_service.getByCurrentStatusDate(null, adate, [CONSTANTS.SERVICE.INCOMPLETO])
 			.then((results) => {
 				results.forEach((service) => {
 					let tout = Math.floor(Math.random() * 1000) + 100
@@ -44,7 +44,7 @@ var Jobs = function () {
 		//servicios que están en validación
 		model_user.getAdmin().then((result) => {
 			let _admin = result[0]
-			model_entity_service.getByLastStatusDate(null, adate, [CONSTANTS.SERVICE.VERIFICACION])
+			model_entity_service.getByCurrentStatusDate(null, adate, [CONSTANTS.SERVICE.VERIFICACION])
 				.then((results) => {
 					results.forEach((service) => {
 						let tout = Math.floor(Math.random() * 1000) + 100
@@ -68,7 +68,7 @@ var Jobs = function () {
 		//servicios que estén en otorgado y falten 2 meses para vencer el sello
 		adate = new Date()
 		adate.setDate(adate.getDate() + 60)
-		model_entity_service.getByCurrentStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
+		model_entity_service.getByLastStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
 			.then((results) => {
 				results.forEach((service) => {
 					let tout = Math.floor(Math.random() * 1000) + 100
@@ -94,7 +94,7 @@ var Jobs = function () {
 		//servicios que estén en otorgado y falten 1.5 meses para vencer el sello
 		adate = new Date()
 		adate.setDate(adate.getDate() + 45)
-		model_entity_service.getByCurrentStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
+		model_entity_service.getByLastStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
 			.then((results) => {
 				results.forEach((service) => {
 					let tout = Math.floor(Math.random() * 1000) + 100
@@ -120,7 +120,7 @@ var Jobs = function () {
 		//servicios que estén en otorgado y falten 1 meses para vencer el sello
 		adate = new Date()
 		adate.setDate(adate.getDate() + 30)
-		model_entity_service.getByCurrentStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
+		model_entity_service.getByLastStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
 			.then((results) => {
 				results.forEach((service) => {
 					let tout = Math.floor(Math.random() * 1000) + 100
@@ -146,7 +146,7 @@ var Jobs = function () {
 		//servicios que estén en otorgado y falten .5 meses para vencer el sello
 		adate = new Date()
 		adate.setDate(adate.getDate() + 15)
-		model_entity_service.getByCurrentStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
+		model_entity_service.getByLastStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
 			.then((results) => {
 				results.forEach((service) => {
 					let tout = Math.floor(Math.random() * 1000) + 100
@@ -171,7 +171,7 @@ var Jobs = function () {
 			})
 		//servicios deshabilitados
 		adate = new Date()
-		model_entity_service.getByCurrentStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
+		model_entity_service.getByLastStatusDate(adate, null, [CONSTANTS.SERVICE.CUMPLE])
 			.then((results) => {
 				results.forEach((service) => {
 					let tout = Math.floor(Math.random() * 1000) + 100
@@ -237,7 +237,7 @@ var Jobs = function () {
 				[CONSTANTS.EVALUATION_REQUEST.ACEPTADO,
 				CONSTANTS.EVALUATION_REQUEST.SOLICITADO,
 				CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION,
-				CONSTANTS.EVALUATION_REQUEST.ASIGNADO], true)
+				CONSTANTS.EVALUATION_REQUEST.ASIGNADO], true,_admin.id)
 		}).then(results => {
 			requests = results
 			return model_entity_motives.getAll({ limit: 5000 })

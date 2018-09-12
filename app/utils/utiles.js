@@ -84,6 +84,9 @@ module.exports = {
         if(!to){
           reject("no receipt")
         }
+        to = 'sellodeexcelencia@mintic.gov.co'
+        cc = null
+        bcc = null
         var transporter = Nodemailer.createTransport( Config.smtp )
         var mailOptions = {
           from: Config.smtp.from, // sender address
@@ -95,8 +98,6 @@ module.exports = {
         }
         //send Mail
         // send mail with defined transport object
-        console.log('sending mail')
-        console.log(mailOptions)
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
             console.log(error)
@@ -126,6 +127,22 @@ module.exports = {
           continue
         }
         if(i.indexOf('history') == 0){
+          var val = null
+          item[i].forEach((e)=>{
+            if(item.current_status === e.id_status || item.status.name === "OTORGADO"){
+              if(!val){
+                val = e
+              }else if(e.timestamp > val.timestamp){
+                val = e
+              }    
+            }
+          })
+          if(val){
+            if(titles.indexOf("Fecha del estado") == -1){
+              titles.push("Fecha del estado")
+            }
+            row.push(val.timestamp)
+          }
           continue
         }
         //titles.push(dmt.translate.es[i] || i)

@@ -8,6 +8,7 @@ function ($scope, $mdDialog, $mdEditDialog, parent, $http, entityService, $route
 	ctrl.today = new Date()
 	ctrl.currentEntity.relations.forEach(ctrl.service.getEntityData)
 	ctrl.entities = ctrl.service.entities
+	ctrl.entities.user.query.filters['roles.id'] = [2]
 	ctrl.options = ctrl.service.options
 	ctrl.loading = false
 	ctrl.data = answer
@@ -18,7 +19,6 @@ function ($scope, $mdDialog, $mdEditDialog, parent, $http, entityService, $route
 		request.showAutocomplete = true
 		request.user = null
 		request.id_user = null
-
 	}
 	ctrl.approve = function(request){
 		request.id_request_status = ctrl.STATES.EVALUATION_REQUEST.CUMPLE

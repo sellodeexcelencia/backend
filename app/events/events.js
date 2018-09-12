@@ -176,6 +176,18 @@ var Events = function () {
 		if (_new.id_request_status === CONSTANTS.EVALUATION_REQUEST.ASIGNADO
 			&& _new.id_user != old.id_user) {
 			emiter.emit('evaluation_request.asignation', { id_user: _new.id_user })
+			return model_request_status.getByUid('' + _new.id_request_status).then((result) => {
+				let status = result[0]
+				let duration = status.duration
+				let alarm = duration - status.pre_end
+				let atime = new Date()
+				atime.setDate(atime.getDate() + alarm)
+				let ftime = new Date()
+				ftime.setDate(ftime.getDate() + duration)
+				_new.alert_time = atime
+				_new.end_time = ftime
+				model_entity_evaluation_request.updateTimes(atime, ftime, _new.id)
+			})
 		}
 		if (old.id_request_status != _new.id_request_status) {
 			let _status = null
@@ -217,7 +229,9 @@ var Events = function () {
 					ftime.setDate(ftime.getDate() + duration)
 					_new.alert_time = atime
 					_new.end_time = ftime
-					model_entity_evaluation_request.updateTimes(atime, ftime, _new.id)
+					if (_new.id_request_status != CONSTANTS.EVALUATION_REQUEST.RECHAZADO){
+						model_entity_evaluation_request.updateTimes(atime, ftime, _new.id)
+					}
 					if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.ACEPTADO) {
 						model_entity_motives.getAll({ limit: 5000 }).then((results) => {
 							if (results.data.length) {
@@ -607,8 +621,6 @@ var Events = function () {
 					if (_new.current_status == CONSTANTS.SERVICE.EVALUACION) {
 						console.log('asigating')
 						model_entity_service.asignate(_new).then((evaluations) => {
-							console.log('evaluations ready')
-							console.log(evaluations)
 							if (evaluations.length == 0) {
 								return
 							}
@@ -619,7 +631,6 @@ var Events = function () {
 							for (let i in evaluations[0]) {
 								data.col_names.push(i)
 							}
-							console.log(data)
 							model_entity_evaluation_request.createMultiple(
 								data
 							)

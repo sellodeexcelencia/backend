@@ -97,7 +97,7 @@ var Service = function () {
 			for (let i = 0; i < data.length; i++) {
 				let item = this.sintetizeRelation(data[i], {entity:'service'})
 				item.history = _history[item.id]
-				if(item.status.id != CONSTANTS.SERVICE.CUMPLE){
+				if(item.status.id != CONSTANTS.SERVICE.NO_CUMPLE){
 					item.status.name = 'NO_OTORGADO'
 				}
 				delete item.is_active

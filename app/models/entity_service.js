@@ -364,12 +364,22 @@ var Service = function () {
 		return this.customQuery(q)
 	}
 	this.renovation= function(){
-		let q = `SELECT s.id,s.name \`service\`,i.name \`institution\`,
+		let q = `SELECT s.id,s.name \`service\`,i.name \`institution\`,c.name \`category\`,
 		s.is_active,ss.level,ss.timestamp,ss.valid_to from service_status ss 
 		JOIN service s ON s.id = ss.id_service
 		JOIN institution i ON s.id_institution = i.id
+		JOIN category c ON s.id_category = c.id
 		WHERE ss.id_status = 4;`
 		return this.customQuery(q).then(res=>{
+			res = res.filter(e =>{
+				let count = 0;
+				res.forEach(d=>{
+					if(d.id === e.id){
+						count ++
+					}
+				})
+				return count > 1
+			})
 			return {data:res}
 		})
 	}

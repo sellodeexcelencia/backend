@@ -99,6 +99,7 @@ var Service = function () {
 				item.history = _history[item.id]
 				delete item.is_active
 				item['Calificado'] = _history[item.id][0].timestamp
+				item.status.name = 'NO_OTORGADO'
 				list.push(item)
 			}
 			return { data: list, total_results: total }

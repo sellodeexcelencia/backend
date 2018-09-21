@@ -102,9 +102,7 @@ var Evaluation_request = function () {
 		})
 	}
 	this.updateTimes = function(atime,ftime,id){
-		var now = new Date()
 		let q = `UPDATE evaluation_request SET 
-			timestamp = '${now.toISOString()}',
 			alert_time = '${atime.toISOString().split('T')[0]}', end_time ='${ftime.toISOString().split('T')[0]}'
 			WHERE id='${id}'`
 		return this.customQuery(q)

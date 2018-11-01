@@ -20,6 +20,7 @@ var Auth = function () {
 	let model_entity_service_status = new(require('../models/entity_service_status'))()
 	let model_entity_service = new(require('../models/entity_service'))()
 	let model_entity_institution = new(require('../models/entity_institution'))()
+	let model_evaluation_request = new(require('../models/entity_evaluation_request'))()
 	let CONSTANTS = require('../events/constants')
 
 	var serviceReport = function(user,params){
@@ -42,11 +43,16 @@ var Auth = function () {
 		return model_entity_service.renovation()
 	}
 
+	var assignation = function(user,params){
+		return model_evaluation_request.report()
+	}
+
 	getMap.set('service',{method:serviceReport,permits:Permissions.NONE})
 	getMap.set('performance',{method:performanceReport,permits:Permissions.NONE})
 	getMap.set('certified',{method:certifiedReport,permits:Permissions.NONE})
 	getMap.set('renovated',{method:renovatedReport,permits:Permissions.NONE})
 	getMap.set('denied',{method:notCertifiedReport,permits:Permissions.NONE})
+	getMap.set('evaluation_request',{method:assignation,permits:Permissions.NONE})
 
 	var params = [getMap, postMap, putMap, null]
 	BaseController.apply(this, params)

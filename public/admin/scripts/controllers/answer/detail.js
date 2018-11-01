@@ -8,7 +8,7 @@ function ($scope, $mdDialog, $mdEditDialog, parent, $http, entityService, $route
 	ctrl.today = new Date()
 	ctrl.currentEntity.relations.forEach(ctrl.service.getEntityData)
 	ctrl.entities = ctrl.service.entities
-	ctrl.entities.user.query.filters['roles.id'] = [2]
+	ctrl.entities.user.query.filters['roles.id'] = [2,3,5,6,7,8,9,10,11,12]
 	ctrl.options = ctrl.service.options
 	ctrl.loading = false
 	ctrl.data = answer

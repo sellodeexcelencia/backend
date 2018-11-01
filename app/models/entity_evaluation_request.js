@@ -140,7 +140,7 @@ var Evaluation_request = function () {
 			JOIN institution i ON i.id = s.id_institution
 			JOIN request_status r_s ON e_r.id_request_status = r_s.id
 			WHERE e_r.id_request_status IN (${status.join(',')})
-			AND e_r.id_user <> '${ignore_user}'
+			${ignore_user ? `AND e_r.id_user <> '${ignore_user}'`: ''}
 			${end_time ? less ?  'AND DATE(e_r.end_time) < \''+end_time+'\' ' : 'AND DATE(e_r.end_time) = \''+end_time+'\' ':''}
 			${alert_time ? less ? 'AND DATE(e_r.alert_time) < \''+alert_time+'\' ' : 'AND DATE(e_r.alert_time) = \''+alert_time+'\' ':''}`
 		return this.customQuery(q)

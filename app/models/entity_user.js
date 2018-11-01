@@ -29,16 +29,7 @@ var User = function () {
 				"rightKey": "id_category"
 			}
 		},
-		{
-			"type": "n-n",
-			"entity": "institution",
-			"name": "institution",
-			"intermediate": {
-				"entity": "institution_user",
-				"leftKey": "id_user",
-				"rightKey": "id_institution"
-			}
-		},
+		
 		{
 			"type": "n-n",
 			"entity": "questiontopic",
@@ -84,12 +75,6 @@ var User = function () {
 			"leftKey": "id_type_document",
 			"foreign_name": "name"
 		},
-		{
-			"type": "1-n",
-			"name": "record_points",
-			"rightKey": "id_user",
-			"entity": "points"
-		}
 	],
 	"entity": "user",
 	"model": "entity"

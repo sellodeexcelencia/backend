@@ -73,8 +73,8 @@ module.exports = {
             resolve(user)
           }
         }
-        if (permit === Permissions.NONE) resolve(user)
-        else throw this.informError(100)
+        if (permit === Permissions.NONE){resolve(user)} 
+        else{ throw this.informError(100) }
       }).catch((err) => { reject(err) })
     })
   },

@@ -58,12 +58,12 @@ var Service = function () {
 
 	this.getDenied = function(){
 		let q=`SELECT \`service\`.\`id\` \`key\` FROM \`service\` 
-		JOIN (SELECT \`service_status\`.\`id_service\`,MAX(\`service_status\`.\`valid_to\`) FROM \`service_status\` 
+		JOIN (SELECT \`service_status\`.\`id_service\`,MAX(\`service_status\`.\`valid_to\`),\`service_status\`.\`timestamp\` FROM \`service_status\` 
 		WHERE (
 			\`service_status\`.\`id_status\` = '${CONSTANTS.SERVICE.NO_CUMPLE}'
 		)
 		GROUP BY \`id_service\`) \`service_status\` ON \`service_status\`.\`id_service\` = \`service\`.\`id\` 
-		GROUP BY \`key\` ORDER BY \`service\`.id ;`
+		GROUP BY \`key\` ORDER BY \`service_status\`.\`timestamp\` desc ;`
 		let keys = []
 		return this.customQuery(q).then((results)=>{
 			results.forEach((result)=>{
@@ -73,7 +73,7 @@ var Service = function () {
 				return [[],[{total:0}],[]]
 			}
 			let query = `SELECT SQL_CALC_FOUND_ROWS * FROM view_service 
-			WHERE id IN (${keys.join(',')}) ORDER BY id desc
+			WHERE id IN (${keys.join(',')}) ORDER BY FIELD(id,${keys.join(',')})
 			LIMIT 0,5000;
 			SELECT FOUND_ROWS() as total;
 			SELECT * FROM view_service_status WHERE id_service IN (${keys.join(',')}) 
@@ -150,7 +150,7 @@ var Service = function () {
 		\`user\`.\`email\` \`user_email\`,\`service_status\`.\`valid_to\`,
 		\`category\`.\`name\` \`category_name\`
 		 FROM \`service\` 
-		JOIN (SELECT \`service_status\`.\`id_service\`,MAX(\`service_status\`.\`valid_to\`) \`valid_to\` FROM \`service_status\` 
+		JOIN (SELECT \`service_status\`.\`id_service\`,\`service_status\`.\`valid_to\`,MAX(\`service_status\`.\`timestamp\`) \`timestamp\` FROM \`service_status\` 
 		WHERE (
 			${status ? `\`service_status\`.\`id_status\` IN ( '${status.join(',')}' ) ` : ``} 
 			${valid_to ? 'AND DATE(\`service_status\`.\`valid_to\`) = \''+valid_to +'\' ' :''}
@@ -333,7 +333,9 @@ var Service = function () {
 					id_request_status = '${CONSTANTS.EVALUATION_REQUEST.ASIGNADO}',
 					alert_time = DATE_ADD(NOW(), INTERVAL (SELECT duration from request_status WHERE id = '${CONSTANTS.EVALUATION_REQUEST.ASIGNADO}') DAY),
 					end_time = DATE_ADD(NOW(), INTERVAL  (SELECT duration - pre_end from request_status WHERE id = '${CONSTANTS.EVALUATION_REQUEST.ASIGNADO}') DAY)
-					WHERE id='${request.id}'`
+					WHERE id='${request.id}';
+					UPDATE chats SET id_sender= ${_users[0].id_user} WHERE id_evaluation_request = '${request.id}' AND id_sender = '${request.id_user}';
+					`
 				emiter.emit('evaluation_request.asignation',{id_user:_users[0].id_user})
 				return this.customQuery(q)
 			}else{
@@ -369,7 +371,8 @@ var Service = function () {
 		JOIN service s ON s.id = ss.id_service
 		JOIN institution i ON s.id_institution = i.id
 		JOIN category c ON s.id_category = c.id
-		WHERE ss.id_status = 4;`
+		WHERE ss.id_status = 4
+		ORDER BY ss.timestamp desc;`
 		return this.customQuery(q).then(res=>{
 			res = res.filter(e =>{
 				let count = 0;
@@ -415,7 +418,7 @@ var Service = function () {
 		${_filters['id_category'] ? 's.id_category = \''+_filters['id_category'][0] +'\' AND ' :''}
 		${older ? 'true ':`s.is_active = '1' `}
 		GROUP BY s.id desc
-		ORDER BY s.id desc`
+		ORDER BY ss.timestamp desc`
 		let keys = []
 		return this.customQuery(query).then((results)=>{
 			results.forEach((result)=>{
@@ -425,7 +428,7 @@ var Service = function () {
 				return [[],[{total:0}],[]]
 			}
 			let query = `SELECT SQL_CALC_FOUND_ROWS * FROM view_service 
-			WHERE id IN (${keys.join(',')}) ORDER BY id desc
+			WHERE id IN (${keys.join(',')}) ORDER BY FIELD(id,${keys.join(',')})
 			LIMIT ${params.limit * (params.page-1)},${params.limit};
 			SELECT FOUND_ROWS() as total;
 			SELECT * FROM view_service_status WHERE id_service IN (${keys.join(',')}) AND id_status = ${CONSTANTS.SERVICE.CUMPLE} ORDER BY timestamp desc;`	

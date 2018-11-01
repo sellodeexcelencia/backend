@@ -428,6 +428,12 @@ dmt.tables = {
 				"type": "datetime",
 				"disabled": true,
 				"key": false
+			},
+			{
+				"name": "id_initial_status",
+				"type": "int",
+				"disabled": false,
+				"key": false
 			}
 		],
 		"defaultSort": "id"

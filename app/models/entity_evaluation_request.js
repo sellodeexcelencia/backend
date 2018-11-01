@@ -102,7 +102,8 @@ var Evaluation_request = function () {
 		})
 	}
 	this.report = function () {
-		let q = `SELECT e_r.id,e_r.id_service service,e_r.id_question requisite,e_r.id_user user,e_r.timestamp from evaluation_request e_r 
+		let q = `SELECT e_r.id,e_r.id_service service,e_r.id_question question,e_r.id_user user, e_r.id_initial_status status,e_r.timestamp from evaluation_request e_r 
+			WHERE id_initial_status is not null
 			ORDER BY id_service desc;`
 		return this.customQuery(q).then(res => {
 			return { data: res }

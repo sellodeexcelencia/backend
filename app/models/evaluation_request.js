@@ -70,7 +70,7 @@
 		"Type": "int(11)",
 		"Null": "YES",
 		"Key": "",
-		"Default": null,
+		"Default": "0",
 		"Extra": ""
 	},
 	{
@@ -96,10 +96,18 @@
 		"Key": "",
 		"Default": null,
 		"Extra": ""
+	},
+	{
+		"Field": "id_initial_status",
+		"Type": "int(11)",
+		"Null": "YES",
+		"Key": "",
+		"Default": null,
+		"Extra": ""
 	}
 ]
- * DMT 2017
- * GENERATED: 21 / 11 / 2017 - 23:20:19
+ * DMT 2018
+ * GENERATED: 1 / 11 / 2018 - 10:48:3
  **/
 var BaseModel = require('../utils/model.js')
 var util = require('util')
@@ -176,7 +184,7 @@ var Evaluation_request = function () {
 		"Type": "int(11)",
 		"Null": "YES",
 		"Key": "",
-		"Default": null,
+		"Default": "0",
 		"Extra": ""
 	},
 	{
@@ -198,6 +206,14 @@ var Evaluation_request = function () {
 	{
 		"Field": "end_time",
 		"Type": "timestamp",
+		"Null": "YES",
+		"Key": "",
+		"Default": null,
+		"Extra": ""
+	},
+	{
+		"Field": "id_initial_status",
+		"Type": "int(11)",
 		"Null": "YES",
 		"Key": "",
 		"Default": null,

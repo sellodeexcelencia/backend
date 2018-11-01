@@ -667,6 +667,7 @@ var question_controller = function () {
 					body.alert_time = atime
 					body.end_time = ftime
 					body.id_request_status = CONSTANTS.EVALUATION_REQUEST.SOLICITADO
+					body.id_initial_status = CONSTANTS.EVALUATION_REQUEST.SOLICITADO
 					return model_entity_evaluation_request.create(body)
 				})
 		}

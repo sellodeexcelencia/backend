@@ -282,6 +282,7 @@ var Service = function () {
 										id_answer: answer,
 										id_service: service.id,
 										id_request_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO,
+										id_initial_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO,
 										id_question: id_question,
 										alert_time:atime.toISOString().split('T')[0],
 										end_time:ftime.toISOString().split('T')[0]
@@ -298,6 +299,7 @@ var Service = function () {
 									id_answer: answer,
 									id_service: service.id,
 									id_request_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO,
+									id_initial_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO,
 									id_question: data.id_question,
 									alert_time:atime.toISOString().split('T')[0],
 									end_time:ftime.toISOString().split('T')[0]

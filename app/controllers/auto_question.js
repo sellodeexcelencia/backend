@@ -321,6 +321,7 @@ var question_controller = function () {
 				params.filter_field = [params.filter_field]
 				params.filter_value = [params.filter_value]
 			}
+			params.order = params.order || 'timestamp desc'
 			return model_entity_user_answer.urgent(user,params)
 		}		
 		return _get(model_entity_user_answer, user, params)

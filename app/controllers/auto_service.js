@@ -467,6 +467,7 @@ var service_controller = function () {
 			}
 			params.filter_field.push('is_active')
 			params.filter_value.push('1')
+			params.order = params.order || 'timestamp desc'
 		}
 		if (params.certificate) {
 			let _service = null
@@ -504,7 +505,7 @@ var service_controller = function () {
 			if(params.certified){
 				return model_entity_service.getByPostulateCertificationDate(params)
 			}
-			params.order = params.order || 'id desc'
+			params.order = params.order || 'timestamp desc'
 			return _get(model_entity_service, user, params)
 		}
 	}

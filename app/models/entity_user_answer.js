@@ -116,15 +116,17 @@ var User_answer = function () {
 		params.page = params.page || 1
 		params.order = params.order || 'id asc'
 		let now = new Date();
-		let query = `SELECT SQL_CALC_FOUND_ROWS * FROM view_user_answer 
-		WHERE id IN (
+		let query = `SELECT SQL_CALC_FOUND_ROWS * FROM view_user_answer u_a
+		JOIN evaluation_request e_r ON e_r.id_answer = u_a.id
+		WHERE u_a.id IN (
 			SELECT u_a.id FROM user_answer u_a
 			JOIN evaluation_request e_r ON e_r.id_answer = u_a.id
 			WHERE 
 			(e_r.id_user = 4 AND e_r.id_request_status < 9 ) OR
 			(e_r.id_request_status < 9 AND e_r.end_time < '${now.toISOString().split("T")[0]}')
-			ORDER BY u_a.id DESC
+			ORDER BY e_r.end_time ASC
 		)
+		ORDER BY e_r.end_time ASC
 		LIMIT ${params.limit * (params.page - 1)},${params.limit};
 		SELECT FOUND_ROWS() as total;`
 		return this.customQuery(query).then((result) => {

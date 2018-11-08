@@ -977,7 +977,7 @@ var question_controller = function () {
 	putMap.set('form', { method: update_entity_form, permits: Permissions.ADMIN_QUESTIONS })
 	putMap.set('user_answer', { method: update_entity_user_answer, permits: Permissions.POSTULATE_SERVICE })
 	putMap.set('status', { method: update_status, permits: Permissions.ADMIN_STATUS })
-	putMap.set('evaluation_request', { method: update_entity_evaluation_request, permits: Permissions.ADMIN_EVALUATION_REQUEST })
+	putMap.set('evaluation_request', { method: update_entity_evaluation_request, permits: Permissions.CREATE_EVALUATION_REQUEST })
 	putMap.set('request_status', { method: update_request_status, permits: Permissions.ADMIN_STATUS })
 	putMap.set('chats', { method: update_chats, permits: Permissions.ADMIN_ANSWERS })
 	/**

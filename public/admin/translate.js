@@ -148,7 +148,7 @@ dmt.translate={
         "admin_evaluation_request":"Re-asignar un requisito",
         "create_chat":"Iniciar Chat (Para Entidades y Evaluadores)",
         "admin_platform":"Administrar Banner,Pie de página",
-        "create_evaluation_request":"Postularse",
+        "create_evaluation_request":"Evaluar y Solicitar Evaluación Voluntaria",
         "validity":"Vigencia",
         "certified":"Certificado",
         "status":"Estado",

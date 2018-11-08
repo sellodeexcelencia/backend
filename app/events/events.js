@@ -66,40 +66,76 @@ var Events = function () {
 				_admin = result[0]
 				_user = old.user
 				if (_new.id_status == CONSTANTS.EVALUATION_REQUEST.ERROR) { // rejected by admin
-					model_entity_service.update({ id: old.id_service, current_status: CONSTANTS.SERVICE.INCOMPLETO }, { id: old.id_service })
-					utiles.sendEmail(_user.email, null, null,
-						'Postulación no aceptada - Sello de Excelencia Gobierno Digital Colombia',
-						`<div style="text-align:center;margin: 10px auto;">
-					<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
-					</div>
-					<p>Hola ${_user ? _user.name : ''}</p>
-					<p>No ha sido aceptado el siguiente requisito:</p>
-					<p>Categoría: ${_category ? _category.name : ''}</p>
-					<p>Nivel: ${_question ? _question.level : ''}</p>
-					<p>Temática: ${_topic ? _topic.name : ''}</p>
-					<p>Requisito: ${_question ? _question.text : ''}</p>
-					<p>Entidad: ${_institution ? _institution.name : ''}</p>
-					<p>Nombre del Producto o Servicio: ${_service ? _service.name : ''}</p>
-					<p>Por favor valide que el requisito cumpla con las especificaciones de la evidencia.</p>
-					<p>Para Subsanar por favor ingrese a la plataforma del Sello de Excelencia Gobierno Digital Colombia,
-					ingrese a <b>Postular</b> y Seleccione el Producto o Servicio en la sección <b>Continuar con una postulación anterior</b></p>
-					<p>Nuestros mejores deseos,<\p>
-					<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`)
-				} else if (_new.id_status == CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR) {
 					model_entity_user_answer.getByParams({ id_service: _service.id })
 						.then((results) => {
 							let ready = true
 							results.data.forEach((answer) => {
-								if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.ERROR
-									|| answer.id_status == CONSTANTS.EVALUATION_REQUEST.PENDIENTE) {
+								if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.PENDIENTE) {
 									ready = false
 								}
 							})
-
 							if (ready) {
-								setTimeout(() => {
-									return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.EVALUACION }, { id: _service.id })
-								}, 500)
+								model_entity_service.update({ id: old.id_service, current_status: CONSTANTS.SERVICE.INCOMPLETO }, { id: old.id_service })
+								utiles.sendEmail(_user.email, null, null,
+									'Postulación no aceptada - Sello de Excelencia Gobierno Digital Colombia',
+									`<div style="text-align:center;margin: 10px auto;">
+									<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
+									</div>
+									<p>Hola ${_user ? _user.name : ''}</p>
+									<p>No ha sido aceptado el siguiente requisito:</p>
+									<p>Categoría: ${_category ? _category.name : ''}</p>
+									<p>Nivel: ${_question ? _question.level : ''}</p>
+									<p>Temática: ${_topic ? _topic.name : ''}</p>
+									<p>Requisito: ${_question ? _question.text : ''}</p>
+									<p>Entidad: ${_institution ? _institution.name : ''}</p>
+									<p>Nombre del Producto o Servicio: ${_service ? _service.name : ''}</p>
+									<p>Por favor valide que el requisito cumpla con las especificaciones de la evidencia.</p>
+									<p>Para Subsanar por favor ingrese a la plataforma del Sello de Excelencia Gobierno Digital Colombia,
+									ingrese a <b>Postular</b> y Seleccione el Producto o Servicio en la sección <b>Continuar con una postulación anterior</b></p>
+									<p>Nuestros mejores deseos,<\p>
+									<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`)
+							}
+							return
+						})
+				} else if (_new.id_status == CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR) {
+					model_entity_user_answer.getByParams({ id_service: _service.id })
+						.then((results) => {
+							let ready = true
+							let rejected = 0
+							results.data.forEach((answer) => {
+								if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.PENDIENTE) {
+									ready = false
+								}
+								if (answer.id_status == CONSTANTS.EVALUATION_REQUEST.ERROR) {
+									rejected += 1
+								}
+							})
+							if (ready) {
+								if (rejected == 0) {
+									setTimeout(() => {
+										return model_entity_service.update({ id: _service.id, current_status: CONSTANTS.SERVICE.EVALUACION }, { id: _service.id })
+									}, 500)
+								} else {
+									model_entity_service.update({ id: old.id_service, current_status: CONSTANTS.SERVICE.INCOMPLETO }, { id: old.id_service })
+									utiles.sendEmail(_user.email, null, null,
+										'Postulación no aceptada - Sello de Excelencia Gobierno Digital Colombia',
+										`<div style="text-align:center;margin: 10px auto;">
+									<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
+									</div>
+									<p>Hola ${_user ? _user.name : ''}</p>
+									<p>No ha sido aceptado el siguiente requisito:</p>
+									<p>Categoría: ${_category ? _category.name : ''}</p>
+									<p>Nivel: ${_question ? _question.level : ''}</p>
+									<p>Temática: ${_topic ? _topic.name : ''}</p>
+									<p>Requisito: ${_question ? _question.text : ''}</p>
+									<p>Entidad: ${_institution ? _institution.name : ''}</p>
+									<p>Nombre del Producto o Servicio: ${_service ? _service.name : ''}</p>
+									<p>Por favor valide que el requisito cumpla con las especificaciones de la evidencia.</p>
+									<p>Para Subsanar por favor ingrese a la plataforma del Sello de Excelencia Gobierno Digital Colombia,
+									ingrese a <b>Postular</b> y Seleccione el Producto o Servicio en la sección <b>Continuar con una postulación anterior</b></p>
+									<p>Nuestros mejores deseos,<\p>
+									<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`)
+								}
 							}
 							return
 						})
@@ -149,7 +185,7 @@ var Events = function () {
 	emiter.on('evaluation_request.created', (_new) => {
 		let user = null
 		if (_new.id_request_status === CONSTANTS.EVALUATION_REQUEST.SOLICITADO) {
-			model_question.getByUid(_new.id_question).then((res)=>{
+			model_question.getByUid(_new.id_question).then((res) => {
 				_new.question = res[0]
 				return model_user.getByUid('' + _new.id_user)
 			}).then((result) => {
@@ -198,63 +234,63 @@ var Events = function () {
 			let _service = null
 			let _topic = null
 			let _institution = null
-			model_question.getByUid(_new.id_question).then((res)=>{
+			model_question.getByUid(_new.id_question).then((res) => {
 				_new.question = res[0]
 				return model_request_status.getByUid('' + _new.id_request_status)
 			}).then((result) => {
-					_status = result[0]
-					return model_user.getAdmin()
-				}).then((result) => {
-					_admin = result[0]
-					return model_entity_user_answer.getByUid(old.id_answer)
-				}).then((result) => {
-					_answer = result.data[0]
-					return model_entity_service.getByUid('' + _answer.id_service)
-				}).then((result) => {
-					_service = result.data[0]
-					return model_user.getByUid('' + old.id_user)
-				}).then((result) => {
-					_evaluator = result[0]
-					return model_user.getByUid('' + _answer.id_user)
-				}).then((result) => {
-					_entity = result[0]
-					return model_entity_questiontopic.getByUid(_new.question.id_topic)
-				}).then((result) => {
-					_topic = result.data[0]
-					let duration = _status.duration
-					let alarm = duration - _status.pre_end
-					let atime = new Date()
-					atime.setDate(atime.getDate() + alarm)
-					let ftime = new Date()
-					ftime.setDate(ftime.getDate() + duration)
-					_new.alert_time = atime
-					_new.end_time = ftime
-					if (_new.id_request_status != CONSTANTS.EVALUATION_REQUEST.RECHAZADO){
-						model_entity_evaluation_request.updateTimes(atime, ftime, _new.id)
-					}
-					if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.ACEPTADO) {
-						model_entity_motives.getAll({ limit: 5000 }).then((results) => {
-							if (results.data.length) {
-								let motive = null
-								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.ACEPTAR_REQUISITO && _motive.level === _new.question.level) {
-										//'id_category': _service.id_category
-										motive = _motive
-										return
-									}
-								})
-								if (motive) {
-									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
+				_status = result[0]
+				return model_user.getAdmin()
+			}).then((result) => {
+				_admin = result[0]
+				return model_entity_user_answer.getByUid(old.id_answer)
+			}).then((result) => {
+				_answer = result.data[0]
+				return model_entity_service.getByUid('' + _answer.id_service)
+			}).then((result) => {
+				_service = result.data[0]
+				return model_user.getByUid('' + old.id_user)
+			}).then((result) => {
+				_evaluator = result[0]
+				return model_user.getByUid('' + _answer.id_user)
+			}).then((result) => {
+				_entity = result[0]
+				return model_entity_questiontopic.getByUid(_new.question.id_topic)
+			}).then((result) => {
+				_topic = result.data[0]
+				let duration = _status.duration
+				let alarm = duration - _status.pre_end
+				let atime = new Date()
+				atime.setDate(atime.getDate() + alarm)
+				let ftime = new Date()
+				ftime.setDate(ftime.getDate() + duration)
+				_new.alert_time = atime
+				_new.end_time = ftime
+				if (_new.id_request_status != CONSTANTS.EVALUATION_REQUEST.RECHAZADO) {
+					model_entity_evaluation_request.updateTimes(atime, ftime, _new.id)
+				}
+				if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.ACEPTADO) {
+					model_entity_motives.getAll({ limit: 5000 }).then((results) => {
+						if (results.data.length) {
+							let motive = null
+							results.data.forEach((_motive) => {
+								if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.ACEPTAR_REQUISITO && _motive.level === _new.question.level) {
+									//'id_category': _service.id_category
+									motive = _motive
+									return
 								}
+							})
+							if (motive) {
+								entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
 							}
-						})
-					}
-					//5 Rechazado
-					if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.RECHAZADO) {
-						if (_new.branch >= 1) {
-							utiles.sendEmail(_admin.email, null, null,
-								'Segundo Rechazo Requisito - Sello de Excelencia Gobierno Digital Colombia',
-								`<p>Se ha rechazado el siguiente requisito 2 veces.</p>
+						}
+					})
+				}
+				//5 Rechazado
+				if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.RECHAZADO) {
+					if (_new.branch >= 1) {
+						utiles.sendEmail(_admin.email, null, null,
+							'Segundo Rechazo Requisito - Sello de Excelencia Gobierno Digital Colombia',
+							`<p>Se ha rechazado el siguiente requisito 2 veces.</p>
 								<p>Hola ${_admin.name}</p>
 								<p>Categoría: ${_service.category.name}</p>
 								<p>Nivel: ${_new.question.level}</p>
@@ -263,111 +299,111 @@ var Events = function () {
 								<p>Entidad: ${_service.institution.name}</p>
 								<p>Nombre del Producto o Servicio: ${_service.name}</p>
 								<p>Ha sido asignado al administrador del sistema</p>`)
-							model_entity_evaluation_request.update({ id: _new.id, id_user: _admin.id, id_request_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO }, { id: _new.id })
-						} else {
-							// add rejection without trigger update event
-							model_entity_evaluation_request.addRejection(_new.id)
-							model_entity_service.reasignate(_new)
+						model_entity_evaluation_request.update({ id: _new.id, id_user: _admin.id, id_request_status: CONSTANTS.EVALUATION_REQUEST.ASIGNADO }, { id: _new.id })
+					} else {
+						// add rejection without trigger update event
+						model_entity_evaluation_request.addRejection(_new.id)
+						model_entity_service.reasignate(_new)
+					}
+					model_entity_motives.getAll({ limit: 5000 }).then((results) => {
+						if (results.data.length) {
+							let motive = null
+							results.data.forEach((_motive) => {
+								if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.RECHAZAR_REQUISITO && _motive.level === _new.question.level) {
+									//'id_category': _service.id_category
+									motive = _motive
+									return
+								}
+							})
+							if (motive) {
+								entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
+							}
 						}
-						model_entity_motives.getAll({ limit: 5000 }).then((results) => {
-							if (results.data.length) {
-								let motive = null
-								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.RECHAZAR_REQUISITO && _motive.level === _new.question.level) {
-										//'id_category': _service.id_category
-										motive = _motive
-										return
-									}
-								})
-								if (motive) {
-									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
-								}
-							}
-						})
+					})
 
-					}
-					//6 Retroalimentación
-					if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION) {
-						model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION }, { id: _answer.id })
-					}
-					//7 Cumple
-					if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {//add points
-						model_entity_motives.getAll({ limit: 5000 }).then((results) => {
-							if (results.data.length) {
-								let motive = null
-								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO && _motive.level === _new.question.level) {
-										//'id_category': _service.id_category
-										motive = _motive
-										return
-									}
-								})
-								if (motive) {
-									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
-								}
-							}
-						})
-						model_entity_evaluation_request.getByParams({ id_answer: _answer.id }).then((results) => {
-							let approved = 0
-							let rejected = 0
-							let total = results.data.length
-							results.data.forEach((request) => {
-								if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {
-									approved += 1
-								}
-								if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {
-									rejected += 1
+				}
+				//6 Retroalimentación
+				if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION) {
+					model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.RETROALIMENTACION }, { id: _answer.id })
+				}
+				//7 Cumple
+				if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {//add points
+					model_entity_motives.getAll({ limit: 5000 }).then((results) => {
+						if (results.data.length) {
+							let motive = null
+							results.data.forEach((_motive) => {
+								if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO && _motive.level === _new.question.level) {
+									//'id_category': _service.id_category
+									motive = _motive
+									return
 								}
 							})
-							if (approved + rejected === total) {
-								if (approved > Math.floor(total / 2)) {
-									model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.CUMPLE }, { id: _answer.id })
-								} else {//if (rejected >= Math.ceil(total / 2)) {
-									model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE }, { id: _answer.id })
-								}
+							if (motive) {
+								entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
+							}
+						}
+					})
+					model_entity_evaluation_request.getByParams({ id_answer: _answer.id }).then((results) => {
+						let approved = 0
+						let rejected = 0
+						let total = results.data.length
+						results.data.forEach((request) => {
+							if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {
+								approved += 1
+							}
+							if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {
+								rejected += 1
 							}
 						})
-					}
-					//8 No Cumple
-					if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {//add points
-						model_entity_motives.getAll({ limit: 5000 }).then((results) => {
-							if (results.data.length) {
-								let motive = null
-								results.data.forEach((_motive) => {
-									if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO) {
-										//'id_category': _service.id_category
-										motive = _motive
-										return
-									}
-								})
-								if (motive) {
-									entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
-								}
+						if (approved + rejected === total) {
+							if (approved > Math.floor(total / 2)) {
+								model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.CUMPLE }, { id: _answer.id })
+							} else {//if (rejected >= Math.ceil(total / 2)) {
+								model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE }, { id: _answer.id })
 							}
-						})
-						model_entity_evaluation_request.getByParams({ id_answer: _answer.id }).then((results) => {
-							let approved = 0
-							let rejected = 0
-							let total = results.data.length
-							results.data.forEach((request) => {
-								if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {
-									approved += 1
-								}
-								if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {
-									rejected += 1
+						}
+					})
+				}
+				//8 No Cumple
+				if (_new.id_request_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {//add points
+					model_entity_motives.getAll({ limit: 5000 }).then((results) => {
+						if (results.data.length) {
+							let motive = null
+							results.data.forEach((_motive) => {
+								if (_motive.name.name === CONSTANTS.MOTIVES.EVALUATOR.CALIFICAR_REQUISITO) {
+									//'id_category': _service.id_category
+									motive = _motive
+									return
 								}
 							})
-							if (approved + rejected === total) {
-								if (approved > Math.floor(total / 2)) {
-									model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.CUMPLE }, { id: _answer.id })
-								} else {//if (rejected >= Math.ceil(total / 2)) {
-									model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE }, { id: _answer.id })
-								}
+							if (motive) {
+								entity_model_points.addUserPoints(_evaluator.id, motive.id, '')
 							}
-
+						}
+					})
+					model_entity_evaluation_request.getByParams({ id_answer: _answer.id }).then((results) => {
+						let approved = 0
+						let rejected = 0
+						let total = results.data.length
+						results.data.forEach((request) => {
+							if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.CUMPLE) {
+								approved += 1
+							}
+							if (request.id_request_status == CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE) {
+								rejected += 1
+							}
 						})
-					}
-				})
+						if (approved + rejected === total) {
+							if (approved > Math.floor(total / 2)) {
+								model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.CUMPLE }, { id: _answer.id })
+							} else {//if (rejected >= Math.ceil(total / 2)) {
+								model_entity_user_answer.update({ id: _answer.id, id_status: CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE }, { id: _answer.id })
+							}
+						}
+
+					})
+				}
+			})
 		}
 	})
 	emiter.on('user.registered', (user, pass_user) => {
@@ -444,11 +480,11 @@ var Events = function () {
 				_service = result.data[0]
 				return model_user.getAdmin()
 			}).then((result) => {
-					_admin = result[0]
+				_admin = result[0]
 				return model_entity_institution.getUser(_service.id_institution)
-			}).then((result) =>{
-					_rep = result[0]
-					utiles.sendEmail(_admin.email, _rep.email, null, 'Servicio con puntaje bajo', `
+			}).then((result) => {
+				_rep = result[0]
+				utiles.sendEmail(_admin.email, _rep.email, null, 'Servicio con puntaje bajo', `
 				<div style="text-align:center;margin: 10px auto;">
 				<img width="100" src="${HOST}/assets/img/sell_gel.png"/>
 				</div>
@@ -459,8 +495,8 @@ var Events = function () {
 				<p>La calificación del servicio es ${avg}</p>
 				<p>Nuestros mejores deseos,<\p>
 				<p>El equipo del Sello de Excelencia Gobierno Digital Colombia<\p>`
-					)
-				})
+				)
+			})
 		}
 	})
 	emiter.on('service.updated', (old, _new, body) => {

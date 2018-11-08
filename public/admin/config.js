@@ -29,7 +29,7 @@ dmt.config = [
 				entity: "config",
 				controller: "detailItemController",
 				templateUrl: "views/logos/detail.html",
-				permission:'admin_config'
+				permission:'admin_platform'
 			},
 			{
 				name: "Banner",
@@ -350,7 +350,7 @@ dmt.config = [
 				entity: "user_answer",
 				controller: "urgentAnswerController",
 				templateUrl: "views/answer/urgent.html",
-				permission:'admin_evaluation_request'
+				permission:'admin_services'
 			}
 		]
 	},

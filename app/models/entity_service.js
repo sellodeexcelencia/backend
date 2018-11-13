@@ -174,7 +174,7 @@ var Service = function () {
 			if(max > 0 && service.level > max){
 				upgrade = true
 			}
-			let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}' AND (id_status <> '${CONSTANTS.EVALUATION_REQUEST.CUMPLE}' AND id_status <> '${CONSTANTS.EVALUATION_REQUEST.ACEPTADO}'); `
+			let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}' AND (id_status <> '${CONSTANTS.EVALUATION_REQUEST.CUMPLE}' AND id_status <> '${CONSTANTS.EVALUATION_REQUEST.POR_ASIGNAR}'); `
 			console.log(q)
 			return this.customQuery(q)	
 		}).then((results)=>{

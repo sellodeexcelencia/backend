@@ -174,13 +174,8 @@ var Service = function () {
 			if(max > 0 && service.level > max){
 				upgrade = true
 			}
-			if(!upgrade){
-				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}'; `
-				return this.customQuery(q)
-			}else {
-				let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id}' AND id_status = '${CONSTANTS.EVALUATION_REQUEST.NO_CUMPLE}'`
-				return this.customQuery(q)
-			}
+			let q = `UPDATE user_answer SET id_status = '${CONSTANTS.EVALUATION_REQUEST.PENDIENTE}' WHERE id_service = '${service.id} AND id_status <> '${CONSTANTS.EVALUATION_REQUEST.CUMPLE}''; `
+			return this.customQuery(q)	
 		}).then((results)=>{
 			let q = `SELECT id FROM chats WHERE id_evaluation_request IN (SELECT id from evaluation_request WHERE id_service = '${service.id}')`
 			return this.customQuery(q)

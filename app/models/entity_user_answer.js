@@ -116,7 +116,7 @@ var User_answer = function () {
 		params.page = params.page || 1
 		params.order = params.order || 'id asc'
 		let now = new Date();
-		let query = `SELECT SQL_CALC_FOUND_ROWS * FROM view_user_answer u_a
+		let query = `SELECT SQL_CALC_FOUND_ROWS u_a.* FROM view_user_answer u_a
 		JOIN evaluation_request e_r ON e_r.id_answer = u_a.id
 		WHERE u_a.id IN (
 			SELECT u_a.id FROM user_answer u_a

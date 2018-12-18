@@ -85,21 +85,34 @@ var Backend = function (configJSON) {
   // This turns on the app
   app.set('port', (process.env.PORT || config.port || 5000))
 
-  var server
+  var server,httpsServer
 
   this.start = function () {
     return new Promise((resolve, reject) => {
-      server = app.listen(app.get('port'), () => {
-        if (verbose) {
-          console.log('Node app is running on port', app.get('port'))
-          console.log('Using profile: ' + config.enviroment)
-        }
-        resolve(true)
-      })
+  // Uncomment to HTTPS
+        var fs = require('fs');
+        const options = {
+                key: fs.readFileSync('/root/sellodeexcelencia.gov.co/privkey.pem'),
+                cert: fs.readFileSync('/root/sellodeexcelencia.gov.co/cert.pem'),
+                ca: fs.readFileSync('/root/sellodeexcelencia.gov.co/chain.pem')
+        };
+        var https = require('https');
+        httpsServer = https.createServer(options, app).listen(app.get('port'), () => {
+                        if (verbose) {
+                                console.log('Node app is running on port', app.get('port'));
+                                console.log("Using profile: " + config.enviroment);
+                        }
+                });
+        var http = require('http');
+        server = http.createServer(function (req, res) {
+                        res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+                        res.end();
+                }).listen(80);
     })
   }
 
   this.close = function () {
+  httpsServer.close()
     server.close()
   }
 }

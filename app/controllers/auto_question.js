@@ -654,7 +654,7 @@ var question_controller = function () {
  	 * 
 	 */
 	var create_entity_evaluation_request = function (user, body) {
-		if (user.permissions.indexOf(Permissions.ADMIN_EVALUATION_REQUEST) == -1) {
+		//if (user.permissions.indexOf(Permissions.ADMIN_EVALUATION_REQUEST) == -1) {
 			return model_request_status.getByUid(CONSTANTS.EVALUATION_REQUEST.SOLICITADO)
 				.then((result) => {
 					let _status = result[0]
@@ -671,8 +671,8 @@ var question_controller = function () {
 					body.id_initial_status = CONSTANTS.EVALUATION_REQUEST.SOLICITADO
 					return model_entity_evaluation_request.create(body)
 				})
-		}
-		return model_entity_evaluation_request.create(body)
+		//}
+		//return model_entity_evaluation_request.create(body)
 	}
 	/**
 	 * @api {post} api/question/request_status Create request_status information

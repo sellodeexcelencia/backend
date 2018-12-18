@@ -142,7 +142,7 @@ dmt.translate={
         "admin_cities_regions":"Ciudades, Regiones y Paises",
         "admin_services":"En Validación, En Proceso, Otorgados, No Otorgados, Todos los Servicios, Evaluaciones Urgentes",
         "admin_questions":"Requisitos, Preguntas al Ciudadano",
-        "postulate_service":"Postular Servicios (Para Entidades)",
+        "postulate_service":"Postular Servicios (Para Entidades), Validar Requisitos (Administradores)",
         "admin_answers":"⚠ Modificar Manualmente las Respuestas y Chats ⚠",
         "admin_status":"Tiempos de Requisito, Tiempos de Servicio",
         "admin_evaluation_request":"Re-asignar un requisito",
